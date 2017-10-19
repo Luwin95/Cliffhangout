@@ -14,5 +14,9 @@
         <p>salt : ${ user.salt }</p>
         <p>email : ${ user.email }</p>
         <p>role : ${ user.role }</p>
+
+        <form method="POST">
+            <input type="submit" value="modifier utilisateur"/>
+        </form>
     </body>
 </html>

@@ -1,11 +1,20 @@
 package com.cliffhangout.beans;
 
 public class Way {
+    private int id;
     private String name;
     private float height;
     private String quotation;
     private int pointsNb;
     private Sector sector;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

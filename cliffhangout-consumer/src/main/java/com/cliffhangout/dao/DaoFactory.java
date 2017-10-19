@@ -39,7 +39,9 @@ public class DaoFactory {
     }
 
     public Connection getConnection() throws SQLException{
-        return DriverManager.getConnection(url, username, password);
+        Connection connection = DriverManager.getConnection(url, username, password);
+        connection.setAutoCommit(false);
+        return connection;
     }
 
     public UserDao getUserDao(){
@@ -49,4 +51,16 @@ public class DaoFactory {
     public SiteDao getSiteDao(){
         return new SiteDaoImpl(this);
     }
+
+    public SectorDao getSectorDao() {return new SectorDaoImpl(this); }
+
+    public WayDao getWayDao() { return new WayDaoImpl(this);}
+
+    public LengthDao getLengthDao() { return new LengthDaoImpl(this); }
+
+    public PointDao getPointDao() { return new PointDaoImpl(this); }
+
+    public CommentDao getCommentDao() { return new CommentDaoImpl(this);}
+
+    public ImageDao getImageDao() { return new ImageDaoImpl(this);}
 }

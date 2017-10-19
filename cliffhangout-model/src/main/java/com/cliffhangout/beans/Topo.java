@@ -2,11 +2,19 @@ package com.cliffhangout.beans;
 
 public class Topo {
 
+    private int id;
     private String name;
     private String description;
     private String file;
     private boolean borrowed;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }

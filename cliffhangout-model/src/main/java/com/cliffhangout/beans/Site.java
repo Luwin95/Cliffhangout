@@ -2,6 +2,7 @@ package com.cliffhangout.beans;
 
 public class Site {
 
+    private int id;
     private String name;
     private String description;
     private String location;
@@ -9,6 +10,14 @@ public class Site {
     private float latitude;
     private float longitude;
     private User creator;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
