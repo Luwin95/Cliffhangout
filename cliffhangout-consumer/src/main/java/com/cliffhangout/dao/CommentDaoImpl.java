@@ -1,17 +1,21 @@
 package com.cliffhangout.dao;
 
 import com.cliffhangout.beans.Comment;
+import com.cliffhangout.beans.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CommentDaoImpl implements CommentDao{
 
     private DaoFactory daoFactory;
+    private UserDao userDao;
 
-    CommentDaoImpl(DaoFactory daoFactory){
+    CommentDaoImpl(DaoFactory daoFactory, UserDao userDao){
         this.daoFactory = daoFactory;
+        this.userDao = userDao;
     }
 
     @Override
@@ -114,5 +118,60 @@ public class CommentDaoImpl implements CommentDao{
                 throw new DaoException("Impossible de communiquer avec la base de données");
             }
         }
+    }
+
+    @Override
+    public Comment find(int id) throws DaoException {
+        Comment comment = new Comment();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultat = null;
+
+        try{
+            connection = daoFactory.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM comment WHERE id=?;");
+            preparedStatement.setInt(1, id);
+            resultat = preparedStatement.executeQuery();
+            while(resultat.next()){
+                comment = buildComment(resultat);
+            }
+        }catch (SQLException e){
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+            }
+            throw new DaoException("Impossible de communiquer avec la base de données");
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de données");
+            }
+        }
+        return comment;
+    }
+
+    @Override
+    public Comment buildComment(ResultSet resultSet) throws DaoException {
+
+        Comment comment = new Comment();
+        try{
+            comment.setId(resultSet.getInt("id"));
+            comment.setContent(resultSet.getString("content"));
+            comment.setAuthor(userDao.find(resultSet.getInt("author_id")));
+            if(resultSet.getInt("parent_id")!= 0)
+            {
+                comment.setParent(this.find(resultSet.getInt("parent_id")));
+            }
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return comment;
     }
 }

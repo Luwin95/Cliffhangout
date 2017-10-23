@@ -1,9 +1,12 @@
 package com.cliffhangout.beans;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Way {
     private int id;
     private String name;
-    private float height;
+    private double height;
     private String quotation;
     private int pointsNb;
     private Sector sector;
@@ -24,11 +27,11 @@ public class Way {
         this.name = name;
     }
 
-    public float getHeight() {
+    public double getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
@@ -55,4 +58,5 @@ public class Way {
     public void setSector(Sector sector) {
         this.sector = sector;
     }
+
 }

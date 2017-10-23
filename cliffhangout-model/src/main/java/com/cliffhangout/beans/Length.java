@@ -1,5 +1,8 @@
 package com.cliffhangout.beans;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Length {
     private int id;
     private String name;

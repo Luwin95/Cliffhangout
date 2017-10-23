@@ -1,5 +1,8 @@
 package com.cliffhangout.beans;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Site {
 
     private int id;
@@ -7,8 +10,8 @@ public class Site {
     private String description;
     private String location;
     private int postcode;
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
     private User creator;
 
     public int getId() {
@@ -51,19 +54,19 @@ public class Site {
         this.postcode = postcode;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -74,4 +77,5 @@ public class Site {
     public void setCreator(User creator) {
         this.creator = creator;
     }
+
 }

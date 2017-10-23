@@ -1,16 +1,22 @@
 package com.cliffhangout.dao;
 
+import com.cliffhangout.beans.Length;
 import com.cliffhangout.beans.Point;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PointDaoImpl implements PointDao {
     private DaoFactory daoFactory;
+    private LengthDao lengthDao;
 
-    PointDaoImpl(DaoFactory daoFactory){
+    PointDaoImpl(DaoFactory daoFactory, LengthDao lengthDao){
         this.daoFactory = daoFactory;
+        this.lengthDao = lengthDao;
     }
 
     @Override
@@ -112,6 +118,126 @@ public class PointDaoImpl implements PointDao {
                 throw new DaoException("Impossible de communiquer avec la base de données");
             }
         }
+    }
 
+    @Override
+    public void deleteAllByLength(Length length) throws DaoException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try{
+            connection = daoFactory.getConnection();
+            preparedStatement = connection.prepareStatement("DELETE FROM point WHERE length_id=?;");
+            preparedStatement.setInt(1, length.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+        }
+        catch(SQLException e){
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+            }
+            throw new DaoException("Impossible de communiquer avec la base de données");
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de données");
+            }
+        }
+    }
+
+    @Override
+    public Point find(int id) throws DaoException {
+        Point point = new Point();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultat = null;
+
+        try{
+            connection = daoFactory.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM point WHERE id=?;");
+            preparedStatement.setInt(1, id);
+            resultat = preparedStatement.executeQuery();
+
+            while(resultat.next()){
+                point = buildPoint(resultat);
+            }
+        }catch (SQLException e){
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+            }
+            throw new DaoException("Impossible de communiquer avec la base de données");
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de données");
+            }
+        }
+        return point;
+    }
+
+    @Override
+    public Set<Point> findAllByLength(Length length) throws DaoException {
+        Set<Point> points = new HashSet<Point>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultat = null;
+
+        try{
+            connection = daoFactory.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM point WHERE length_id=? ORDER BY id;");
+            preparedStatement.setInt(1, length.getId());
+            resultat = preparedStatement.executeQuery();
+
+            while(resultat.next()){
+                Point point = buildPoint(resultat);
+                points.add(point);
+            }
+        }catch (SQLException e){
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+            }
+            throw new DaoException("Impossible de communiquer avec la base de données");
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de données");
+            }
+        }
+        return points;
+    }
+
+    @Override
+    public Point buildPoint(ResultSet resultat) throws DaoException {
+        Point point = new Point();
+        try{
+            point.setId(resultat.getInt("id"));
+            point.setName(resultat.getString("name"));
+            point.setDescription(resultat.getString("description"));
+            Length length = lengthDao.find(resultat.getInt("length_id"));
+            point.setLength(length);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return point;
     }
 }

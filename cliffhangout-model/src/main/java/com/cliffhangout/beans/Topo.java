@@ -1,5 +1,7 @@
 package com.cliffhangout.beans;
 
+import java.util.Set;
+
 public class Topo {
 
     private int id;
@@ -7,6 +9,8 @@ public class Topo {
     private String description;
     private String file;
     private boolean borrowed;
+    private User owner;
+    private Set<Site> sites;
 
     public int getId() {
         return id;
@@ -45,5 +49,29 @@ public class Topo {
 
     public void setBorrowed(boolean borrowed) {
         this.borrowed = borrowed;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Set<Site> getSites() {
+        return sites;
+    }
+
+    public void setSites(Set<Site> sites) {
+        this.sites = sites;
+    }
+
+    public void addSite(Site site){
+        this.sites.add(site);
+    }
+
+    public void removeSite(Site site){
+        this.sites.remove(site);
     }
 }
