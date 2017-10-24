@@ -3,18 +3,17 @@ package com.cliffhangout.dao;
 import com.cliffhangout.beans.Length;
 import com.cliffhangout.beans.Sector;
 import com.cliffhangout.beans.Way;
-
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WayDaoImpl implements WayDao {
     private DaoFactory daoFactory;
-    private SectorDao sectorDao;
+    private LengthDao lengthDao;
 
-    WayDaoImpl(DaoFactory daoFactory,SectorDao sectorDao){
+    WayDaoImpl(DaoFactory daoFactory, LengthDao lengthDao){
         this.daoFactory = daoFactory;
-        this.sectorDao = sectorDao;
+        this.lengthDao = lengthDao;
     }
 
     @Override
@@ -32,12 +31,15 @@ public class WayDaoImpl implements WayDao {
 
             preparedStatement.executeUpdate();
             connection.commit();
-
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys())
             {
                 if(generatedKeys.next())
                 {
                     way.setId(generatedKeys.getInt(1));
+                    for(Length length : way.getLengths())
+                    {
+                        lengthDao.create(length);
+                    }
                 }else{
                     throw new SQLException("Creating way failed, no ID obtained");
                 }
@@ -81,6 +83,11 @@ public class WayDaoImpl implements WayDao {
             preparedStatement.executeUpdate();
             connection.commit();
 
+            for(Length length : way.getLengths())
+            {
+                lengthDao.update(length);
+            }
+
         }
         catch(SQLException e){
             try {
@@ -108,6 +115,7 @@ public class WayDaoImpl implements WayDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try{
+            lengthDao.deleteAllByWay(way);
             connection = daoFactory.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM way WHERE id=?;");
             preparedStatement.setInt(1, way.getId());
@@ -139,11 +147,16 @@ public class WayDaoImpl implements WayDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try{
+            for(Way way : sector.getWays())
+            {
+                lengthDao.deleteAllByWay(way);
+            }
             connection = daoFactory.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM way WHERE sector_id=?;");
             preparedStatement.setInt(1, sector.getId());
             preparedStatement.executeUpdate();
             connection.commit();
+
         }
         catch(SQLException e){
             try {
@@ -166,8 +179,8 @@ public class WayDaoImpl implements WayDao {
     }
 
     @Override
-    public Way find(int id) throws DaoException {
-        Way way = new Way();
+    public Way find(int id, Sector sector) throws DaoException {
+        Way way = new Way(sector);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultat = null;
@@ -179,7 +192,7 @@ public class WayDaoImpl implements WayDao {
             resultat = preparedStatement.executeQuery();
 
             while(resultat.next()){
-                way = buildWay(resultat);
+                way = buildWay(resultat, sector);
             }
         }catch (SQLException e){
             try {
@@ -203,8 +216,8 @@ public class WayDaoImpl implements WayDao {
     }
 
     @Override
-    public Set<Way> findAllBySector(Sector sector) throws DaoException {
-        Set<Way> ways = new HashSet<Way>();
+    public List<Way> findAllBySector(Sector sector) throws DaoException {
+        List<Way> ways = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultat = null;
@@ -216,7 +229,7 @@ public class WayDaoImpl implements WayDao {
             resultat = preparedStatement.executeQuery();
 
             while(resultat.next()){
-                Way way = buildWay(resultat);
+                Way way = buildWay(resultat, sector);
                 ways.add(way);
             }
         }catch (SQLException e){
@@ -241,17 +254,15 @@ public class WayDaoImpl implements WayDao {
     }
 
     @Override
-    public Way buildWay(ResultSet resultat) throws DaoException {
-        Way way = new Way();
+    public Way buildWay(ResultSet resultat, Sector sector) throws DaoException {
+        Way way = new Way(sector);
         try{
             way.setId(resultat.getInt("id"));
             way.setName(resultat.getString("name"));
             way.setHeight(resultat.getDouble("height"));
             way.setQuotation(resultat.getString("quotation"));
             way.setPointsNb(resultat.getInt("points_nb"));
-            Sector sector = sectorDao.find(resultat.getInt("sector_id"));
-            way.setSector(sector);
-
+            way.setLengths(lengthDao.findAllByWay(way));
         }catch(SQLException e){
             e.printStackTrace();
         }

@@ -49,16 +49,16 @@ public class DaoFactory {
     }
 
     public SiteDao getSiteDao(){
-        return new SiteDaoImpl(this, this.getUserDao());
+        return new SiteDaoImpl(this, this.getUserDao(), this.getSectorDao());
     }
 
-    public SectorDao getSectorDao() {return new SectorDaoImpl(this, this.getSiteDao()); }
+    public SectorDao getSectorDao() {return new SectorDaoImpl(this, this.getWayDao()); }
 
-    public WayDao getWayDao() { return new WayDaoImpl(this, this.getSectorDao());}
+    public WayDao getWayDao() { return new WayDaoImpl(this, this.getLengthDao());}
 
-    public LengthDao getLengthDao() { return new LengthDaoImpl(this, this.getWayDao()); }
+    public LengthDao getLengthDao() { return new LengthDaoImpl(this, this.getPointDao()); }
 
-    public PointDao getPointDao() { return new PointDaoImpl(this, this.getLengthDao()); }
+    public PointDao getPointDao() { return new PointDaoImpl(this); }
 
     public CommentDao getCommentDao() { return new CommentDaoImpl(this, this.getUserDao());}
 

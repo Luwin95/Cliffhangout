@@ -3,20 +3,18 @@ package com.cliffhangout.dao;
 import com.cliffhangout.beans.Sector;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Way;
-
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SectorDaoImpl implements SectorDao {
 
     private DaoFactory daoFactory;
     private WayDao wayDao;
-    private SiteDao siteDao;
 
-    SectorDaoImpl(DaoFactory daoFactory, SiteDao siteDao){
+    SectorDaoImpl(DaoFactory daoFactory, WayDao wayDao){
         this.daoFactory = daoFactory;
-        this.siteDao = siteDao;
+        this.wayDao = wayDao;
     }
 
     @Override
@@ -38,6 +36,10 @@ public class SectorDaoImpl implements SectorDao {
                 if(generatedKeys.next())
                 {
                     sector.setId(generatedKeys.getInt(1));
+                    for(Way way : sector.getWays())
+                    {
+                        wayDao.create(way);
+                    }
                 }else{
                     throw new SQLException("Creating sector failed, no ID obtained");
                 }
@@ -78,6 +80,10 @@ public class SectorDaoImpl implements SectorDao {
 
             preparedStatement.executeUpdate();
             connection.commit();
+            for(Way way : sector.getWays())
+            {
+                wayDao.update(way);
+            }
         }catch(SQLException e){
             try {
                 if (connection != null) {
@@ -104,6 +110,7 @@ public class SectorDaoImpl implements SectorDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try{
+            wayDao.deleteAllBySector(sector);
             connection = daoFactory.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM sector WHERE id=?;");
             preparedStatement.setInt(1, sector.getId());
@@ -134,11 +141,16 @@ public class SectorDaoImpl implements SectorDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try{
+            for(Sector sector : site.getSectors())
+            {
+                wayDao.deleteAllBySector(sector);
+            }
             connection = daoFactory.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM sector WHERE site_id=?;");
             preparedStatement.setInt(1, site.getId());
             preparedStatement.executeUpdate();
             connection.commit();
+
         }catch(SQLException e){
             try {
                 if (connection != null) {
@@ -160,8 +172,8 @@ public class SectorDaoImpl implements SectorDao {
     }
 
     @Override
-    public Sector find(int id) throws DaoException {
-        Sector sector = new Sector();
+    public Sector find(int id, Site site) throws DaoException {
+        Sector sector = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultat = null;
@@ -173,7 +185,7 @@ public class SectorDaoImpl implements SectorDao {
             resultat = preparedStatement.executeQuery();
 
             while(resultat.next()){
-                sector = buildSector(resultat);
+                sector = buildSector(resultat, site);
             }
         }catch (SQLException e){
             try {
@@ -197,8 +209,8 @@ public class SectorDaoImpl implements SectorDao {
     }
 
     @Override
-    public Set<Sector> findAllBySite(Site site) throws DaoException {
-        Set<Sector> sectors = new HashSet<Sector>();
+    public List<Sector> findAllBySite(Site site) throws DaoException {
+        List<Sector> sectors = new ArrayList<Sector>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultat = null;
@@ -210,7 +222,7 @@ public class SectorDaoImpl implements SectorDao {
             resultat = preparedStatement.executeQuery();
 
             while(resultat.next()){
-                Sector sector = buildSector(resultat);
+                Sector sector = buildSector(resultat, site);
                 sectors.add(sector);
             }
         }catch (SQLException e){
@@ -235,15 +247,13 @@ public class SectorDaoImpl implements SectorDao {
     }
 
     @Override
-    public Sector buildSector(ResultSet resultat) throws DaoException {
-        Sector sector = new Sector();
+    public Sector buildSector(ResultSet resultat, Site site) throws DaoException {
+        Sector sector = new Sector(site);
         try{
             sector.setId(resultat.getInt("id"));
             sector.setName(resultat.getString("name"));
             sector.setDescription(resultat.getString("description"));
-            Site site = siteDao.find(resultat.getInt("site_id"));
-            sector.setSite(site);
-
+            sector.setWays(wayDao.findAllBySector(sector));
         }catch(SQLException e){
             e.printStackTrace();
         }

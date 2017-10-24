@@ -5,16 +5,18 @@ import com.cliffhangout.beans.Point;
 import com.cliffhangout.beans.Way;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class LengthDaoImpl implements LengthDao {
     private DaoFactory daoFactory;
-    private WayDao wayDao;
+    private PointDao pointDao;
 
-    LengthDaoImpl(DaoFactory daoFactory, WayDao wayDao){
+    LengthDaoImpl(DaoFactory daoFactory, PointDao pointDao){
         this.daoFactory =daoFactory;
-        this.wayDao = wayDao;
+        this.pointDao = pointDao;
     }
 
     @Override
@@ -36,6 +38,11 @@ public class LengthDaoImpl implements LengthDao {
                 if(generatedKeys.next())
                 {
                     length.setId(generatedKeys.getInt(1));
+                    for(Point point : length.getPoints())
+                    {
+                        pointDao.create(point);
+                    }
+
                 }else{
                     throw new SQLException("Creating length failed, no ID obtained");
                 }
@@ -75,6 +82,11 @@ public class LengthDaoImpl implements LengthDao {
 
             preparedStatement.executeUpdate();
             connection.commit();
+
+            for(Point point : length.getPoints())
+            {
+                pointDao.update(point);
+            }
         }
         catch(SQLException e){
             try {
@@ -101,6 +113,7 @@ public class LengthDaoImpl implements LengthDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try{
+            pointDao.deleteAllByLength(length);
             connection = daoFactory.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM length WHERE id=?;");
             preparedStatement.setInt(1, length.getId());
@@ -133,6 +146,10 @@ public class LengthDaoImpl implements LengthDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try{
+            for(Length length : way.getLengths())
+            {
+                pointDao.deleteAllByLength(length);
+            }
             connection = daoFactory.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM length WHERE way_id=?;");
             preparedStatement.setInt(1, way.getId());
@@ -161,8 +178,8 @@ public class LengthDaoImpl implements LengthDao {
     }
 
     @Override
-    public Length find(int id) throws DaoException {
-        Length length = new Length();
+    public Length find(int id, Way way) throws DaoException {
+        Length length = new Length(way);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultat = null;
@@ -174,7 +191,7 @@ public class LengthDaoImpl implements LengthDao {
             resultat = preparedStatement.executeQuery();
 
             while(resultat.next()){
-                length = buildLength(resultat);
+                length = buildLength(resultat, way);
             }
         }catch (SQLException e){
             try {
@@ -198,8 +215,8 @@ public class LengthDaoImpl implements LengthDao {
     }
 
     @Override
-    public Set<Length> findAllByWay(Way way) throws DaoException {
-        Set<Length> lengths = new HashSet<Length>();
+    public List<Length> findAllByWay(Way way) throws DaoException {
+        List<Length> lengths = new ArrayList<Length>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultat = null;
@@ -211,7 +228,7 @@ public class LengthDaoImpl implements LengthDao {
             resultat = preparedStatement.executeQuery();
 
             while(resultat.next()){
-                Length length = buildLength(resultat);
+                Length length = buildLength(resultat, way);
                 lengths.add(length);
             }
         }catch (SQLException e){
@@ -236,14 +253,14 @@ public class LengthDaoImpl implements LengthDao {
     }
 
     @Override
-    public Length buildLength(ResultSet resultSet) throws DaoException {
-        Length length = new Length();
+    public Length buildLength(ResultSet resultSet, Way way) throws DaoException {
+        Length length = new Length(way);
         try{
             length.setId(resultSet.getInt("id"));
             length.setName(resultSet.getString("name"));
             length.setDescription(resultSet.getString("description"));
-            Way way = wayDao.find(resultSet.getInt("way_id"));
-            length.setWay(way);
+            length.setPoints(pointDao.findAllByLength(length));
+
         }catch(SQLException e){
             e.printStackTrace();
         }

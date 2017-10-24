@@ -6,6 +6,10 @@ public class Point {
     private String description;
     private Length length;
 
+    public Point(Length length){
+        this.length = length;
+    }
+
     public int getId() {
         return id;
     }

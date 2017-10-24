@@ -26,9 +26,9 @@ public class Home extends HttpServlet {
         addUser.CreateAccount();
         AddSite addSite = new AddSite();
         addSite.newSite();
-        /*UpdateSite updateSite = new UpdateSite();
+        UpdateSite updateSite = new UpdateSite();
         updateSite.editSite();
-        DeleteSite deleteSite = new DeleteSite();
+        /*DeleteSite deleteSite = new DeleteSite();
         deleteSite.purgeSite();*/
         doGet(request,response);
     }
@@ -45,27 +45,8 @@ public class Home extends HttpServlet {
         request.setAttribute("user", user);
 
         GetSite getSite = new GetSite();
-        List<Object> entities = getSite.displaySite();
-        for(int i=0; i<entities.size(); i++){
-            switch(i)
-            {
-                case 0:
-                    request.setAttribute("site", entities.get(i));
-                    break;
-                case 1:
-                    request.setAttribute("sectors", entities.get(i));
-                    break;
-                case 2:
-                    request.setAttribute("ways", entities.get(i));
-                    break;
-                case 3:
-                    request.setAttribute("lengths", entities.get(i));
-                    break;
-                case 4:
-                    request.setAttribute("points", entities.get(i));
-                    break;
-            }
-        }
+        Site site = getSite.displaySite();
+        request.setAttribute("site", site);
         this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
     }
 }

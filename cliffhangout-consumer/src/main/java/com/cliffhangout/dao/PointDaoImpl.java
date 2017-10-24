@@ -7,16 +7,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class PointDaoImpl implements PointDao {
     private DaoFactory daoFactory;
-    private LengthDao lengthDao;
 
-    PointDaoImpl(DaoFactory daoFactory, LengthDao lengthDao){
+    PointDaoImpl(DaoFactory daoFactory){
         this.daoFactory = daoFactory;
-        this.lengthDao = lengthDao;
     }
 
     @Override
@@ -152,8 +152,8 @@ public class PointDaoImpl implements PointDao {
     }
 
     @Override
-    public Point find(int id) throws DaoException {
-        Point point = new Point();
+    public Point find(int id, Length length) throws DaoException {
+        Point point = new Point(length);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultat = null;
@@ -165,7 +165,7 @@ public class PointDaoImpl implements PointDao {
             resultat = preparedStatement.executeQuery();
 
             while(resultat.next()){
-                point = buildPoint(resultat);
+                point = buildPoint(resultat, length);
             }
         }catch (SQLException e){
             try {
@@ -189,8 +189,8 @@ public class PointDaoImpl implements PointDao {
     }
 
     @Override
-    public Set<Point> findAllByLength(Length length) throws DaoException {
-        Set<Point> points = new HashSet<Point>();
+    public List<Point> findAllByLength(Length length) throws DaoException {
+        List<Point> points = new ArrayList<Point>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultat = null;
@@ -202,7 +202,7 @@ public class PointDaoImpl implements PointDao {
             resultat = preparedStatement.executeQuery();
 
             while(resultat.next()){
-                Point point = buildPoint(resultat);
+                Point point = buildPoint(resultat, length);
                 points.add(point);
             }
         }catch (SQLException e){
@@ -227,14 +227,12 @@ public class PointDaoImpl implements PointDao {
     }
 
     @Override
-    public Point buildPoint(ResultSet resultat) throws DaoException {
-        Point point = new Point();
+    public Point buildPoint(ResultSet resultat, Length length) throws DaoException {
+        Point point = new Point(length);
         try{
             point.setId(resultat.getInt("id"));
             point.setName(resultat.getString("name"));
             point.setDescription(resultat.getString("description"));
-            Length length = lengthDao.find(resultat.getInt("length_id"));
-            point.setLength(length);
         }catch(SQLException e){
             e.printStackTrace();
         }

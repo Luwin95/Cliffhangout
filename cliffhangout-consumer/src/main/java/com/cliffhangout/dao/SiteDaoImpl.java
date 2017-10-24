@@ -15,10 +15,12 @@ public class SiteDaoImpl implements SiteDao{
 
     private DaoFactory daoFactory;
     private UserDao userDao;
+    private SectorDao sectorDao;
 
-    SiteDaoImpl(DaoFactory daoFactory, UserDao userDao){
+    SiteDaoImpl(DaoFactory daoFactory, UserDao userDao, SectorDao sectorDao){
         this.daoFactory = daoFactory;
         this.userDao = userDao;
+        this.sectorDao = sectorDao;
     }
 
     @Override
@@ -38,11 +40,16 @@ public class SiteDaoImpl implements SiteDao{
 
             preparedStatement.executeUpdate();
             connection.commit();
+
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys())
             {
                 if(generatedKeys.next())
                 {
                     site.setId(generatedKeys.getInt(1));
+                    for(Sector sector : site.getSectors())
+                    {
+                        sectorDao.create(sector);
+                    }
                 }else{
                     throw new SQLException("Creating site failed, no ID obtained");
                 }
@@ -86,6 +93,10 @@ public class SiteDaoImpl implements SiteDao{
 
             preparedStatement.executeUpdate();
             connection.commit();
+            for(Sector sector : site.getSectors())
+            {
+                sectorDao.update(sector);
+            }
         }catch(SQLException e){
             try {
                 if (connection != null) {
@@ -111,6 +122,7 @@ public class SiteDaoImpl implements SiteDao{
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try{
+            sectorDao.deleteAllBySite(site);
             connection = daoFactory.getConnection();
             preparedStatement = connection.prepareStatement("DELETE FROM site WHERE id=?;");
             preparedStatement.setInt(1, site.getId());
@@ -260,6 +272,8 @@ public class SiteDaoImpl implements SiteDao{
             site.setLongitude(resultat.getFloat("longitude"));
             User user = userDao.find(resultat.getInt("user_account_id"));
             site.setCreator(user);
+            site.setSectors(sectorDao.findAllBySite(site));
+
         }catch(SQLException e){
             e.printStackTrace();
         }

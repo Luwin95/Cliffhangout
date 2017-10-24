@@ -1,6 +1,8 @@
 package com.cliffhangout.beans;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Way {
@@ -10,6 +12,12 @@ public class Way {
     private String quotation;
     private int pointsNb;
     private Sector sector;
+    private List<Length> lengths = new ArrayList<Length>();
+
+    public Way(Sector sector)
+    {
+        this.sector = sector;
+    }
 
     public int getId() {
         return id;
@@ -59,4 +67,19 @@ public class Way {
         this.sector = sector;
     }
 
+    public List<Length> getLengths() {
+        return lengths;
+    }
+
+    public void setLengths(List<Length> lengths) {
+        this.lengths = lengths;
+    }
+
+    public void addLength(Length length){
+        this.lengths.add(length);
+    }
+
+    public void removeLength(Length length){
+        this.lengths.remove(length);
+    }
 }

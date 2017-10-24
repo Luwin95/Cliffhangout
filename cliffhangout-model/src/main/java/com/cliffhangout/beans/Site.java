@@ -1,6 +1,7 @@
 package com.cliffhangout.beans;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class Site {
@@ -13,6 +14,7 @@ public class Site {
     private double latitude;
     private double longitude;
     private User creator;
+    private List<Sector> sectors = new ArrayList<Sector>();
 
     public int getId() {
         return id;
@@ -78,4 +80,19 @@ public class Site {
         this.creator = creator;
     }
 
+    public List<Sector> getSectors() {
+        return sectors;
+    }
+
+    public void setSectors(List<Sector> sectors) {
+        this.sectors = sectors;
+    }
+
+    public void addSector(Sector sector){
+        this.sectors.add(sector);
+    }
+
+    public void removeSector(Sector sector){
+        this.sectors.remove(sector);
+    }
 }
