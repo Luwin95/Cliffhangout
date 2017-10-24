@@ -6,20 +6,12 @@ import com.cliffhangout.dao.*;
 public class AddSite {
 
     private SiteDao siteDao;
-    private SectorDao sectorDao;
-    private WayDao wayDao;
-    private LengthDao lengthDao;
-    private PointDao pointDao;
     private UserDao userDao;
 
     public AddSite()
     {
         DaoFactory daoFactory = DaoFactory.getInstance();
         this.siteDao = daoFactory.getSiteDao();
-        this.sectorDao = daoFactory.getSectorDao();
-        this.wayDao = daoFactory.getWayDao();
-        this.lengthDao = daoFactory.getLengthDao();
-        this.pointDao = daoFactory.getPointDao();
         this.userDao = daoFactory.getUserDao();
     }
 

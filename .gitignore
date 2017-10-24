@@ -13,3 +13,7 @@ log/
 target/
 
 *.properties
+*.jpg
+*.jpeg
+*.png
+*.gif

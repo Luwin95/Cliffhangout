@@ -47,6 +47,6 @@ public class Home extends HttpServlet {
         GetSite getSite = new GetSite();
         Site site = getSite.displaySite();
         request.setAttribute("site", site);
-        this.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
+        this.getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request,response);
     }
 }

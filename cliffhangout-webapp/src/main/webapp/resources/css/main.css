@@ -1,0 +1,78 @@
+﻿.﻿body
+{
+    position : absolute ;
+    top:0;
+    left:0;
+    right:0;
+    margin :0;
+    padding:0;
+    background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover; /* pour anciens Chrome et Safari */
+    background-size: cover;
+    min-height:100vh;
+}
+
+.menu
+{
+    position : absolute ;
+    top:0;
+    left:0;
+    right:0;
+    background : rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.menu ul
+{
+    margin: 1vh 0 1vh 2.5vh;
+
+}
+
+.menu li, .footer li{
+
+    display : inline;
+    list-style: none;
+    margin-left: 0;
+}
+
+.menu li a, .footer li {
+    font-family: 'Anton', sans-serif !important;
+    color : lightgrey !important;
+    margin-right: 5px;
+}
+
+.welcome
+{
+    margin: 50vh 0 0 10vh; /* poussé de la moitié de hauteur de viewport */
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+    /*font-family: 'Merriweather', serif;*/
+    font-family: 'Anton', sans-serif;
+    color : lightgrey;
+}
+
+.welcome h1
+{
+    font-size :5vw;
+}
+
+.welcome p
+{
+    font-size :2vw;
+}
+
+.footer
+{
+    position : absolute ;
+    bottom:0;
+    left:0;
+    right:0;
+    width:100%;
+    text-align: center;
+}
+
+.footer ul
+{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
