@@ -12,7 +12,10 @@
 log/
 target/
 
+#Properties
 *.properties
+
+#Images
 *.jpg
 *.jpeg
 *.png

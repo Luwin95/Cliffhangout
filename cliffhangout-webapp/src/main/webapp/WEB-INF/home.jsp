@@ -1,52 +1,38 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Ben
-  Date: 24/10/2017
-  Time: 14:02
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Accueil</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-              rel="stylesheet"
-              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-              crossorigin="anonymous">
-        <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
-    </head>
-    <body>
-        <div class="﻿body">
-            <div class="menu">
-                <ul>
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#">Rechercher un site</a></li>
-                    <li><a href="#">Se connecter</a></li>
-                </ul>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<div class="welcome">
+    <h1>Cliffhangout</h1>
+    <p>Le premier site communautaire dédié à l'escalade</p>
+</div>
+<a href="#site-elements">
+    <div class="discover">
+        <p class="discover-text">Découvrir <br/><span class="glyphicon glyphicon-chevron-down"></span></p>
+    </div>
+</a>
+<div class="container site-elements" id="site-elements">
+    <div class="row ">
+        <div class ="col-md-3 element">
+            <div class="img-container">
+                <img src="${pageContext.request.contextPath}/resources/images/background.jpg"/>
             </div>
-            <div class="welcome">
-                <h1>Cliffhangout</h1>
-                <p>Bienvenue sur le premier site communautaire dédié à l'escalade</p>
-            </div>
-            <div class="footer">
-                <ul>
-                    <li>Développé par Ben's Company </li>
-                    <li>-</li>
-                    <li>Copyright 2017 ©</li>
-                    <li>-</li>
-                    <li>Cliffhangout</li>
-                </ul>
-            </div>
+            <h2>Retrouvez et découvrez les meilleurs sites d'escalade recensés par la communauté Cliffhangout</h2>
+            <a href="#" class="btn-cliffhangout">Rechercher un site</a>
         </div>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-                crossorigin="anonymous"></script>
-    </body>
-</html>
+        <div class="col-md-offset-1 col-md-4 element">
+            <div class="img-container">
+                <img src="${pageContext.request.contextPath}/resources/images/climber.jpg"/>
+            </div>
+
+            <h2>Partager votre expérience de la grimpe en décrivant vos sites favoris</h2>
+            <a href="#" class="btn-cliffhangout">Partager un site</a>
+        </div>
+        <div class="col-md-offset-1 col-md-3 element">
+            <div class="img-container">
+                <img src="${pageContext.request.contextPath}/resources/images/lenses-ridge.jpg"/>
+            </div>
+
+            <h2>Accédez à notre espace de partage de topo pour faciliter vos prochaines journées grimpe</h2>
+            <a href="#" class="btn-cliffhangout">Espace prêt de topo</a>
+        </div>
+    </div>
+</div>
