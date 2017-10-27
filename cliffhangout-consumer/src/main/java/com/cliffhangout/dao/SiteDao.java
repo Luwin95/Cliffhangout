@@ -14,5 +14,7 @@ public interface SiteDao {
     Site find(int id) throws DaoException;
     List<Site> findAllSites() throws DaoException;
     Set<Site> findAllByTopo(Topo topo) throws DaoException;
+    List<Site> findAllBySearchCriteria(String sqlStatement) throws DaoException;
+    List<Site> findLastTen() throws DaoException;
     Site buildSite(ResultSet resultat) throws DaoException;
 }

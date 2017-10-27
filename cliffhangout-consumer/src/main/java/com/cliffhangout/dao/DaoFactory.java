@@ -49,12 +49,12 @@ public class DaoFactory {
     }
 
     public SiteDao getSiteDao(){
-        return new SiteDaoImpl(this, this.getUserDao(), this.getSectorDao());
+        return new SiteDaoImpl(this, this.getUserDao(), this.getSectorDao(), this.getDepartementDao());
     }
 
     public SectorDao getSectorDao() {return new SectorDaoImpl(this, this.getWayDao()); }
 
-    public WayDao getWayDao() { return new WayDaoImpl(this, this.getLengthDao());}
+    public WayDao getWayDao() { return new WayDaoImpl(this, this.getLengthDao(), this.getQuotationDao());}
 
     public LengthDao getLengthDao() { return new LengthDaoImpl(this, this.getPointDao()); }
 
@@ -65,4 +65,10 @@ public class DaoFactory {
     public ImageDao getImageDao() { return new ImageDaoImpl(this);}
 
     public TopoDao getTopoDao(){ return new TopoDaoImpl(this, this.getUserDao(), this.getSiteDao()); }
+
+    public RegionDao getRegionDao(){ return new RegionDaoImpl(this); }
+
+    public DepartementDao getDepartementDao() { return new DepartementDaoImpl(this, this.getRegionDao()); }
+
+    public QuotationDao getQuotationDao() { return new QuotationDaoImpl(this); }
 }

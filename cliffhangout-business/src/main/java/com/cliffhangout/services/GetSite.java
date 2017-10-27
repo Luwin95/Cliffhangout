@@ -16,16 +16,25 @@ public class GetSite {
         this.siteDao = daoFactory.getSiteDao();
     }
 
-    public Site displaySite()
+    public Site displaySite(int id)
     {
         Site site = new Site();
         try{
-            site= siteDao.find(3);
+            site= siteDao.find(id);
         }catch(DaoException e){
             e.printStackTrace();
         }
-
-
         return site;
+    }
+
+    public List<Site> displayLastTenSite()
+    {
+        List<Site> sites = new ArrayList<>();
+        try{
+            sites = siteDao.findLastTen();
+        }catch(DaoException e){
+            e.printStackTrace();
+        }
+        return sites;
     }
 }

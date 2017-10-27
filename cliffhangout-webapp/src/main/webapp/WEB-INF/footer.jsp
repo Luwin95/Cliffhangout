@@ -21,5 +21,3 @@
         <li>Cliffhangout</li>
     </ul>
 </div>
-<div class="page-cache">
-</div>

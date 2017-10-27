@@ -22,13 +22,13 @@ public class Home extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        AddUser addUser = new AddUser();
+        /*AddUser addUser = new AddUser();
         addUser.CreateAccount();
         AddSite addSite = new AddSite();
         addSite.newSite();
         UpdateSite updateSite = new UpdateSite();
         updateSite.editSite();
-        /*DeleteSite deleteSite = new DeleteSite();
+        DeleteSite deleteSite = new DeleteSite();
         deleteSite.purgeSite();*/
         doGet(request,response);
     }
@@ -45,9 +45,10 @@ public class Home extends HttpServlet {
         request.setAttribute("user", user);
 
         GetSite getSite = new GetSite();
-        Site site = getSite.displaySite();
-        request.setAttribute("site", site);
+        //Site site = getSite.displaySite();
+        //request.setAttribute("site", site);
         request.setAttribute("page", "home.jsp");
+        request.setAttribute("stylesheets", "home.css");
         this.getServletContext().getRequestDispatcher("/WEB-INF/layout.jsp").forward(request,response);
     }
 }

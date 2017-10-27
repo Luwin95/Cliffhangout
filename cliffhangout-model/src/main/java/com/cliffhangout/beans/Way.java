@@ -9,7 +9,7 @@ public class Way {
     private int id;
     private String name;
     private double height;
-    private String quotation;
+    private Quotation quotation;
     private int pointsNb;
     private Sector sector;
     private List<Length> lengths = new ArrayList<Length>();
@@ -43,11 +43,11 @@ public class Way {
         this.height = height;
     }
 
-    public String getQuotation() {
+    public Quotation getQuotation() {
         return quotation;
     }
 
-    public void setQuotation(String quotation) {
+    public void setQuotation(Quotation quotation) {
         this.quotation = quotation;
     }
 

@@ -10,10 +10,12 @@ import java.util.List;
 public class WayDaoImpl implements WayDao {
     private DaoFactory daoFactory;
     private LengthDao lengthDao;
+    private QuotationDao quotationDao;
 
-    WayDaoImpl(DaoFactory daoFactory, LengthDao lengthDao){
+    WayDaoImpl(DaoFactory daoFactory, LengthDao lengthDao, QuotationDao quotationDao){
         this.daoFactory = daoFactory;
         this.lengthDao = lengthDao;
+        this.quotationDao = quotationDao;
     }
 
     @Override
@@ -22,10 +24,10 @@ public class WayDaoImpl implements WayDao {
         PreparedStatement preparedStatement = null;
         try{
             connection = daoFactory.getConnection();
-            preparedStatement = connection.prepareStatement("INSERT INTO way(name, height, quotation, points_nb, sector_id) VALUES(?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement("INSERT INTO way(name, height, quotation_difficulty, points_nb, sector_id) VALUES(?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, way.getName());
             preparedStatement.setDouble(2, way.getHeight());
-            preparedStatement.setString(3, way.getQuotation());
+            preparedStatement.setInt(3, way.getQuotation().getDifficulty());
             preparedStatement.setInt(4, way.getPointsNb());
             preparedStatement.setInt(5, way.getSector().getId());
 
@@ -73,10 +75,10 @@ public class WayDaoImpl implements WayDao {
         PreparedStatement preparedStatement = null;
         try{
             connection = daoFactory.getConnection();
-            preparedStatement = connection.prepareStatement("UPDATE way SET name=?, height=?, quotation=?, points_nb=?, sector_id=? WHERE id=?;");
+            preparedStatement = connection.prepareStatement("UPDATE way SET name=?, height=?, quotation_difficulty=?, points_nb=?, sector_id=? WHERE id=?;");
             preparedStatement.setString(1, way.getName());
             preparedStatement.setDouble(2, way.getHeight());
-            preparedStatement.setString(3, way.getQuotation());
+            preparedStatement.setInt(3, way.getQuotation().getDifficulty());
             preparedStatement.setInt(4, way.getPointsNb());
             preparedStatement.setInt(5, way.getSector().getId());
             preparedStatement.setInt(6, way.getId());
@@ -260,7 +262,7 @@ public class WayDaoImpl implements WayDao {
             way.setId(resultat.getInt("id"));
             way.setName(resultat.getString("name"));
             way.setHeight(resultat.getDouble("height"));
-            way.setQuotation(resultat.getString("quotation"));
+            way.setQuotation(quotationDao.find(resultat.getInt("quotation_difficulty")));
             way.setPointsNb(resultat.getInt("points_nb"));
             way.setLengths(lengthDao.findAllByWay(way));
         }catch(SQLException e){

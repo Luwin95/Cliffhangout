@@ -16,11 +16,13 @@ public class SiteDaoImpl implements SiteDao{
     private DaoFactory daoFactory;
     private UserDao userDao;
     private SectorDao sectorDao;
+    private DepartementDao departementDao;
 
-    SiteDaoImpl(DaoFactory daoFactory, UserDao userDao, SectorDao sectorDao){
+    SiteDaoImpl(DaoFactory daoFactory, UserDao userDao, SectorDao sectorDao, DepartementDao departementDao){
         this.daoFactory = daoFactory;
         this.userDao = userDao;
         this.sectorDao = sectorDao;
+        this.departementDao = departementDao;
     }
 
     @Override
@@ -29,14 +31,16 @@ public class SiteDaoImpl implements SiteDao{
         PreparedStatement preparedStatement = null;
         try{
             connection = daoFactory.getConnection();
-            preparedStatement = connection.prepareStatement("INSERT INTO site(name, description, location, postcode, latitude, longitude, user_account_id) VALUES(?, ?, ?, ?, ?, ?, ?);",Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement("INSERT INTO site(name, description, location, postcode, latitude, longitude, user_account_id, departement_code, region_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);",Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, site.getName());
             preparedStatement.setString(2, site.getDescription());
             preparedStatement.setString(3, site.getLocation());
-            preparedStatement.setInt(4, site.getPostcode());
+            preparedStatement.setString(4, site.getPostcode());
             preparedStatement.setDouble(5, site.getLatitude());
             preparedStatement.setDouble(6, site.getLongitude());
             preparedStatement.setInt(7, site.getCreator().getId());
+            preparedStatement.setString(8, site.getDepartement().getCode());
+            preparedStatement.setInt(9, site.getRegion().getId());
 
             preparedStatement.executeUpdate();
             connection.commit();
@@ -81,15 +85,17 @@ public class SiteDaoImpl implements SiteDao{
         PreparedStatement preparedStatement = null;
         try{
             connection = daoFactory.getConnection();
-            preparedStatement = connection.prepareStatement("UPDATE site SET name=?, description=?, location=?, postcode=?, latitude=?, longitude=?, user_account_id=? WHERE id=?;");
+            preparedStatement = connection.prepareStatement("UPDATE site SET name=?, description=?, location=?, postcode=?, latitude=?, longitude=?, user_account_id=?, departement_code=?, region_id=? WHERE id=?;");
             preparedStatement.setString(1, site.getName());
             preparedStatement.setString(2, site.getDescription());
             preparedStatement.setString(3, site.getLocation());
-            preparedStatement.setInt(4, site.getPostcode());
+            preparedStatement.setString(4, site.getPostcode());
             preparedStatement.setDouble(5, site.getLatitude());
             preparedStatement.setDouble(6, site.getLongitude());
             preparedStatement.setInt(7, site.getCreator().getId());
-            preparedStatement.setInt(8, site.getId());
+            preparedStatement.setString(8, site.getDepartement().getCode());
+            preparedStatement.setInt(9, site.getRegion().getId());
+            preparedStatement.setInt(10, site.getId());
 
             preparedStatement.executeUpdate();
             connection.commit();
@@ -259,6 +265,83 @@ public class SiteDaoImpl implements SiteDao{
         return sites;
     }
 
+
+    @Override
+    public List<Site> findAllBySearchCriteria(String sqlStatement) throws DaoException {
+        List<Site> sites = new ArrayList<Site>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultat = null;
+        System.out.println(sqlStatement);
+
+        try{
+            connection = daoFactory.getConnection();
+            statement = connection.createStatement();
+            resultat = statement.executeQuery(sqlStatement);
+
+            while(resultat.next()){
+                Site site = buildSite(resultat);
+                sites.add(site);
+            }
+        }catch (SQLException e){
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+            }
+            e.printStackTrace();
+            throw new DaoException("Impossible de communiquer avec la base de données");
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de données");
+            }
+        }
+        return sites;
+    }
+
+    @Override
+    public List<Site> findLastTen() throws DaoException {
+        List<Site> sites = new ArrayList<Site>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultat = null;
+
+        try{
+            connection = daoFactory.getConnection();
+            statement = connection.createStatement();
+            resultat = statement.executeQuery("SELECT * FROM site ORDER BY id DESC LIMIT 10;");
+
+            while(resultat.next()){
+                Site site = buildSite(resultat);
+                sites.add(site);
+            }
+        }catch (SQLException e){
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+            }
+            throw new DaoException("Impossible de communiquer avec la base de données");
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de données");
+            }
+        }
+        return sites;
+    }
+
     @Override
     public Site buildSite(ResultSet resultat) throws DaoException {
         Site site = new Site();
@@ -267,7 +350,9 @@ public class SiteDaoImpl implements SiteDao{
             site.setName(resultat.getString("name"));
             site.setDescription(resultat.getString("description"));
             site.setLocation(resultat.getString("location"));
-            site.setPostcode(resultat.getInt("postcode"));
+            site.setPostcode(resultat.getString("postcode"));
+            site.setDepartement(departementDao.find(resultat.getString("departement_code")));
+            site.setRegion(site.getDepartement().getRegion());
             site.setLatitude(resultat.getFloat("latitude"));
             site.setLongitude(resultat.getFloat("longitude"));
             User user = userDao.find(resultat.getInt("user_account_id"));

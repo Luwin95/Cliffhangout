@@ -7,24 +7,30 @@ public class AddSite {
 
     private SiteDao siteDao;
     private UserDao userDao;
+    private DepartementDao departementDao;
+    private QuotationDao quotationDao;
 
     public AddSite()
     {
         DaoFactory daoFactory = DaoFactory.getInstance();
         this.siteDao = daoFactory.getSiteDao();
         this.userDao = daoFactory.getUserDao();
+        this.departementDao = daoFactory.getDepartementDao();
+        this.quotationDao = daoFactory.getQuotationDao();
     }
 
     public void newSite(){
         try{
 
             Site site = new Site();
-            site.setName("test");
+            site.setName("Fort de Nantes");
             site.setDescription("test site 1");
-            site.setLocation("Eaubonne");
-            site.setPostcode(95600);
-            site.setLatitude(49);
-            site.setLongitude(2.28333);
+            site.setLocation("Nantes");
+            site.setPostcode("44000");
+            site.setDepartement(departementDao.find("44"));
+            site.setRegion(site.getDepartement().getRegion());
+            site.setLatitude(47.2172500);
+            site.setLongitude(-1.5533600);
             site.setCreator(userDao.find(1));
 
             Sector sector1= new Sector(site);
@@ -40,28 +46,28 @@ public class AddSite {
             Way way1 = new Way(sector1);
             way1.setName("Voie 1 du sector 1 du site 1");
             way1.setHeight(1.500);
-            way1.setQuotation("5c");
+            way1.setQuotation(quotationDao.findByName("6a"));
             way1.setPointsNb(4);
             sector1.addWay(way1);
 
             Way way2 = new Way(sector1);
             way2.setName("Voie 2 du sector 1 du site 1");
             way2.setHeight(2.500);
-            way2.setQuotation("4a");
+            way2.setQuotation(quotationDao.findByName("7b"));
             way2.setPointsNb(4);
             sector1.addWay(way2);
 
             Way way3 = new Way(sector2);
             way3.setName("Voie 1 du sector 2 du site 1");
             way3.setHeight(1.500);
-            way3.setQuotation("5c");
+            way3.setQuotation(quotationDao.findByName("8c"));
             way3.setPointsNb(4);
             sector2.addWay(way3);
 
             Way way4 = new Way(sector2);
             way4.setName("Voie 2 du sector 2 du site 1");
             way4.setHeight(2.500);
-            way4.setQuotation("4a");
+            way4.setQuotation(quotationDao.findByName("9a"));
             way4.setPointsNb(4);
             sector2.addWay(way4);
 

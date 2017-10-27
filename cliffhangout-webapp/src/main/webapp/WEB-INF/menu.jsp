@@ -7,7 +7,7 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
-<a>
+<a class="burger-link">
     <div class="burger"></div>
 </a>
 <div class="menu-user">
@@ -18,8 +18,8 @@
 </div>
 <div class="menu">
     <ul>
-        <li><a href="#">Accueil</a></li>
-        <li><a href="#">Rechercher un site</a></li>
+        <li><a href="${pageContext.request.contextPath}/home">Accueil</a></li>
+        <li><a href="${pageContext.request.contextPath}/search">Rechercher un site</a></li>
         <li><a href="#">Se connecter</a></li>
     </ul>
 </div>

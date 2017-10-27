@@ -27,7 +27,7 @@
                             <li>Way : <c:out value="${ way.name }" /></li>
                             <ul>
                                 <li>Way Height : <c:out value="${ way.height }" /></li>
-                                <li>Way quotation : <c:out value="${ way.quotation }" /></li>
+                                <li>Way quotation : <c:out value="${ way.quotation.name }" /></li>
                                 <li>Way number of points : <c:out value="${ way.pointsNb }" /></li>
                                 <c:if test="${ !empty way.lengths }">
                                     <c:forEach items="${ way.lengths }" var="length" varStatus="status">

@@ -10,7 +10,9 @@ public class Site {
     private String name;
     private String description;
     private String location;
-    private int postcode;
+    private String postcode;
+    private Departement departement;
+    private Region region;
     private double latitude;
     private double longitude;
     private User creator;
@@ -48,12 +50,28 @@ public class Site {
         this.location = location;
     }
 
-    public int getPostcode() {
+    public String getPostcode() {
         return postcode;
     }
 
-    public void setPostcode(int postcode) {
+    public void setPostcode(String postcode) {
         this.postcode = postcode;
+    }
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
     }
 
     public double getLatitude() {

@@ -15,7 +15,11 @@
               rel="stylesheet"
               integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
               crossorigin="anonymous">
-        <link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/resources/css/menu.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/resources/css/footer.css" rel="stylesheet">
+        <c:forEach items="${ stylesheets }" var="stylesheet" varStatus="status">
+            <link href="${pageContext.request.contextPath}/resources/css/${ stylesheet }" rel="stylesheet">
+        </c:forEach>
         <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
     </head>
@@ -23,8 +27,10 @@
         <%@ include file="menu.jsp" %>
         <div class="page">
             <jsp:include page="${page}" flush="true" />
-            <%@ include file="footer.jsp" %>
+            <div class="page-cache">
+            </div>
         </div>
+        <%@ include file="footer.jsp" %>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"
                 integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
                 crossorigin="anonymous"></script>
@@ -32,5 +38,8 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
                 crossorigin="anonymous"></script>
         <script src="${pageContext.request.contextPath}/resources/js/menu.js"></script>
+        <c:forEach items="${ jsPages }" var="jsPage" varStatus="status">
+            <script src="${pageContext.request.contextPath}/resources/js/${ jsPage }"></script>
+        </c:forEach>
     </body>
 </html>

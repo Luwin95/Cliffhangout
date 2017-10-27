@@ -1,0 +1,124 @@
+﻿body
+{
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    margin:0;
+    padding:0;
+    background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover; /* pour anciens Chrome et Safari */
+    background-size: cover;
+    font-family: 'Anton', sans-serif;
+    color : lightgrey;
+    overflow:hidden;
+}
+
+.page
+{
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    transition: transform .6s ease-in-out;
+    -webkit-transition: transform .6s ease-in-out;
+    transform: translateX(0%);
+    -webkit-transform: translateX(0%);
+}
+
+.welcome
+{
+    margin: 50vh 0 0 10vh;  /*poussé de la moitié de hauteur de viewport */
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+}
+
+.welcome h1
+{
+    font-size :5vw;
+}
+
+.welcome p
+{
+    font-size :2vw;
+}
+
+.discover
+{
+    position:absolute;
+    right:47.5%;
+    left:47.5%;
+    top:85vh;
+    width:100px;
+    height:100px;
+    text-align : center;
+    background: rgba(0,0,0,0.8);
+    border-radius : 50%;
+}
+
+.discover p
+{
+    font-size:20px;
+    margin-top : 60%;
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+    color : lightgrey !important;
+}
+
+.site-elements
+{
+    margin-top : 100vh;
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+}
+
+.element
+{
+    background: rgba(0,0,0,0.8);
+    text-align: center;
+    height:450px;
+}
+
+.img-container
+{
+    position : absolute;
+    top: 5%;
+    left: 10%;
+    right: 10%;
+    width: 80%;
+    text-align: center;
+}
+
+.element img
+{
+    border: 2px solid lightgrey;
+    border-radius : 50%;
+    height:200px;
+    width:200px;
+}
+
+.element h2
+{
+    margin-top : 300px;
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+    color : lightgrey !important;
+    font-size : 20px;
+}
+
+.element a
+{
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    bottom : 10%;
+    width : 60%;
+    color : lightgrey !important;
+}
+
+.btn-cliffhangout
+{
+    border: 2px solid lightgrey;
+}
+
+.btn-cliffhangout:hover, .btn-cliffhangout:focus
+{
+    background : rgba(255,255,255,0.5);
+    text-decoration : none;
+}

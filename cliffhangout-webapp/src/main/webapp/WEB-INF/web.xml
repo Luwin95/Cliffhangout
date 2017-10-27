@@ -9,4 +9,20 @@
     <servlet-name>Home</servlet-name>
     <url-pattern>/home</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Search</servlet-name>
+    <servlet-class>com.cliffhangout.servlets.Search</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Search</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Site</servlet-name>
+    <servlet-class>com.cliffhangout.servlets.SiteInfo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Site</servlet-name>
+    <url-pattern>/site/*</url-pattern>
+  </servlet-mapping>
 </web-app>

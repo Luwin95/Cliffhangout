@@ -1,0 +1,132 @@
+html
+{
+    margin : 0;
+    padding : 0;
+}
+
+body
+{
+
+    margin:0;
+    padding:0;
+    background: url('http://localhost:8080/resources/images/background.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover; /* pour anciens Chrome et Safari */
+    background-size: cover;
+    color : lightgrey !important;
+    font-family: 'Anton', sans-serif;
+}
+
+.page
+{
+    position:absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    height:100vh;
+}
+
+h1
+{
+    /*margin-top:0 !important;*/
+    text-align:center;
+}
+
+.page-section
+{
+    background : rgba(0,0,0,0.8);
+}
+
+.search-form
+{
+    margin-top:50px;
+    margin-bottom:20px;
+
+}
+
+.search-input
+{
+    border:1px solid lightgrey;
+    border-top-left-radius:4px;
+    border-bottom-left-radius:4px;
+    height:25px;
+    color: black;
+    margin-bottom:10px;
+}
+
+.search-button
+{
+    border:1px solid lightgrey;
+    border-top-right-radius:4px;
+    border-bottom-right-radius:4px;
+    height:25px;
+    background : rgba(0,0,0,0.8);
+}
+
+.search-button:hover, .search-button:focus
+{
+    background : rgba(255,255,255,0.5);
+}
+
+.criterias
+{
+    display:none;
+    margin-left:10px;
+    font-size: 17px;
+}
+
+.criterias-location, .criterias-cotation,.criterias-ways
+{
+    margin-left:10px;
+}
+
+.criterias input[type=text], .criterias input[type=number]
+{
+    border:1px solid lightgrey;
+    border-radius:4px;
+    color : black;
+}
+
+.criterias input[type=number]
+{
+    width: 50px;
+}
+
+select
+{
+    border:1px solid lightgrey;
+    border-radius:4px;
+    background : rgba(0,0,0,0.8);
+}
+
+.btn-cliffhangout
+{
+    border:1px solid lightgrey;
+    border-radius:4px;
+    height:25px;
+    background : rgba(0,0,0,0.8);
+}
+
+.btn-cliffhangout:hover, .btn-cliffhangout:focus
+{
+    background : rgba(255,255,255,0.5);
+}
+
+.table-bordered > thead > tr > th
+{
+    background : rgba(0,0,0,0.8)!important;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th, .table-hover tbody tr:hover td a {
+    background : rgba(255,255,255,0.1)!important;
+    color:black !important;
+}
+
+.table a
+{
+    color: lightgrey!important;
+}
+
+.table a:hover, .table a:focus
+{
+    color: black !important;
+}
