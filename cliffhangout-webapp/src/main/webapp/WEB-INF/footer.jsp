@@ -12,12 +12,7 @@
         <span class="glyphicon glyphicon-chevron-up"></span>
     </div>
 </a>
-<div class="footer">
-    <ul>
-        <li>Développé par Ben's Company </li>
-        <li>-</li>
-        <li>Copyright 2017 ©</li>
-        <li>-</li>
-        <li>Cliffhangout</li>
-    </ul>
-</div>
+
+<footer class="footer">
+    <p>Développé par Ben's Company -  Copyright 2017 © - Cliffhangout</p>
+</footer>

@@ -17,6 +17,8 @@ public class Site {
     private double longitude;
     private User creator;
     private List<Sector> sectors = new ArrayList<Sector>();
+    private List<Image> images = new ArrayList<Image>();
+    private List<Comment> comments = new ArrayList<Comment>();
 
     public int getId() {
         return id;
@@ -112,5 +114,21 @@ public class Site {
 
     public void removeSector(Sector sector){
         this.sectors.remove(sector);
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

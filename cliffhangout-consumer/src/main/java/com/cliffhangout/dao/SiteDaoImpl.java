@@ -17,12 +17,16 @@ public class SiteDaoImpl implements SiteDao{
     private UserDao userDao;
     private SectorDao sectorDao;
     private DepartementDao departementDao;
+    private ImageDao imageDao;
+    private CommentDao commentDao;
 
-    SiteDaoImpl(DaoFactory daoFactory, UserDao userDao, SectorDao sectorDao, DepartementDao departementDao){
+    SiteDaoImpl(DaoFactory daoFactory, UserDao userDao, SectorDao sectorDao, DepartementDao departementDao, ImageDao imageDao, CommentDao commentDao){
         this.daoFactory = daoFactory;
         this.userDao = userDao;
         this.sectorDao = sectorDao;
         this.departementDao = departementDao;
+        this.imageDao = imageDao;
+        this.commentDao = commentDao;
     }
 
     @Override
@@ -358,7 +362,8 @@ public class SiteDaoImpl implements SiteDao{
             User user = userDao.find(resultat.getInt("user_account_id"));
             site.setCreator(user);
             site.setSectors(sectorDao.findAllBySite(site));
-
+            site.setImages(imageDao.findAllBySite(site));
+            site.setComments(commentDao.findAllBySite(site));
         }catch(SQLException e){
             e.printStackTrace();
         }

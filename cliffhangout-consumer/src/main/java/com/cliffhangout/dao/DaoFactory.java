@@ -49,7 +49,7 @@ public class DaoFactory {
     }
 
     public SiteDao getSiteDao(){
-        return new SiteDaoImpl(this, this.getUserDao(), this.getSectorDao(), this.getDepartementDao());
+        return new SiteDaoImpl(this, this.getUserDao(), this.getSectorDao(), this.getDepartementDao(), this.getImageDao(), this.getCommentDao());
     }
 
     public SectorDao getSectorDao() {return new SectorDaoImpl(this, this.getWayDao()); }

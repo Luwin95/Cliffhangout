@@ -20,15 +20,14 @@
 
 .footer
 {
-    position : absolute ;
-    bottom:0;
-    left:0;
-    right:0;
-    width:100%;
-    text-align: center;
+    padding:1% 0 1% 0;
+    display: flex;
+    color : lightgrey !important;
+    align-items: center;
+    justify-content: center;
 }
 
-.footer ul
+/*.footer ul
 {
     margin-left: auto;
     margin-right: auto;
@@ -43,3 +42,4 @@
     color : lightgrey !important;
     margin-right: 5px;
 }
+*/
