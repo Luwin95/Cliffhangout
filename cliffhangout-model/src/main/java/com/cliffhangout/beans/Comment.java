@@ -1,18 +1,15 @@
 package com.cliffhangout.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Comment {
 
     private int id;
     private String content;
-    private List<Comment> children;
+    private List<Comment> children = new ArrayList<Comment>();
     private Comment parent;
     private User author;
-
-    public Comment(Comment parent){
-        this.parent = parent;
-    }
 
     public int getId() {
         return id;
@@ -46,6 +43,15 @@ public class Comment {
         this.children = children;
     }
 
+    public void addChild(Comment child){
+        this.children.add(child);
+    }
+
+    public void removeChild(Comment comment)
+    {
+        this.children.remove(comment);
+    }
+
     public Comment getParent() {
         return parent;
     }
@@ -53,4 +59,6 @@ public class Comment {
     public void setParent(Comment parent) {
         this.parent = parent;
     }
+
+
 }

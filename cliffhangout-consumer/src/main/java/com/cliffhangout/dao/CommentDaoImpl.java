@@ -204,7 +204,7 @@ public class CommentDaoImpl implements CommentDao{
 
         try{
             connection = daoFactory.getConnection();
-            preparedStatement = connection.prepareStatement("Select comment.* from comment_site INNER JOIN comment on comment_site.comment_id= comment.id WHERE site_id =? AND parent_id IS null;");
+            preparedStatement = connection.prepareStatement("Select comment.* from comment_site INNER JOIN comment on comment_site.comment_id= comment.id WHERE site_id =?;");
             preparedStatement.setInt(1, site.getId());
             resultat = preparedStatement.executeQuery();
             while(resultat.next()){
@@ -240,7 +240,6 @@ public class CommentDaoImpl implements CommentDao{
             comment.setId(resultSet.getInt("id"));
             comment.setContent(resultSet.getString("content"));
             comment.setAuthor(userDao.find(resultSet.getInt("author_id")));
-            comment.setChildren(this.findAllByParent(comment));
             if(resultSet.getInt("parent_id")!= 0)
             {
                 comment.setParent(this.find(resultSet.getInt("parent_id")));

@@ -21,6 +21,11 @@ public class GetSite {
         Site site = new Site();
         try{
             site= siteDao.find(id);
+            if(site.getComments() != null)
+            {
+                List<Comment> sortedComments = this.sortSiteComments(site.getComments());
+                site.setComments(sortedComments);
+            }
         }catch(DaoException e){
             e.printStackTrace();
         }
@@ -36,5 +41,29 @@ public class GetSite {
             e.printStackTrace();
         }
         return sites;
+    }
+
+    private List<Comment> sortSiteComments(List<Comment> comments)
+    {
+        List<Comment> children = new ArrayList<Comment>();
+        for(Comment comment : comments)
+        {
+            if(comment.getParent() != null)
+            {
+                children.add(comment);
+                comments.remove(comment);
+            }
+        }
+        for(Comment parent : comments)
+        {
+            for(Comment child : children)
+            {
+                if(parent.getId() == child.getParent().getId())
+                {
+                    parent.addChild(child);
+                }
+            }
+        }
+        return comments;
     }
 }

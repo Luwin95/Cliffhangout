@@ -37,7 +37,7 @@ public class SearchSite {
             if(criterias.containsKey("site-name") && key.equals("site-name") && !criterias.get(key).equals(""))
             {
                 String siteName = (String) criterias.get(key);
-                String siteNameCap = siteName.substring(0, 1).toUpperCase() + siteName.substring(1);
+                String siteNameCap = siteName.substring(0, 1).toUpperCase() + siteName.toLowerCase().substring(1);
                 sqlCriterias.add(" (name LIKE '%"+siteName+"%' OR name LIKE '%"+siteName.toLowerCase()+"%' OR name LIKE '%"+siteName.toUpperCase()+"%' OR name LIKE '%"+siteNameCap+"%')") ;
             }
 

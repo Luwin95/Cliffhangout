@@ -79,41 +79,92 @@
                 </div>
             </div>
         </div>
-        <aside class="col-md-offset-1 col-md-3">
-            <h2>Carte d'identité du site</h2>
-            <ul>
-                <li><span class="id-list-title">Localisation : </span><c:out value="${site.location}"/> </li>
-                <li><span class="id-list-title">Région : </span><c:out value="${site.departement.region.name}"/></li>
-                <li><span class="id-list-title">Département : </span><c:out value="${site.departement.name}"/></li>
-            </ul>
-        </aside>
+        <div class="col-md-offset-1 col-md-3">
+            <aside>
+                <h2>Carte d'identité</h2>
+                <ul>
+                    <li><span class="id-list-title">Localisation : </span><c:out value="${site.location}"/> </li>
+                    <li><span class="id-list-title">Région : </span><c:out value="${site.departement.region.name}"/></li>
+                    <li><span class="id-list-title">Département : </span><c:out value="${site.departement.name}"/></li>
+                </ul>
+                <p class="aside-footer">Ajouté par <c:out value="${site.creator.login}"/></p>
+            </aside>
+            <aside>
+                <h2>Topos</h2>
+                <c:choose>
+                    <c:when test="${!empty topos}">
+                    </c:when>
+                    <c:otherwise>
+                        <p>Ce site d'escalade n'est lié à aucun topo</p>
+                        <p class="aside-footer"><button class="btn-cliffhangout">Ajouter un topo</button></p>
+                    </c:otherwise>
+                </c:choose>
+            </aside>
+        </div>
+
     </div>
-    <div class="row">
-        <div class="col-md-8 comments-form ">
-            <div class="row">
+    <div class="row comments-section">
+        <div class="col-md-offset-1 col-md-10 ">
+            <div class="row comments-form">
                 <h2>Commentaires</h2>
                 <form method="post">
                     <textarea name="comment-content" id="comment-content" placeholder="Laisser un commentaire"></textarea>
                     <br/><input type="submit" value="Laisser un commentaire" class="btn-cliffhangout"/>
                 </form>
             </div>
-            <div class="row">
-                <c:if test="${!empty site.comments }">
+            <c:if test="${!empty site.comments }">
+                <div class="row comments-display">
                     <c:forEach items="${ site.comments }" var="comment" varStatus="status">
-                        <p><c:out value="${comment.author.login}"/> a dit : <c:out value="${comment.content}"/></p>
+                        <div class="row comment">
+                            <div class="col-xs-1">
+                                <c:choose>
+                                    <c:when test="${!empty comment.author.image}">
+                                        <div class="profile-img">
+                                            <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${comment.author.image.path}"/>"/>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="profile-img">
+                                            <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            <div class="col-xs-11 comment-content">
+                                <c:out value="${comment.author.login}"/> a dit : <c:out value="${comment.content}"/>
+                            </div>
+                        </div>
                         <c:if test="${!empty comment.children }">
                             <c:forEach items="${ comment.children }" var="child" varStatus="status">
-                                <p style="margin-left:20px;"><c:out value="${child.author.login}"/> a dit : <c:out value="${child.content}"/></p>
+                                <div class="row comment" style="margin-left:20px;">
+                                    <div class="col-xs-1">
+                                        <c:choose>
+                                            <c:when test="${!empty child.author.image}">
+                                                <div class="profile-img">
+                                                    <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${child.author.image.path}"/>"/>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="profile-img">
+                                                    <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    <div class="col-xs-11 comment-content">
+                                        <c:out value="${child.author.login}"/> a répondu : <c:out value="${child.content}"/>
+                                    </div>
+                                </div>
                                 <c:if test="${!empty child.children }">
                                     <c:forEach items="${ child.children }" var="childsChild" varStatus="status">
-                                        <p style="margin-left:20px;"><c:out value="${childsChild.author.login}"/> a dit : <c:out value="${childsChild.content}"/></p>
+                                        <p style="margin-left:20px;"><c:out value="${childsChild.author.login}"/> a répondu : <c:out value="${childsChild.content}"/></p>
                                     </c:forEach>
                                 </c:if>
                             </c:forEach>
                         </c:if>
                     </c:forEach>
-                </c:if>
-            </div>
+                </div>
+            </c:if>
         </div>
     </div>
 </div>

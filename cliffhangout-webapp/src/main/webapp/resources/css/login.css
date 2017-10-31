@@ -1,0 +1,73 @@
+html
+{
+    margin : 0;
+    padding-bottom : 50px;
+}
+
+body
+{
+
+    margin:0;
+    padding:0;
+    background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover; /* pour anciens Chrome et Safari */
+    background-size: cover;
+    color : lightgrey !important;
+    font-family: 'Anton', sans-serif;
+}
+
+.page
+{
+    position:absolute;
+    top:0;
+    left: 0;
+    right: 0;
+}
+
+.login-form
+{
+    margin-top:50vh;
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+}
+
+form
+{
+    padding:20px;
+    background: rgba(0,0,0,0.6);
+}
+
+label
+{
+    font-size:20px;
+}
+
+h2, .row p
+{
+    text-align:center;
+    margin: 50px 0;
+}
+
+input[type="text"], input[type="password"]
+{
+    color: black;
+    border:1px solid lightgrey;
+    border-radius:4px;
+}
+
+.btn-cliffhangout
+{
+    border:1px solid lightgrey;
+    border-radius:4px;
+    height:25px;
+    background : rgba(0,0,0,0.8);
+}
+
+.btn-cliffhangout:hover, .btn-cliffhangout:focus
+{
+    background : rgba(255,255,255,0.5);
+}
+
+.error
+{
+    color:red;
+}

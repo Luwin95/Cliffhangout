@@ -7,7 +7,7 @@
     <div class="container page-section">
         <div class="row">
             <form method="post" class=" col-md-offset-2 col-md-8 search-form">
-                <input type="text" placeholder="Rechercher un site" class="search-input col-xs-10" name="site-name"/>
+                <input type="text" placeholder="Rechercher un site" class="search-input col-xs-10" name="site-name" id="search-input" required/>
                 <button type="submit" class="search-button col-xs-2"><i class="glyphicon glyphicon-search"></i></button>
                 <p><label><input type="checkbox" id="addCriteria" name="addCriteria"/>Ajouter des critères de recherche </label></p>
                 <div class="criterias">
@@ -68,7 +68,7 @@
                     </p>
                     <div class="row">
                         <div class="col-xs-offset-5 col-xs-2">
-                            <input type="submit" value="Rechercher" class="btn-cliffhangout"/>
+                            <input type="submit" value="Rechercher" class="btn-cliffhangout" id="search_button2"/>
                         </div>
                     </div>
                 </div>
@@ -82,13 +82,13 @@
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
                             <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th>Localisation</th>
-                                <th>Code Postal</th>
-                                <th>Nombre de secteurs</th>
-                                <th>Description</th>
-                            </tr>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Localisation</th>
+                                    <th>Code Postal</th>
+                                    <th>Nombre de secteurs</th>
+                                    <th>Description</th>
+                                </tr>
                             </thead>
                             <tbody>
                             <c:forEach items="${ sites }" var="site" varStatus="status">
@@ -108,34 +108,38 @@
         </c:if>
     </div>
 </div>
-<div class="last_sites">
-    <div class="container page-section">
-        <h2>Les derniers sites publiés</h2>
-        <c:if test="${ !empty lastSites }">
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Localisation</th>
-                        <th>Code Postal</th>
-                        <th>Nombre de secteurs</th>
-                        <th>Description</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${ lastSites }" var="site" varStatus="status">
+<c:if test="${empty result}">
+    <div class="last_sites">
+        <div class="container page-section">
+            <h2>Les derniers sites publiés</h2>
+            <c:if test="${ !empty lastSites }">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead>
                         <tr>
-                            <td><a href="${pageContext.request.contextPath}/site/${site.id}">${site.name}</a></td>
-                            <td>${site.location}</td>
-                            <td>${site.postcode}</td>
-                            <td>${fn:length(site.sectors)}</td>
-                            <td>${site.description}</td>
+                            <th>Nom</th>
+                            <th>Localisation</th>
+                            <th>Code Postal</th>
+                            <th>Nombre de secteurs</th>
+                            <th>Description</th>
                         </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </c:if>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${ lastSites }" var="site" varStatus="status">
+                            <tr>
+                                <td><a href="${pageContext.request.contextPath}/site/${site.id}">${site.name}</a></td>
+                                <td>${site.location}</td>
+                                <td>${site.postcode}</td>
+                                <td>${fn:length(site.sectors)}</td>
+                                <td>${site.description}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:if>
+        </div>
     </div>
-</div>
+</c:if>
+
+

@@ -28,4 +28,5 @@ public class Departement {
     public void setRegion(Region region) {
         this.region = region;
     }
+
 }
