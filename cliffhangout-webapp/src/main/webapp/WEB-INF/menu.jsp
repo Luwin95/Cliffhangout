@@ -12,15 +12,54 @@
 </a>
 <div class="menu-user">
     <ul>
-        <li><a href="#">S'inscrire</a></li>
-        <li><a href="#">Se connecter</a></li>
+        <c:choose>
+            <c:when test="${ sessionScope.sessionUser != null }">
+                <li>Bonjour <c:out value="${sessionScope.sessionUser.login}"/></li>
+                <c:choose>
+                    <c:when test="${!empty sessionScope.sessionUser.image}">
+                        <li class="profile-img dropdown">
+                            <button class="button-profile" id="menu1" data-toggle="dropdown">
+                                <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${sessionScope.sessionUser.image.path}"/>"/>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Mon profil</a></li>
+                                <li><a href="${pageContext.request.contextPath}/logout">Se déconnecter</a></li>
+                            </ul>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="profile-img dropdown">
+                            <button class="button-profile" id="menu2" data-toggle="dropdown">
+                                <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Mon profil</a></li>
+                                <li><a href="${pageContext.request.contextPath}/logout">Se déconnecter</a></li>
+                            </ul>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+            <c:otherwise>
+                <li><a href="#">S'inscrire</a></li>
+                <li><a href="${pageContext.request.contextPath}/login">Se connecter</a></li>
+            </c:otherwise>
+        </c:choose>
     </ul>
 </div>
 <div class="menu">
     <ul>
         <li><a href="${pageContext.request.contextPath}/home">Accueil</a></li>
         <li><a href="${pageContext.request.contextPath}/search">Rechercher un site</a></li>
-        <li><a href="#">Se connecter</a></li>
+        <c:choose>
+            <c:when test="${ sessionScope.sessionUser != null }">
+                <li><a href="${pageContext.request.contextPath}/logout">Se déconnecter</a></li>
+            </c:when>
+            <c:otherwise>
+                <li><a href="${pageContext.request.contextPath}/login">Se connecter</a></li>
+            </c:otherwise>
+        </c:choose>
     </ul>
 </div>
 

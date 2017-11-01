@@ -129,12 +129,7 @@ public class UserDaoImpl implements UserDao {
             resultat = preparedStatement.executeQuery();
             if(resultat.next())
             {
-                user.setId(resultat.getInt("id"));
-                user.setLogin(resultat.getString("login"));
-                user.setPassword(resultat.getString("password"));
-                user.setSalt(resultat.getString("salt"));
-                user.setEmail(resultat.getString("email"));
-                user.setRole(resultat.getString("role"));
+                user = buildUser(resultat);
             }
         }catch (SQLException e){
             try {
@@ -160,4 +155,61 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
+    @Override
+    public User findByLogin(String login) throws DaoException {
+        User user = new User();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultat = null;
+
+        try{
+            connection = daoFactory.getConnection();
+            preparedStatement = connection.prepareStatement("SELECT * FROM user_account WHERE login=?;");
+            preparedStatement.setString(1, login);
+            resultat = preparedStatement.executeQuery();
+            if(resultat.next())
+            {
+                user = buildUser(resultat);
+            }
+        }catch (SQLException e){
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+            e.printStackTrace();
+            throw new DaoException("Impossible de communiquer avec la base de données");
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new DaoException("Impossible de communiquer avec la base de données");
+            }
+        }
+        return user;
+    }
+
+    @Override
+    public User buildUser(ResultSet resultSet) throws DaoException {
+        User user = new User();
+        try{
+            user.setId(resultSet.getInt("id"));
+            user.setLogin(resultSet.getString("login"));
+            user.setPassword(resultSet.getString("password"));
+            user.setSalt(resultSet.getString("salt"));
+            user.setEmail(resultSet.getString("email"));
+            user.setRole(resultSet.getString("role"));
+        }catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
 }

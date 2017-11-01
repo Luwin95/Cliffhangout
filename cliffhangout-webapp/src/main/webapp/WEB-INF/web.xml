@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>Cliffhangout</display-name>
+
+  <!--     Mapping invité    -->
   <servlet>
     <servlet-name>Home</servlet-name>
     <servlet-class>com.cliffhangout.servlets.Home</servlet-class>
@@ -33,4 +35,33 @@
     <servlet-name>Login</servlet-name>
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Logout</servlet-name>
+    <servlet-class>com.cliffhangout.servlets.Logout</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Logout</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+
+  <!--     Mapping abonné     -->
+  <servlet>
+    <servlet-name>SubscriberHome</servlet-name>
+    <servlet-class>com.cliffhangout.servlets.subscriber.SubscriberHome</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubscriberHome</servlet-name>
+    <url-pattern>/subscriber/home</url-pattern>
+  </servlet-mapping>
+
+
+  <!--    Filtres    -->
+  <filter>
+    <filter-name>SubscriberRestriction</filter-name>
+    <filter-class>com.cliffhangout.filters.SubscriberRestriction</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>SubscriberRestriction</filter-name>
+    <url-pattern>/subscriber/*</url-pattern>
+  </filter-mapping>
 </web-app>

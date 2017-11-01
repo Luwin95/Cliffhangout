@@ -5,6 +5,9 @@ import com.cliffhangout.dao.DaoException;
 import com.cliffhangout.dao.DaoFactory;
 import com.cliffhangout.dao.UserDao;
 
+import java.util.Random;
+import java.lang.Object.*;
+
 public class AddUser {
     private UserDao userDao;
 
@@ -17,8 +20,11 @@ public class AddUser {
     public void CreateAccount()
     {
         User user = new User();
-        user.setLogin("new");
-        user.setPassword("nouveau");
+        Password password = new Password();
+        user.setLogin("user2");
+        String passwordPlain = "password";
+        String passwordHash = password.hashPassword(passwordPlain);
+        user.setPassword(passwordHash);
         user.setSalt("test");
         user.setEmail("nouveau@gmail.com");
         user.setRole("test");
@@ -29,5 +35,4 @@ public class AddUser {
             e.printStackTrace();
         }
     }
-
 }

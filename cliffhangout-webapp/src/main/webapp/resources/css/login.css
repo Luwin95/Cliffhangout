@@ -22,6 +22,7 @@ body
     top:0;
     left: 0;
     right: 0;
+    bottom:0;
 }
 
 .login-form
@@ -44,7 +45,7 @@ label
 h2, .row p
 {
     text-align:center;
-    margin: 50px 0;
+    margin: 40px 0;
 }
 
 input[type="text"], input[type="password"]
@@ -70,4 +71,9 @@ input[type="text"], input[type="password"]
 .error
 {
     color:red;
+}
+
+.success
+{
+    color:green;
 }
