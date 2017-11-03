@@ -1,0 +1,29 @@
+html
+{
+    margin : 0;
+    padding : 0;
+}
+
+body
+{
+
+    margin:0;
+    padding:0;
+    -webkit-background-size: cover; /* pour anciens Chrome et Safari */
+    background-size: cover;
+    color : lightgrey !important;
+    font-family: 'Anton', sans-serif;
+}
+
+.page
+{
+    position:absolute;
+    top:0;
+    left: 0;
+    right: 0;
+}
+
+h2, h3, h4
+{
+    color:rgb(184,85,1);
+}

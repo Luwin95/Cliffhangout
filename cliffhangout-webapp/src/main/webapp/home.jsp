@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <div class="welcome">
     <h1>Cliffhangout</h1>
     <p>Le premier site communautaire dédié à l'escalade</p>
@@ -13,14 +14,14 @@
     <div class="row ">
         <div class ="col-sm-3 element">
             <div class="img-container">
-                <img src="${pageContext.request.contextPath}/resources/images/background.jpg"/>
+                <img src="/resources/images/background.jpg"/>
             </div>
             <h2>Retrouvez et découvrez les meilleurs sites d'escalade recensés par la communauté Cliffhangout</h2>
-            <a href="${pageContext.request.contextPath}/search" class="btn-cliffhangout">Rechercher un site</a>
+            <a href="<s:url action='search'/>" class="btn-cliffhangout">Rechercher un site</a>
         </div>
         <div class="col-md-offset-1 col-sm-4 element">
             <div class="img-container">
-                <img src="${pageContext.request.contextPath}/resources/images/climber.jpg"/>
+                <img src="/resources/images/climber.jpg"/>
             </div>
 
             <h2>Partager votre expérience de la grimpe en décrivant vos sites favoris</h2>
@@ -28,7 +29,7 @@
         </div>
         <div class="col-md-offset-1 col-sm-3 element">
             <div class="img-container">
-                <img src="${pageContext.request.contextPath}/resources/images/lenses-ridge.jpg"/>
+                <img src="/resources/images/lenses-ridge.jpg"/>
             </div>
 
             <h2>Accédez à notre espace de partage de topo pour faciliter vos prochaines journées grimpe</h2>

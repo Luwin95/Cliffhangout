@@ -40,6 +40,18 @@
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts2-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+    </dependency>
   </dependencies>
 
   <!-- ===== Build ===== -->
@@ -56,6 +68,21 @@
           <jdkToolchain>
             <version>8</version>
           </jdkToolchain>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <webApp>
+            <contextPath>/${build.finalName}</contextPath>
+          </webApp>
+          <stopKey>CTRL+C</stopKey>
+          <stopPort>8999</stopPort>
+          <scanIntervalSeconds>10</scanIntervalSeconds>
+          <scanTargets>
+            <scanTarget>src/main/webapp/WEB-INF/web.xml</scanTarget>
+          </scanTargets>
         </configuration>
       </plugin>
       <plugin>

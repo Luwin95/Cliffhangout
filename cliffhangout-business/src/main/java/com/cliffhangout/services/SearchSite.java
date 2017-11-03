@@ -42,7 +42,7 @@ public class SearchSite {
             }
 
             //Critère de sélection sur la localisation
-            if(criterias.containsKey("criteria-location") && key.equals("criteria-location") && criterias.get(key).equals("on"))
+            if(criterias.containsKey("criteria-location") && key.equals("criteria-location") && criterias.get(key).equals(true))
             {
                 //Critère de sélection sur une région française
                 if(criterias.containsKey("criteria-region") && !criterias.get("criteria-region").equals("0"))
@@ -52,7 +52,7 @@ public class SearchSite {
                 //critère de sélection sur un département français
                 if(criterias.containsKey("criteria-departement") && !criterias.get("criteria-departement").equals("0"))
                 {
-                    sqlCriterias.add("( departement_code = "+criterias.get("criteria-departement")+")");
+                    sqlCriterias.add("( departement_code = '"+criterias.get("criteria-departement")+"')");
                 }
             }
         }
@@ -81,7 +81,7 @@ public class SearchSite {
         }
 
         //Critère de sélection sur la cotation maximale ou minimale du site
-        if(criterias.containsKey("criteria-cotation") && criterias.get("criteria-cotation").equals("on"))
+        if(criterias.containsKey("criteria-cotation") && criterias.get("criteria-cotation").equals(true))
         {
             //Critère de sélection sur la cotation minimale du site
             if(criterias.containsKey("criteria-cotation-min-value"))
@@ -138,7 +138,7 @@ public class SearchSite {
                 }
             }
         }
-        if(criterias.containsKey("criteria-ways") && criterias.get("criteria-ways").equals("on"))
+        if(criterias.containsKey("criteria-ways") && criterias.get("criteria-ways").equals(true))
         {
             int wayNbMin;
             int wayNbMax;

@@ -51,9 +51,9 @@ public class GetSite {
             if(comment.getParent() != null)
             {
                 children.add(comment);
-                comments.remove(comment);
             }
         }
+        comments.removeAll(children);
         for(Comment parent : comments)
         {
             for(Comment child : children)

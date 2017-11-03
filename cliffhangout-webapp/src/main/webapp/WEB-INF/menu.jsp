@@ -7,6 +7,7 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <a class="burger-link">
     <div class="burger"></div>
 </a>
@@ -43,21 +44,21 @@
             </c:when>
             <c:otherwise>
                 <li><a href="#">S'inscrire</a></li>
-                <li><a href="${pageContext.request.contextPath}/login">Se connecter</a></li>
+                <li><a href="<s:url action='login'/>">Se connecter</a></li>
             </c:otherwise>
         </c:choose>
     </ul>
 </div>
 <div class="menu">
     <ul>
-        <li><a href="${pageContext.request.contextPath}/home">Accueil</a></li>
-        <li><a href="${pageContext.request.contextPath}/search">Rechercher un site</a></li>
+        <li><a href="<s:url action='home'/>">Accueil</a></li>
+        <li><a href="<s:url action='search'/>">Rechercher un site</a></li>
         <c:choose>
             <c:when test="${ sessionScope.sessionUser != null }">
                 <li><a href="${pageContext.request.contextPath}/logout">Se déconnecter</a></li>
             </c:when>
             <c:otherwise>
-                <li><a href="${pageContext.request.contextPath}/login">Se connecter</a></li>
+                <li><a href="<s:url action='login'/>">Se connecter</a></li>
             </c:otherwise>
         </c:choose>
     </ul>

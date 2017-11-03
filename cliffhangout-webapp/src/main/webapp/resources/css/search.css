@@ -1,28 +1,6 @@
-html
-{
-    margin : 0;
-    padding : 0;
-}
-
 body
 {
-
-    margin:0;
-    padding:0;
-    background: url('http://localhost:8080/resources/images/background.jpg') no-repeat center center fixed;
-    -webkit-background-size: cover; /* pour anciens Chrome et Safari */
-    background-size: cover;
-    color : lightgrey !important;
-    font-family: 'Anton', sans-serif;
-}
-
-.page
-{
-    position:absolute;
-    top:0;
-    left: 0;
-    right: 0;
-    height:100vh;
+    background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
 }
 
 h1
@@ -31,9 +9,14 @@ h1
     text-align:center;
 }
 
+.page{
+    bottom:0;
+}
+
+
 .page-section
 {
-    background : rgba(0,0,0,0.8);
+    background : rgba(0,0,0,0.6);
 }
 
 .search-form

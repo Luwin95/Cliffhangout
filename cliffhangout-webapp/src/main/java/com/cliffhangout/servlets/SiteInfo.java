@@ -1,6 +1,7 @@
 package com.cliffhangout.servlets;
 
 import com.cliffhangout.beans.Site;
+import com.cliffhangout.forms.CommentForm;
 import com.cliffhangout.services.GetSite;
 
 import javax.servlet.ServletException;
@@ -18,7 +19,9 @@ public class SiteInfo extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        CommentForm commentForm = new CommentForm();
+        commentForm.addCommentSite(request);
+        doGet(request,response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

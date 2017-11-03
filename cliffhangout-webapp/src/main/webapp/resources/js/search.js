@@ -23,12 +23,6 @@ $(document).ready(function(){
         }else{
             $('.criterias-location').hide();
         }
-        if($('#criteria-ways').prop('checked') == true || ($('#criteria-location').prop('checked') == true && ($('#region').val() !=0 || $('#departement').val() != 0)) || $('#criteria-cotation').prop('checked') == true)
-        {
-            $('#search-input').prop('required', false);
-        }else{
-            $('#search-input').prop('required', true);
-        }
     });
 
     $('#criteria-cotation').click(function(){
@@ -39,13 +33,6 @@ $(document).ready(function(){
         }else{
             $('.criterias-cotation').hide();
         }
-        if($('#criteria-ways').prop('checked') == true || ($('#criteria-location').prop('checked') == true && ($('#region').val() !=0 || $('#departement').val() != 0)) || $('#criteria-cotation').prop('checked') == true)
-        {
-            $('#search-input').prop('required', false);
-        }else{
-            $('#search-input').prop('required', true);
-        }
-
     });
 
     $('#criteria-ways').click(function(){
@@ -56,6 +43,10 @@ $(document).ready(function(){
         }else{
             $('.criterias-ways').hide();
         }
+
+    });
+
+    $('#search_button1').click(function(){
         if($('#criteria-ways').prop('checked') == true || ($('#criteria-location').prop('checked') == true && ($('#region').val() !=0 || $('#departement').val() != 0)) || $('#criteria-cotation').prop('checked') == true)
         {
             $('#search-input').prop('required', false);
@@ -64,13 +55,14 @@ $(document).ready(function(){
         }
     });
 
-    $( "form:first" ).submit(function( event ){
-            if($('#criteria-ways').prop('checked') == true || ($('#criteria-location').prop('checked') == true && ($('#region').val() !=0 || $('#departement').val() != 0)) || $('#criteria-cotation').prop('checked') == true)
-            {
-                $('#search-input').prop('required', false);
-            }else{
-                $('#search-input').prop('required', true);
-            }
+    $('#search_button2').click(function(){
+        if($('#criteria-ways').prop('checked') == true || ($('#criteria-location').prop('checked') == true && ($('#region').val() !=0 || $('#departement').val() != 0)) || $('#criteria-cotation').prop('checked') == true)
+        {
+            $('#search-input').prop('required', false);
+        }else{
+            $('#search-input').prop('required', true);
         }
-    );
+    });
+
+
 });

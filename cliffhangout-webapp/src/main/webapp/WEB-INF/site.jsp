@@ -33,14 +33,14 @@
                                     <c:when test="${status.count-1 == 0}">
                                         <div class="item active">
                                             <div class="carousel-page">
-                                                <img src="${pageContext.request.contextPath}/resources/images/site/<c:out value="${image.path}"/>" alt="<c:out value="${image.alt}"/>" title="<c:out value="${image.title}"/>" class="img-responsive" style="margin:0px auto;" />
+                                                <img src="/resources/images/site/<c:out value="${image.path}"/>" alt="<c:out value="${image.alt}"/>" title="<c:out value="${image.title}"/>" class="img-responsive" style="margin:0px auto;" />
                                             </div>
                                         </div>
                                     </c:when>
                                     <c:otherwise>
                                         <div class="item">
                                             <div class="carousel-page">
-                                                <img src="${pageContext.request.contextPath}/resources/images/site/<c:out value="${image.path}"/>" alt="<c:out value="${image.alt}"/>" title="<c:out value="${image.title}"/>" class="img-responsive" style="margin:0px auto;" />
+                                                <img src="/resources/images/site/<c:out value="${image.path}"/>" alt="<c:out value="${image.alt}"/>" title="<c:out value="${image.title}"/>" class="img-responsive" style="margin:0px auto;" />
                                             </div>
                                         </div>
                                     </c:otherwise>
@@ -105,13 +105,15 @@
     </div>
     <div class="row comments-section">
         <div class="col-md-offset-1 col-md-10 ">
-            <div class="row comments-form">
-                <h2>Commentaires</h2>
-                <form method="post">
-                    <textarea name="comment-content" id="comment-content" placeholder="Laisser un commentaire"></textarea>
-                    <br/><input type="submit" value="Laisser un commentaire" class="btn-cliffhangout"/>
-                </form>
-            </div>
+            <h2>Commentaires</h2>
+            <c:if test="${ sessionScope.sessionUser != null }">
+                <div class="row comments-form">
+                    <form method="post">
+                        <textarea name="comment-content" id="comment-content" placeholder="Laisser un commentaire"></textarea>
+                        <br/><input type="submit" value="Laisser un commentaire" class="btn-cliffhangout"/>
+                    </form>
+                </div>
+            </c:if>
             <c:if test="${!empty site.comments }">
                 <div class="row comments-display">
                     <c:forEach items="${ site.comments }" var="comment" varStatus="status">
@@ -119,12 +121,12 @@
                             <div class="col-xs-1">
                                 <c:choose>
                                     <c:when test="${!empty comment.author.image}">
-                                        <div class="profile-img">
+                                        <div class="author-profile-img">
                                             <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${comment.author.image.path}"/>"/>
                                         </div>
                                     </c:when>
                                     <c:otherwise>
-                                        <div class="profile-img">
+                                        <div class="author-profile-img">
                                             <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
                                         </div>
                                     </c:otherwise>
@@ -140,12 +142,12 @@
                                     <div class="col-xs-1">
                                         <c:choose>
                                             <c:when test="${!empty child.author.image}">
-                                                <div class="profile-img">
+                                                <div class="author-profile-img">
                                                     <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${child.author.image.path}"/>"/>
                                                 </div>
                                             </c:when>
                                             <c:otherwise>
-                                                <div class="profile-img">
+                                                <div class="author-profile-img">
                                                     <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
                                                 </div>
                                             </c:otherwise>

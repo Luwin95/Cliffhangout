@@ -2,12 +2,10 @@ package com.cliffhangout.dao;
 
 import com.cliffhangout.beans.Comment;
 import com.cliffhangout.beans.Site;
+import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +25,97 @@ public class CommentDaoImpl implements CommentDao{
         PreparedStatement preparedStatement = null;
         try{
             connection = daoFactory.getConnection();
-            preparedStatement = connection.prepareStatement("INSERT INTO comment(content, author_id, parent_id) VALUES(?, ?, ?);");
+            preparedStatement = connection.prepareStatement("INSERT INTO comment(content, author_id, parent_id) VALUES(?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, comment.getContent());
             preparedStatement.setInt(2, comment.getAuthor().getId());
-            preparedStatement.setInt(3, comment.getParent().getId());
+            if(comment.getParent() != null)
+            {
+                preparedStatement.setInt(3, comment.getParent().getId());
+            }else{
+                preparedStatement.setNull(3, Types.INTEGER);
+            }
+
+            preparedStatement.executeUpdate();
+            connection.commit();
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys())
+            {
+                if(generatedKeys.next())
+                {
+                    comment.setId(generatedKeys.getInt(1));
+                }else{
+                    throw new SQLException("Creating comment failed, no ID obtained");
+                }
+            }
+        }
+        catch(SQLException e){
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+            e.printStackTrace();
+            throw new DaoException("Impossible de communiquer avec la base de données");
+
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de données");
+            }
+        }
+    }
+
+    @Override
+    public void createCommentSite(int site_id, Comment comment) throws DaoException {
+        this.create(comment);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try{
+            connection = daoFactory.getConnection();
+            preparedStatement = connection.prepareStatement("INSERT INTO comment_site(comment_id, site_id) VALUES(?, ?);");
+            preparedStatement.setInt(1, comment.getId());
+            preparedStatement.setInt(2, site_id);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        }
+        catch(SQLException e){
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+            e.printStackTrace();
+            throw new DaoException("Impossible de communiquer avec la base de données");
+        }
+        finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new DaoException("Impossible de communiquer avec la base de données");
+            }
+        }
+    }
+
+    @Override
+    public void createCommentTopo(int topo_id, Comment comment) throws DaoException {
+        this.create(comment);
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try{
+            connection = daoFactory.getConnection();
+            preparedStatement = connection.prepareStatement("INSERT INTO comment_topo(comment_id, topo_id) VALUES(?, ?);");
+            preparedStatement.setInt(1, comment.getId());
+            preparedStatement.setInt(2, topo_id);
             preparedStatement.executeUpdate();
             connection.commit();
         }
@@ -52,7 +137,6 @@ public class CommentDaoImpl implements CommentDao{
                 throw new DaoException("Impossible de communiquer avec la base de données");
             }
         }
-
     }
 
     @Override

@@ -36,9 +36,7 @@ public class LoginForm {
         errors.put(field, message);
     }
 
-    public User connectUser(HttpServletRequest request){
-        String login = getFieldValue( request, FIELD_LOGIN);
-        String password = getFieldValue( request, FIELD_PSSWD);
+    public User connectUser(String login, String password){
 
         try{
             validateLogin(login);
@@ -110,12 +108,14 @@ public class LoginForm {
         }
     }
 
-    private void validateCredentials(User user, String password) throws Exception
+    public boolean validateCredentials(User user, String password)
     {
         Password paswordService = new Password();
         if(!paswordService.verifyCredentials(password,user.getPassword()))
         {
-            throw new Exception("Mot de passe incorrect");
+            return false;
+        }else{
+            return true;
         }
     }
 
@@ -126,14 +126,32 @@ public class LoginForm {
         }
     }
 
-    private static String getFieldValue( HttpServletRequest request, String fieldName)
+    public boolean isInDatabase(String username)
     {
-        String value = request.getParameter( fieldName );
-        if( value == null || value.trim().length()==0)
+        User user = new User();
+        try {
+            user = userDao.findByLogin(username);
+        }catch(Exception e)
         {
-            return null;
+            e.printStackTrace();
+        }
+        if(user.getId() != 0)
+        {
+            return true;
         }else{
-            return value;
+            return false;
         }
     }
+
+    public User getLoginUser(String username)
+    {
+        User user = new User();
+        try{
+            userDao.findByLogin(username);
+        }catch(DaoException e){
+            e.printStackTrace();
+        }
+        return user;
+    }
+
 }

@@ -3,7 +3,7 @@
          pageEncoding="UTF-8"%>
 <div class="container login-form">
     <div class="row">
-        <h2>Se connecter à Cliffhangout</h2>
+        <h1>Se connecter à Cliffhangout</h1>
         <form method="post" class="col-xs-offset-3 col-xs-6">
             <div class="row">
                 <label for="login" class="col-sm-4">Login</label>

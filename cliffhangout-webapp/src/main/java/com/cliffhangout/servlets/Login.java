@@ -16,7 +16,7 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         LoginForm loginForm = new LoginForm();
-        User user = loginForm.connectUser( request);
+        User user = loginForm.connectUser("","");
         if(loginForm.getErrors().isEmpty())
         {
             session.setAttribute("sessionUser", user);
