@@ -12,17 +12,11 @@ import java.util.List;
 
 public class SearchSiteAction extends ActionSupport {
     private String page = "/WEB-INF/search.jsp";
-
     private String stylesheets = "search.css";
-
     private String jsPages = "search.js";
-
     private List<Site> lastSites;
-
     private Object departements;
-
     private Object regions;
-
     private String siteName;
     private boolean addCriteria;
     private boolean criteriaLocation;
@@ -38,6 +32,7 @@ public class SearchSiteAction extends ActionSupport {
     private String criteriaWayNumberMax ="";
     private String result="";
     private List<Site> sites = new ArrayList<Site>();
+    private String title = "Rechercher un site";
 
     public String getPage() {
         return page;
@@ -183,6 +178,10 @@ public class SearchSiteAction extends ActionSupport {
         this.sites = sites;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public String execute(){
         GetAllDepartmentsAndRegions getAllDepartmentsAndRegions = new GetAllDepartmentsAndRegions();
         List<Object> entities = getAllDepartmentsAndRegions.displayAllDepartmentsAndRegions();
@@ -231,7 +230,6 @@ public class SearchSiteAction extends ActionSupport {
                 this.setResult("Votre recherche a aboutie à "+sites.size()+" résultats");
             }
         }
-
         return SUCCESS;
     }
 }

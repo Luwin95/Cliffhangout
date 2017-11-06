@@ -1,10 +1,16 @@
 package com.cliffhangout.actions;
 
+import com.cliffhangout.beans.Comment;
 import com.cliffhangout.beans.Site;
+import com.cliffhangout.beans.User;
+import com.cliffhangout.forms.CommentForm;
 import com.cliffhangout.services.GetSite;
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.interceptor.SessionAware;
 
-public class SiteInfoAction extends ActionSupport {
+import java.util.Map;
+
+public class SiteInfoAction extends ActionSupport implements SessionAware {
     private String idSite;
 
     private String page = "/WEB-INF/site.jsp";
@@ -13,7 +19,13 @@ public class SiteInfoAction extends ActionSupport {
 
     private String jsPages = "site.js";
 
+    private String title = "Infos Site";
+
+    Map<String, Object> session;
+
     private Site site = new Site();
+
+    private Comment commentBean= new Comment();
 
     public String getIdSite() {
         return idSite;
@@ -35,6 +47,11 @@ public class SiteInfoAction extends ActionSupport {
         return jsPages;
     }
 
+
+    public String getTitle() {
+        return title;
+    }
+
     public Site getSite() {
         return site;
     }
@@ -43,11 +60,43 @@ public class SiteInfoAction extends ActionSupport {
         this.site = site;
     }
 
+    public Comment getCommentBean() {
+        return commentBean;
+    }
+
+    public void setCommentBean(Comment commentBean) {
+        this.commentBean = commentBean;
+    }
+
+    @Override
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
+    }
+
     public String execute()
     {
         int id = Integer.parseInt(this.idSite);
         GetSite getSite = new GetSite();
         this.site = getSite.displaySite(id);
-        return SUCCESS;
+        if(commentBean.getContent() != null && session.containsKey("sessionUser"))
+        {
+            CommentForm commentForm = new CommentForm();
+            User author = (User) session.get("sessionUser");
+            commentBean.setAuthor(author);
+            commentForm.addCommentSite(commentBean, site.getId());
+            return SUCCESS;
+        }else{
+            return ERROR;
+        }
+    }
+
+    public void validate()
+    {
+        if(commentBean.getContent() != null){
+            if(commentBean.getContent().equals(""))
+            {
+                addFieldError("commentBean.content", "Le commentaire ne peut être vide");
+            }
+        }
     }
 }

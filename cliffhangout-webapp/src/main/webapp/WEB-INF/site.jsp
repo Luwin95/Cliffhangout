@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <div class="container">
@@ -108,10 +109,13 @@
             <h2>Commentaires</h2>
             <c:if test="${ sessionScope.sessionUser != null }">
                 <div class="row comments-form">
-                    <form method="post">
-                        <textarea name="comment-content" id="comment-content" placeholder="Laisser un commentaire"></textarea>
-                        <br/><input type="submit" value="Laisser un commentaire" class="btn-cliffhangout"/>
-                    </form>
+                    <s:form action="site">
+                        <s:textarea name="commentBean.content" id="comment-content" placeholder="Laisser un commentaire"/>
+                        <br/><s:submit value="Laisser un commentaire" cssClass="btn-cliffhangout"/>
+                        <s:hidden name="idSite" value="%{idSite}"/>
+                    </s:form>
+                        <!--textarea name="comment-content" id="comment-content" placeholder="Laisser un commentaire"></textarea-->
+                        <!--input type="submit" value="Laisser un commentaire" class="btn-cliffhangout"/-->
                 </div>
             </c:if>
             <c:if test="${!empty site.comments }">

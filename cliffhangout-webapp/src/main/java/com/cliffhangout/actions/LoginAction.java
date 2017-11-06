@@ -16,10 +16,9 @@ public class LoginAction extends ActionSupport implements RequestAware, SessionA
     protected Map session;
     protected Map request;
     private String page = "/WEB-INF/login.jsp";
-
     private String stylesheets = "login.css";
-
     private String jsPages = "login.js";
+    private String title = "Login";
 
     public void setSession(Map session) {
         this.session = session;
@@ -60,46 +59,43 @@ public class LoginAction extends ActionSupport implements RequestAware, SessionA
     public void setUser(User user) {
         this.user = user;
     }
-    
+
     public String getPage() {
         return page;
-    }
-
-    public void setPage(String page) {
-        this.page = page;
     }
 
     public String getStylesheets() {
         return stylesheets;
     }
 
-    public void setStylesheets(String stylesheets) {
-        this.stylesheets = stylesheets;
-    }
-
     public String getJsPages() {
         return jsPages;
     }
 
-    public void setJsPages(String jsPages) {
-        this.jsPages = jsPages;
-    }
 
+    public String getTitle() {
+        return title;
+    }
     public String execute()
     {
-        session.put("sessionUser", getUser());
-        return SUCCESS;
+        if(this.user!= null)
+        {
+            session.put("sessionUser", getUser());
+            return SUCCESS;
+        }else{
+            return ERROR;
+        }
     }
 
     public void validate()
     {
         if( getUsername()== null) {
-            addFieldError("login", "Le login est obligatoire");
+            addFieldError("username", "Le login est obligatoire");
         } else if( getUsername().length() <=2)
         {
-            addFieldError("login", "Le login doit faire plus de deux caractères");
-        }else if(loginForm.isInDatabase(getUsername())){
-            addFieldError("login", "Ce login est incorrect");
+            addFieldError("username", "Le login doit faire plus de deux caractères");
+        }else if(!loginForm.isInDatabase(getUsername())){
+            addFieldError("username", "Ce login est incorrect");
         }else{
             user = loginForm.getLoginUser(getUsername());
         }
@@ -108,7 +104,7 @@ public class LoginAction extends ActionSupport implements RequestAware, SessionA
             addFieldError("password", "Le mot de passe ne peut être vide");
         }else  if(getPassword().length()<5){
             addFieldError("password", "Le  mot de passe ne doit pas faire moins de cinq caractères");
-        }else if(loginForm.validateCredentials(user,getPassword())){
+        }else if(!loginForm.validateCredentials(user,getPassword())){
             addFieldError("password", "Le mot de passe est incorrect");
         }
     }

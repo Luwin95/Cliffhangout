@@ -110,8 +110,8 @@ public class LoginForm {
 
     public boolean validateCredentials(User user, String password)
     {
-        Password paswordService = new Password();
-        if(!paswordService.verifyCredentials(password,user.getPassword()))
+        Password passwordService = new Password();
+        if(!passwordService.verifyCredentials(password,user.getPassword()))
         {
             return false;
         }else{
@@ -147,7 +147,7 @@ public class LoginForm {
     {
         User user = new User();
         try{
-            userDao.findByLogin(username);
+            user = userDao.findByLogin(username);
         }catch(DaoException e){
             e.printStackTrace();
         }

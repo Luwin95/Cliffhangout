@@ -25,7 +25,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Mon profil</a></li>
-                                <li><a href="${pageContext.request.contextPath}/logout">Se déconnecter</a></li>
+                                <li><a href="<s:url action='logout'/>">Se déconnecter</a></li>
                             </ul>
                         </li>
                     </c:when>
@@ -36,7 +36,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Mon profil</a></li>
-                                <li><a href="${pageContext.request.contextPath}/logout">Se déconnecter</a></li>
+                                <li><a href="<s:url action='logout'/>">Se déconnecter</a></li>
                             </ul>
                         </li>
                     </c:otherwise>
@@ -55,7 +55,7 @@
         <li><a href="<s:url action='search'/>">Rechercher un site</a></li>
         <c:choose>
             <c:when test="${ sessionScope.sessionUser != null }">
-                <li><a href="${pageContext.request.contextPath}/logout">Se déconnecter</a></li>
+                <li><a href="<s:url action='logout'/>">Se déconnecter</a></li>
             </c:when>
             <c:otherwise>
                 <li><a href="<s:url action='login'/>">Se connecter</a></li>

@@ -20,7 +20,7 @@ public class SiteInfo extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CommentForm commentForm = new CommentForm();
-        commentForm.addCommentSite(request);
+        //commentForm.addCommentSite(request);
         doGet(request,response);
     }
 

@@ -13,10 +13,20 @@
             <result name="success">/layout.jsp</result>
         </action>
         <action name="site" class="com.cliffhangout.actions.SiteInfoAction" method="execute">
-            <result name="success">/layout.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">site</param>
+                <param name="idSite">${idSite}</param>
+            </result>
+            <result name="input">/layout.jsp</result>
+            <result name="error">/layout.jsp</result>
         </action>
         <action name="login" class="com.cliffhangout.actions.LoginAction" method="execute">
-            <result name="success">/layout.jsp</result>
+            <result name="success" type="redirect">/home.action</result>
+            <result name="input">/layout.jsp</result>
+            <result name="error">/layout.jsp</result>
+        </action>
+        <action name="logout" class="com.cliffhangout.actions.LogoutAction" method="execute">
+            <result name="success" type="redirect">/home.action</result>
         </action>
     </package>
 </struts>

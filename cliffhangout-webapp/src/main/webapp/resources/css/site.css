@@ -92,3 +92,7 @@ textarea
     margin-top : 25px;
     transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
 }
+
+table{
+    width:100%;
+}
