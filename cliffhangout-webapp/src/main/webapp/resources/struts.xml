@@ -5,7 +5,7 @@
 
 <struts>
     <constant name="struts.devMode" value="true" />
-    <package name="basicstruts2" extends="struts-default" >
+    <package name="default" namespace="/" extends="struts-default" >
         <action name="home" class="com.cliffhangout.actions.HomeAction" method="execute">
             <result name="success">/layout.jsp</result>
         </action>
@@ -29,6 +29,22 @@
         </action>
         <action name="logout" class="com.cliffhangout.actions.LogoutAction" method="execute">
             <result name="success" type="redirect">/home.action</result>
+        </action>
+    </package>
+    <package name="subscriber" namespace="/subscriber" extends="struts-default">
+        <interceptors>
+            <interceptor name="authentication" class="com.cliffhangout.interceptors.AuthenticationInterceptor">
+
+            </interceptor>
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="authentication"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="authStack"></default-interceptor-ref>
+        <action name="home" class="com.cliffhangout.actions.SubscriberAction" method="execute">
+            <result name="success">/WEB-INF/subscriber/home.jsp</result>
+            <result name="login" type="redirect">/login.action</result>
         </action>
     </package>
 </struts>

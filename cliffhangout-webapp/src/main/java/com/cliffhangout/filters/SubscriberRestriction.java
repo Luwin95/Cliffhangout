@@ -20,7 +20,7 @@ public class SubscriberRestriction implements Filter {
 
         if(session.getAttribute("sessionUser") == null)
         {
-            response.sendRedirect("/login");
+            response.sendRedirect("/login.action");
         }else{
             chain.doFilter(req, resp);
         }
