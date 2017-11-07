@@ -11,6 +11,8 @@
         </action>
         <action name="search" class="com.cliffhangout.actions.SearchSiteAction" method="execute">
             <result name="success">/layout.jsp</result>
+            <result name="input">/layout.jsp</result>
+            <result name="error">/layout.jsp</result>
         </action>
         <action name="site" class="com.cliffhangout.actions.SiteInfoAction" method="execute">
             <result name="success" type="redirectAction">

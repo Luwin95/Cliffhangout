@@ -19,9 +19,9 @@
         <link href="/resources/css/menu.css" rel="stylesheet">
         <link href="/resources/css/footer.css" rel="stylesheet">
         <link href="/resources/css/main.css" rel="stylesheet">
-        <c:forEach items="${ stylesheets }" var="stylesheet" varStatus="status">
-            <link href="/resources/css/${ stylesheet }" rel="stylesheet">
-        </c:forEach>
+        <s:iterator value="stylesheets">
+            <link href="/resources/css/<s:property />" rel="stylesheet">
+        </s:iterator>
         <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
     </head>
@@ -41,8 +41,8 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
                 crossorigin="anonymous"></script>
         <script src="/resources/js/menu.js"></script>
-        <c:forEach items="${ jsPages }" var="jsPage" varStatus="status">
-            <script src="/resources/js/${ jsPage }"></script>
-        </c:forEach>
+        <s:iterator value="jsPages">
+            <script src="/resources/js/<s:property/>"></script>
+        </s:iterator>
     </body>
 </html>

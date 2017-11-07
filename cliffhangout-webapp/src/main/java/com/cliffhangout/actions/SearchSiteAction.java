@@ -30,7 +30,7 @@ public class SearchSiteAction extends ActionSupport {
     private String criteriaQuotationMaxValue="";
     private String criteriaWayNumberMin ="";
     private String criteriaWayNumberMax ="";
-    private String result="";
+    private String result;
     private List<Site> sites = new ArrayList<Site>();
     private String title = "Rechercher un site";
 
@@ -183,16 +183,10 @@ public class SearchSiteAction extends ActionSupport {
     }
 
     public String execute(){
-        GetAllDepartmentsAndRegions getAllDepartmentsAndRegions = new GetAllDepartmentsAndRegions();
-        List<Object> entities = getAllDepartmentsAndRegions.displayAllDepartmentsAndRegions();
-        departements = entities.get(0);
-        regions = entities.get(1);
-        GetSite getSite = new GetSite();
-        lastSites = getSite.displayLastTenSite();
 
-        Hashtable criterias = new Hashtable();
         if(this.siteName != null || (this.addCriteria && (this.criteriaWays || this.criteriaQuotation || this.criteriaLocation)))
         {
+            Hashtable criterias = new Hashtable();
             criterias.put("site-name",siteName);
             if(this.criteriaLocation)
             {
@@ -226,10 +220,19 @@ public class SearchSiteAction extends ActionSupport {
             if(sites.isEmpty())
             {
                 this.setResult("Aucun résultat n'a  été trouvé pour votre recherche");
+                return ERROR;
             }else{
                 this.setResult("Votre recherche a aboutie à "+sites.size()+" résultats");
+                return SUCCESS;
             }
+        }else{
+            GetAllDepartmentsAndRegions getAllDepartmentsAndRegions = new GetAllDepartmentsAndRegions();
+            List<Object> entities = getAllDepartmentsAndRegions.displayAllDepartmentsAndRegions();
+            departements = entities.get(0);
+            regions = entities.get(1);
+            GetSite getSite = new GetSite();
+            lastSites = getSite.displayLastTenSite();
+            return INPUT;
         }
-        return SUCCESS;
     }
 }

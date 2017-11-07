@@ -10,44 +10,43 @@
     </div>
     <div class="row">
         <div class="col-md-8">
-            <h1><c:out value="${site.name}"/></h1>
+            <h1><s:property value="site.name"/></h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-8 site-content">
-            <c:if test="${!empty site.images}">
+            <s:if test="%{site.images !=null && site.images.size()!=0}">
                 <div class="row">
                     <div id="my_carousel" class="carousel slide col-md-offset-1 col-md-10" data-ride="carousel">
                         <!-- Bulles -->
                         <ol class="carousel-indicators">
-                            <c:forEach items="${ site.images }" var="image" varStatus="status">
-                                <c:choose>
-                                    <c:when test="${status.count-1 == 0}"><li data-target="#my_carousel" data-slide-to="${status.count-1}" class="active"></li></c:when>
-                                    <c:otherwise><li data-target="#my_carousel" data-slide-to="${status.count-1}"></li></c:otherwise>
-                                </c:choose>
-                            </c:forEach>
+                            <s:iterator value="site.images" status="status">
+                                <s:if test="%{#status.index ==0}">
+                                    <li data-target="#my_carousel" data-slide-to="<s:property value="%{#status.index}"/>" class="active"></li>
+                                </s:if>
+                                <s:else>
+                                    <li data-target="#my_carousel" data-slide-to="<s:property value="%{#status.index}"/>"></li>
+                                </s:else>
+                            </s:iterator>
                         </ol>
                         <!-- Slides -->
                         <div class="carousel-inner">
-                            <c:forEach items="${ site.images }" var="image" varStatus="status">
-                                <c:choose>
-                                    <c:when test="${status.count-1 == 0}">
-                                        <div class="item active">
-                                            <div class="carousel-page">
-                                                <img src="/resources/images/site/<c:out value="${image.path}"/>" alt="<c:out value="${image.alt}"/>" title="<c:out value="${image.title}"/>" class="img-responsive" style="margin:0px auto;" />
-                                            </div>
+                            <s:iterator value="site.images" status="status">
+                                <s:if test="%{#status.index ==0}">
+                                    <div class="item active">
+                                        <div class="carousel-page">
+                                            <img src="/resources/images/site/<s:property value="path"/>" alt="<s:property value="alt"/>" title="<s:property value="title"/>" class="img-responsive" style="margin:0px auto;" />
                                         </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="item">
-                                            <div class="carousel-page">
-                                                <img src="/resources/images/site/<c:out value="${image.path}"/>" alt="<c:out value="${image.alt}"/>" title="<c:out value="${image.title}"/>" class="img-responsive" style="margin:0px auto;" />
-                                            </div>
+                                    </div>
+                                </s:if>
+                                <s:else>
+                                    <div class="item">
+                                        <div class="carousel-page">
+                                            <img src="/resources/images/site/<s:property value="path"/>" alt="<s:property value="alt"/>" title="<s:property value="title"/>" class="img-responsive" style="margin:0px auto;" />
                                         </div>
-                                    </c:otherwise>
-                                </c:choose>
-
-                            </c:forEach>
+                                    </div>
+                                </s:else>
+                            </s:iterator>
                         </div>
                         <!-- Contrôles -->
                         <a class="left carousel-control" href="#my_carousel" data-slide="prev">
@@ -58,25 +57,25 @@
                         </a>
                     </div>
                 </div>
-            </c:if>
+            </s:if>
             <div class="row">
                 <div class="col-md-offset-1 col-md-10">
-                    <p><c:out value="${ site.description}"/> </p>
-                    <c:forEach items="${ site.sectors }" var="sector" varStatus="status">
-                        <h2>Secteur : <c:out value="${sector.name}"/></h2>
-                        <p><c:out value="${sector.description}"/></p>
-                        <c:forEach items="${ sector.ways }" var="way" varStatus="status">
-                            <h3><c:out value="${way.name}"/></h3>
-                            <p>Cette voie est composée de <c:out value="${way.pointsNb}"/> points et s'étend sur une hauteur de <c:out value="${way.height}"/> m. Elle a été enregistré en tant que voie de catégorie <c:out value="${way.quotation.name}"/>.</p>
-                            <p> Elle comporte <c:out value="${fn:length(way.lengths)}"/> <c:choose><c:when test="${fn:length(way.lengths) >1}">longueurs</c:when><c:when test="${fn:length(way.lengths) <=1}">longueur</c:when></c:choose> comme suit :
+                    <p><s:property value="site.description"/></p>
+                    <s:iterator value="site.sectors">
+                    <h2>Secteur : <s:property value="name"/></h2>
+                    <p><s:property value="description"/></p>
+                    <s:iterator value="ways">
+                        <h3><s:property value="name"/></h3>
+                        <p>Cette voie est composée de <s:property value="pointsNb"/> points et s'étend sur une hauteur de <s:property value="height"/>m. Elle a été enregistré en tant que voie de catégorie <s:property value="quotation.name"/>.</p>
+                        <p> Elle comporte <s:property value="lengths.size()"/> <s:if test="lengths.size() > 1">longueurs</s:if><s:else>longueur</s:else> comme suit :
                             <ul>
-                                <c:forEach items="${ way.lengths }" var="length" varStatus="status">
-                                    <li><c:out value="${length.name}"/>, longueur constituée de <c:out value="${fn:length(length.points)}"/> points</li>
-                                </c:forEach>
+                                <s:iterator value="lengths">
+                                    <li><s:property value="name"/>, longueur constituée de <s:property value="points.size()"/> points</li>
+                                </s:iterator>
                             </ul>
-                            </p>
-                        </c:forEach>
-                    </c:forEach>
+                        </p>
+                    </s:iterator>
+                </s:iterator>
                 </div>
             </div>
         </div>
@@ -84,22 +83,21 @@
             <aside>
                 <h2>Carte d'identité</h2>
                 <ul>
-                    <li><span class="id-list-title">Localisation : </span><c:out value="${site.location}"/> </li>
-                    <li><span class="id-list-title">Région : </span><c:out value="${site.departement.region.name}"/></li>
-                    <li><span class="id-list-title">Département : </span><c:out value="${site.departement.name}"/></li>
+                    <li><span class="id-list-title">Localisation : </span><s:property value="site.location"/></li>
+                    <li><span class="id-list-title">Région : </span><s:property value="site.departement.region.name"/></li>
+                    <li><span class="id-list-title">Département : </span><s:property value="site.departement.name"/></li>
                 </ul>
-                <p class="aside-footer">Ajouté par <c:out value="${site.creator.login}"/></p>
+                <p class="aside-footer">Ajouté par <s:property value="site.creator.login"/></p>
             </aside>
             <aside>
                 <h2>Topos</h2>
-                <c:choose>
-                    <c:when test="${!empty topos}">
-                    </c:when>
-                    <c:otherwise>
-                        <p>Ce site d'escalade n'est lié à aucun topo</p>
-                        <p class="aside-footer"><button class="btn-cliffhangout">Ajouter un topo</button></p>
-                    </c:otherwise>
-                </c:choose>
+                <s:if test="%{topos !=null && topos.size()!=0}">
+                    <%-- Liste des topos disponibles pour le site --%>
+                </s:if>
+                <s:else>
+                    <p>Ce site d'escalade n'est lié à aucun topo</p>
+                    <p class="aside-footer"><button class="btn-cliffhangout">Ajouter un topo</button></p>
+                </s:else>
             </aside>
         </div>
 
@@ -107,7 +105,7 @@
     <div class="row comments-section">
         <div class="col-md-offset-1 col-md-10 ">
             <h2>Commentaires</h2>
-            <c:if test="${ sessionScope.sessionUser != null }">
+            <s:if test="#session.sessionUser!= null">
                 <div class="row comments-form">
                     <s:form action="site">
                         <s:textarea name="commentBean.content" id="comment-content" placeholder="Laisser un commentaire"/>
@@ -117,60 +115,74 @@
                         <!--textarea name="comment-content" id="comment-content" placeholder="Laisser un commentaire"></textarea-->
                         <!--input type="submit" value="Laisser un commentaire" class="btn-cliffhangout"/-->
                 </div>
-            </c:if>
-            <c:if test="${!empty site.comments }">
+            </s:if>
+            <s:if test="%{site.comments !=null && site.comments.size()!=0}">
                 <div class="row comments-display">
-                    <c:forEach items="${ site.comments }" var="comment" varStatus="status">
+                    <s:iterator value="site.comments">
                         <div class="row comment">
                             <div class="col-xs-1">
-                                <c:choose>
-                                    <c:when test="${!empty comment.author.image}">
-                                        <div class="author-profile-img">
-                                            <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${comment.author.image.path}"/>"/>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="author-profile-img">
-                                            <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
+                                <s:if test="%{author.image !=null}">
+                                    <div class="author-profile-img">
+                                        <img src=/resources/images/user/<s:property value="author.image.path"/>"/>
+                                    </div>
+                                </s:if>
+                                <s:else>
+                                    <div class="author-profile-img">
+                                        <img src="/resources/images/user/icone-grimpeur.png"/>
+                                    </div>
+                                </s:else>
                             </div>
                             <div class="col-xs-11 comment-content">
-                                <c:out value="${comment.author.login}"/> a dit : <c:out value="${comment.content}"/>
+                                <s:property value="author.login"/> a dit : <s:property value="content"/>
                             </div>
                         </div>
-                        <c:if test="${!empty comment.children }">
-                            <c:forEach items="${ comment.children }" var="child" varStatus="status">
+                        <s:if test="%{children !=null && children.size()!=0}">
+                            <s:iterator value="children">
                                 <div class="row comment" style="margin-left:20px;">
                                     <div class="col-xs-1">
-                                        <c:choose>
-                                            <c:when test="${!empty child.author.image}">
-                                                <div class="author-profile-img">
-                                                    <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${child.author.image.path}"/>"/>
-                                                </div>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <div class="author-profile-img">
-                                                    <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
-                                                </div>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <s:if test="%{author.image !=null}">
+                                            <div class="author-profile-img">
+                                                <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${child.author.image.path}"/>"/>
+                                            </div>
+                                        </s:if>
+                                        <s:else>
+                                            <div class="author-profile-img">
+                                                <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
+                                            </div>
+                                        </s:else>
+                                            <%--
+                                            <c:choose>
+                                                <c:when test="${!empty child.author.image}">
+                                                    <div class="author-profile-img">
+                                                        <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${child.author.image.path}"/>"/>
+                                                    </div>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="author-profile-img">
+                                                        <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>--%>
                                     </div>
                                     <div class="col-xs-11 comment-content">
-                                        <c:out value="${child.author.login}"/> a répondu : <c:out value="${child.content}"/>
+                                        <s:property value="author.login"/> a répondu : <s:property value="content"/>
                                     </div>
                                 </div>
-                                <c:if test="${!empty child.children }">
+                                <s:if test="%{children !=null && children.size()!=0}">
+                                    <s:iterator value="children">
+                                        <p style="margin-left:20px;"><s:property value="author.login"/> a répondu : <s:property value="content"/></p>
+                                    </s:iterator>
+                                </s:if>
+                                <%--<c:if test="${!empty child.children }">
                                     <c:forEach items="${ child.children }" var="childsChild" varStatus="status">
                                         <p style="margin-left:20px;"><c:out value="${childsChild.author.login}"/> a répondu : <c:out value="${childsChild.content}"/></p>
                                     </c:forEach>
-                                </c:if>
-                            </c:forEach>
-                        </c:if>
-                    </c:forEach>
+                                </c:if>--%>
+                            </s:iterator>
+                        </s:if>
+                    </s:iterator>
                 </div>
-            </c:if>
+            </s:if>
         </div>
     </div>
 </div>
