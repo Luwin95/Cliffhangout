@@ -19,8 +19,12 @@
                 <param name="actionName">site</param>
                 <param name="idSite">${idSite}</param>
             </result>
-            <result name="input">/layout.jsp</result>
-            <result name="error">/layout.jsp</result>
+            <result name="input" type="redirectAction">
+                <param name="actionName">site</param>
+                <param name="idSite">${idSite}</param>
+                <param name="actionErrors">${actionErrors}</param>
+            </result>
+            <result name="error" >/layout.jsp</result>
         </action>
         <action name="login" class="com.cliffhangout.actions.LoginAction" method="execute">
             <result name="success" type="redirect">/home.action</result>
@@ -34,7 +38,6 @@
     <package name="subscriber" namespace="/subscriber" extends="struts-default">
         <interceptors>
             <interceptor name="authentication" class="com.cliffhangout.interceptors.AuthenticationInterceptor">
-
             </interceptor>
             <interceptor-stack name="authStack">
                 <interceptor-ref name="authentication"></interceptor-ref>

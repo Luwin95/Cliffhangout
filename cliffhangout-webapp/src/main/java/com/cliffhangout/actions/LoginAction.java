@@ -5,6 +5,7 @@ import com.cliffhangout.forms.LoginForm;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.RequestAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 import java.util.Map;
 
@@ -78,7 +79,8 @@ public class LoginAction extends ActionSupport implements RequestAware, SessionA
     }
     public String execute()
     {
-        if(this.user!= null)
+        user = loginForm.getLoginUser(this.username);
+        if(user.getId()!=0 && loginForm.validateCredentials(user,this.password))
         {
             session.put("sessionUser", getUser());
             return SUCCESS;
@@ -89,24 +91,34 @@ public class LoginAction extends ActionSupport implements RequestAware, SessionA
 
     public void validate()
     {
-        if( getUsername()== null) {
-            addFieldError("username", "Le login est obligatoire");
-        } else if( getUsername().length() <=2)
+        if(this.username!=null)
         {
-            addFieldError("username", "Le login doit faire plus de deux caractères");
-        }else if(!loginForm.isInDatabase(getUsername())){
-            addFieldError("username", "Ce login est incorrect");
-        }else{
-            user = loginForm.getLoginUser(getUsername());
+            if(this.username.equals("")) {
+                addFieldError("username", "Le login est obligatoire");
+            }
+            if(!this.username.equals("") && this.username.length() <=2)
+            {
+                addFieldError("username", "Le login doit faire plus de deux caractères");
+            }
         }
-        if(getPassword()== null)
+        if(this.password!=null)
         {
-            addFieldError("password", "Le mot de passe ne peut être vide");
-        }else  if(getPassword().length()<5){
-            addFieldError("password", "Le  mot de passe ne doit pas faire moins de cinq caractères");
-        }else if(!loginForm.validateCredentials(user,getPassword())){
-            addFieldError("password", "Le mot de passe est incorrect");
+            if(this.password.equals(""))
+            {
+                addFieldError("password", "Le mot de passe ne peut être vide");
+            }
+            if(!this.password.equals("") && this.password.length()<5){
+                addFieldError("password", "Le  mot de passe ne doit pas faire moins de cinq caractères");
+            }
+        }
+        if(this.password!= null && this.username!= null && this.password.length()>=5 && this.username.length()>2)
+        {
+            if(!loginForm.isInDatabase(this.username)){
+                addFieldError("username", "Ce login est incorrect");
+            }else if(!loginForm.validateCredentials(loginForm.getLoginUser(this.username),this.password))
+            {
+                addFieldError("password", "Le mot de passe est incorrect");
+            }
         }
     }
-
 }

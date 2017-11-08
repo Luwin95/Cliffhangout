@@ -106,14 +106,12 @@
         <div class="col-md-offset-1 col-md-10 ">
             <h2>Commentaires</h2>
             <s:if test="#session.sessionUser!= null">
-                <div class="row comments-form">
-                    <s:form action="site">
-                        <s:textarea name="commentBean.content" id="comment-content" placeholder="Laisser un commentaire"/>
+                <div class="row comments-form" id="commentForm">
+                    <s:form action="site" >
+                        <textarea name="commentBean.content" id="comment-content" placeholder="Laisser un commentaire" required></textarea>
                         <br/><s:submit value="Laisser un commentaire" cssClass="btn-cliffhangout"/>
                         <s:hidden name="idSite" value="%{idSite}"/>
                     </s:form>
-                        <!--textarea name="comment-content" id="comment-content" placeholder="Laisser un commentaire"></textarea-->
-                        <!--input type="submit" value="Laisser un commentaire" class="btn-cliffhangout"/-->
                 </div>
             </s:if>
             <s:if test="%{site.comments !=null && site.comments.size()!=0}">
@@ -132,53 +130,27 @@
                                     </div>
                                 </s:else>
                             </div>
-                            <div class="col-xs-11 comment-content">
+                            <div class="col-xs-8 comment-content">
                                 <s:property value="author.login"/> a dit : <s:property value="content"/>
+                            </div>
+                            <div class="col-xs-3 comment-content">
+                                <div class="row">
+                                    <s:if test="#session.sessionUser!= null">
+                                        <button class="col-xs-5 btn-cliffhangout answer" id="<s:property value="id"/>">Répondre</button>
+                                        <button class="col-xs-offset-2 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
+                                    </s:if>
+                                    <s:else>
+                                        <a href="<s:url action="login"/>">Se connecter</a> ou <a href="#">S'inscrire</a>
+                                    </s:else>
+                                </div>
                             </div>
                         </div>
                         <s:if test="%{children !=null && children.size()!=0}">
-                            <s:iterator value="children">
-                                <div class="row comment" style="margin-left:20px;">
-                                    <div class="col-xs-1">
-                                        <s:if test="%{author.image !=null}">
-                                            <div class="author-profile-img">
-                                                <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${child.author.image.path}"/>"/>
-                                            </div>
-                                        </s:if>
-                                        <s:else>
-                                            <div class="author-profile-img">
-                                                <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
-                                            </div>
-                                        </s:else>
-                                            <%--
-                                            <c:choose>
-                                                <c:when test="${!empty child.author.image}">
-                                                    <div class="author-profile-img">
-                                                        <img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${child.author.image.path}"/>"/>
-                                                    </div>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <div class="author-profile-img">
-                                                        <img src="${pageContext.request.contextPath}/resources/images/user/icone-grimpeur.png"/>
-                                                    </div>
-                                                </c:otherwise>
-                                            </c:choose>--%>
-                                    </div>
-                                    <div class="col-xs-11 comment-content">
-                                        <s:property value="author.login"/> a répondu : <s:property value="content"/>
-                                    </div>
-                                </div>
-                                <s:if test="%{children !=null && children.size()!=0}">
-                                    <s:iterator value="children">
-                                        <p style="margin-left:20px;"><s:property value="author.login"/> a répondu : <s:property value="content"/></p>
-                                    </s:iterator>
-                                </s:if>
-                                <%--<c:if test="${!empty child.children }">
-                                    <c:forEach items="${ child.children }" var="childsChild" varStatus="status">
-                                        <p style="margin-left:20px;"><c:out value="${childsChild.author.login}"/> a répondu : <c:out value="${childsChild.content}"/></p>
-                                    </c:forEach>
-                                </c:if>--%>
-                            </s:iterator>
+                            <s:set var="cpt" value="0"/>
+                            <div style="margin-left:20px;">
+                                <s:set var="cpt" value="%{#cpt+1}"/>
+                                <s:include value="comment.jsp"/>
+                            </div>
                         </s:if>
                     </s:iterator>
                 </div>

@@ -4,6 +4,7 @@ import com.cliffhangout.beans.Comment;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.forms.CommentForm;
+import com.cliffhangout.services.CommentManagement;
 import com.cliffhangout.services.GetSite;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.SessionAware;
@@ -17,7 +18,7 @@ public class SiteInfoAction extends ActionSupport implements SessionAware {
 
     private String stylesheets = "site.css";
 
-    private String jsPages = "site.js";
+    private String[] jsPages = {"site.js", "comment.js"};
 
     private String title = "Infos Site";
 
@@ -26,6 +27,8 @@ public class SiteInfoAction extends ActionSupport implements SessionAware {
     private Site site = new Site();
 
     private Comment commentBean= new Comment();
+
+    private String parent;
 
     public String getIdSite() {
         return idSite;
@@ -43,10 +46,9 @@ public class SiteInfoAction extends ActionSupport implements SessionAware {
         return stylesheets;
     }
 
-    public String getJsPages() {
+    public String[] getJsPages() {
         return jsPages;
     }
-
 
     public String getTitle() {
         return title;
@@ -73,6 +75,14 @@ public class SiteInfoAction extends ActionSupport implements SessionAware {
         this.session = session;
     }
 
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
     public String execute()
     {
         int id = Integer.parseInt(this.idSite);
@@ -82,6 +92,8 @@ public class SiteInfoAction extends ActionSupport implements SessionAware {
         {
             CommentForm commentForm = new CommentForm();
             User author = (User) session.get("sessionUser");
+            CommentManagement commentManagement = new CommentManagement();
+            commentManagement.getParentSiteComment(parent, commentBean);
             commentBean.setAuthor(author);
             commentForm.addCommentSite(commentBean, site.getId());
             return SUCCESS;

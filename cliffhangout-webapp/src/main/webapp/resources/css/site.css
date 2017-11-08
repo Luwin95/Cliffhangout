@@ -34,7 +34,7 @@ aside h2, aside .aside-footer{
 {
     border:1px solid lightgrey;
     border-radius:4px;
-    height:25px;
+    height:100%;
     background : rgba(0,0,0,0.8);
 }
 

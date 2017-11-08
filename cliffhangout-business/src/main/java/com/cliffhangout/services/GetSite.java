@@ -3,10 +3,7 @@ package com.cliffhangout.services;
 import com.cliffhangout.beans.*;
 import com.cliffhangout.dao.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class GetSite {
     private SiteDao siteDao;
@@ -45,23 +42,19 @@ public class GetSite {
 
     private List<Comment> sortSiteComments(List<Comment> comments)
     {
-        List<Comment> children = new ArrayList<Comment>();
+        Map<Integer, Comment> commentById = new HashMap<>();
+        Iterator<Comment> iterator = comments.iterator();
         for(Comment comment : comments)
         {
+            commentById.put(comment.getId(), comment);
+        }
+        while(iterator.hasNext())
+        {
+            Comment comment = iterator.next();
             if(comment.getParent() != null)
             {
-                children.add(comment);
-            }
-        }
-        comments.removeAll(children);
-        for(Comment parent : comments)
-        {
-            for(Comment child : children)
-            {
-                if(parent.getId() == child.getParent().getId())
-                {
-                    parent.addChild(child);
-                }
+                commentById.get(comment.getParent().getId()).addChild(comment);
+                iterator.remove();
             }
         }
         return comments;
