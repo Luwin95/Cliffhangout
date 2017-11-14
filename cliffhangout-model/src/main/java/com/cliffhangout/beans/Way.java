@@ -11,13 +11,9 @@ public class Way {
     private double height;
     private Quotation quotation;
     private int pointsNb;
-    private Sector sector;
+    private int sectorId;
     private List<Length> lengths = new ArrayList<Length>();
 
-    public Way(Sector sector)
-    {
-        this.sector = sector;
-    }
 
     public int getId() {
         return id;
@@ -59,12 +55,12 @@ public class Way {
         this.pointsNb = pointsNb;
     }
 
-    public Sector getSector() {
-        return sector;
+    public int getSectorId() {
+        return sectorId;
     }
 
-    public void setSector(Sector sector) {
-        this.sector = sector;
+    public void setSectorId(int sectorId) {
+        this.sectorId = sectorId;
     }
 
     public List<Length> getLengths() {

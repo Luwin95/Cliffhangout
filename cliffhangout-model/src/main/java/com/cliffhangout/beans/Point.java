@@ -4,11 +4,7 @@ public class Point {
     private int id;
     private String name;
     private String description;
-    private Length length;
-
-    public Point(Length length){
-        this.length = length;
-    }
+    private int lengthId;
 
     public int getId() {
         return id;
@@ -34,11 +30,11 @@ public class Point {
         this.description = description;
     }
 
-    public Length getLength() {
-        return length;
+    public int getLengthId() {
+        return lengthId;
     }
 
-    public void setLength(Length length) {
-        this.length = length;
+    public void setLengthId(int lengthId) {
+        this.lengthId = lengthId;
     }
 }

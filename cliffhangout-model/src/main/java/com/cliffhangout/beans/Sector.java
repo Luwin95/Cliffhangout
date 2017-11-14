@@ -10,12 +10,8 @@ public class Sector {
     private int id;
     private String name;
     private String description;
-    private Site site;
+    private int siteId;
     private List<Way> ways = new ArrayList<Way>();
-
-    public Sector(Site site){
-        this.site = site;
-    }
 
     public int getId() {
         return id;
@@ -41,12 +37,12 @@ public class Sector {
         this.description = description;
     }
 
-    public Site getSite() {
-        return site;
+    public int getSiteId() {
+        return siteId;
     }
 
-    public void setSite(Site site) {
-        this.site = site;
+    public void setSiteId(int siteId) {
+        this.siteId = siteId;
     }
 
     public List<Way> getWays() {

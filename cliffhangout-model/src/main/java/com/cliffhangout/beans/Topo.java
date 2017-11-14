@@ -1,5 +1,6 @@
 package com.cliffhangout.beans;
 
+import java.util.List;
 import java.util.Set;
 
 public class Topo {
@@ -10,7 +11,7 @@ public class Topo {
     private String file;
     private boolean borrowed;
     private User owner;
-    private Set<Site> sites;
+    private List<Site> sites;
 
     public int getId() {
         return id;
@@ -59,11 +60,11 @@ public class Topo {
         this.owner = owner;
     }
 
-    public Set<Site> getSites() {
+    public List<Site> getSites() {
         return sites;
     }
 
-    public void setSites(Set<Site> sites) {
+    public void setSites(List<Site> sites) {
         this.sites = sites;
     }
 

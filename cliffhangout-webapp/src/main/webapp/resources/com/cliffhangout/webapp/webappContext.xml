@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- ==== AbstractResource ===== -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="com.cliffhangout.webapp.AbstractAction"/>
+        <property name="targetMethod" value="setManagerFactory"/>
+        <property name="arguments" ref="managerFactory"/>
+    </bean>
+
+    <bean id="dataSourceCliffhangout" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/DB_CLIFFHANGOUT"/>
+    </bean>
+
+</beans>

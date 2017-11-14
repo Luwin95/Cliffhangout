@@ -9,12 +9,8 @@ public class Length {
     private int id;
     private String name;
     private String description;
-    private Way way;
+    private int wayId;
     private List<Point> points = new ArrayList<Point>();
-
-    public Length(Way way){
-        this.way = way;
-    }
 
     public int getId() {
         return id;
@@ -40,12 +36,12 @@ public class Length {
         this.description = description;
     }
 
-    public Way getWay() {
-        return way;
+    public int getWayId() {
+        return wayId;
     }
 
-    public void setWay(Way way) {
-        this.way = way;
+    public void setWayId(int wayId) {
+        this.wayId = wayId;
     }
 
     public List<Point> getPoints() {
