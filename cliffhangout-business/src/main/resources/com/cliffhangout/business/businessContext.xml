@@ -9,12 +9,18 @@
         <property name="daoFactory" ref="daoFactory"/>
     </bean>
     <!-- ===== Déclaration des Managers ===== -->
-    <bean id="siteManager" class="com.cliffhangout.business.impl.manager.SiteManagerImpl" parent="abstractManager"/>
+    <bean id="siteManager" class="com.cliffhangout.business.impl.manager.SiteManagerImpl" parent="abstractManager">
+        <property name="commentManager" ref="commentManager"/>
+    </bean>
     <bean id="userManager" class="com.cliffhangout.business.impl.manager.UserManagerImpl" parent="abstractManager"/>
+    <bean id="commentManager" class="com.cliffhangout.business.impl.manager.CommentManagerImpl" parent="abstractManager"/>
+    <bean id="departementRegionManager" class="com.cliffhangout.business.impl.manager.DepartementRegionManagerImpl" parent="abstractManager"/>
 
     <!-- ===== ManagerFactory ===== -->
     <bean id="managerFactory" class="com.cliffhangout.business.impl.ManagerFactoryImpl">
         <property name="siteManager" ref="siteManager"/>
         <property name="userManager" ref="userManager"/>
+        <property name="commentManager" ref="commentManager"/>
+        <property name="departementRegionManager" ref="departementRegionManager"/>
     </bean>
 </beans>

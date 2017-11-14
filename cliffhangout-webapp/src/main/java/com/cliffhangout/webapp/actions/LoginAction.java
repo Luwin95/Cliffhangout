@@ -1,7 +1,6 @@
 package com.cliffhangout.webapp.actions;
 
 import com.cliffhangout.beans.User;
-import com.cliffhangout.business.forms.LoginForm;
 import com.cliffhangout.webapp.AbstractAction;
 import org.apache.struts2.interceptor.RequestAware;
 import org.apache.struts2.interceptor.SessionAware;
@@ -11,7 +10,6 @@ import java.util.Map;
 public class LoginAction extends AbstractAction implements RequestAware, SessionAware {
     private String username;
     private String password;
-    private LoginFor loginForm=new LoginForm();
     private User user;
     protected Map session;
     protected Map request;
@@ -78,8 +76,8 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
     }
     public String execute()
     {
-        user = loginFor.getLoginUser(this.username);
-        if(user.getId()!=0 && loginForm.validateCredentials(user,this.password))
+        user = getManagerFactory().getUserManager().getLoginUser(this.username);
+        if(user.getId()!=0 && getManagerFactory().getUserManager().validateCredentials(user,this.password))
         {
             session.put("sessionUser", getUser());
             return SUCCESS;
@@ -112,9 +110,9 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
         }
         if(this.password!= null && this.username!= null && this.password.length()>=5 && this.username.length()>2)
         {
-            if(!loginForm.isInDatabase(this.username)){
+            if(getManagerFactory().getUserManager().isInDatabase(this.username)){
                 addFieldError("username", "Ce login est incorrect");
-            }else if(!loginForm.validateCredentials(loginForm.getLoginUser(this.username),this.password))
+            }else if(getManagerFactory().getUserManager().validateCredentials(getManagerFactory().getUserManager().getLoginUser(this.username),this.password))
             {
                 addFieldError("password", "Le mot de passe est incorrect");
             }

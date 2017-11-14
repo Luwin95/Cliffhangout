@@ -3,11 +3,7 @@ package com.cliffhangout.webapp.actions;
 import com.cliffhangout.beans.Comment;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.User;
-import com.cliffhangout.business.forms.CommentForm;
-import com.cliffhangout.business.services.CommentManagement;
-import com.cliffhangout.business.services.GetSite;
 import com.cliffhangout.webapp.AbstractAction;
-import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.SessionAware;
 
 import java.util.Map;
@@ -87,16 +83,13 @@ public class SiteInfoAction extends AbstractAction implements SessionAware {
     public String execute()
     {
         int id = Integer.parseInt(this.idSite);
-        GetSite getSite = new GetSite();
-        this.site = getSite.displaySite(id);
+        this.site = getManagerFactory().getSiteManager().displaySite(id);
         if(commentBean.getContent() != null && session.containsKey("sessionUser"))
         {
-            CommentForm commentForm = new CommentForm();
             User author = (User) session.get("sessionUser");
-            CommentManagement commentManagement = new CommentManagement();
-            commentManagement.getParentSiteComment(parent, commentBean);
+            getManagerFactory().getCommentManager().getParentSiteComment(parent, commentBean);
             commentBean.setAuthor(author);
-            commentForm.addCommentSite(commentBean, site.getId());
+            getManagerFactory().getCommentManager().addCommentSite(commentBean, site.getId());
             return SUCCESS;
         }else{
             return ERROR;

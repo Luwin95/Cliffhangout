@@ -1,22 +1,15 @@
 package com.cliffhangout.consumer.impl.dao;
 
-import com.cliffhangout.beans.Sector;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Topo;
-import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.contract.dao.*;
 import com.cliffhangout.consumer.impl.rowmapper.SiteRM;
-import com.sun.deploy.security.ValidationState;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
 

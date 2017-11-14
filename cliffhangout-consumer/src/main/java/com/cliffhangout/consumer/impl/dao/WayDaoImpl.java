@@ -1,10 +1,7 @@
 package com.cliffhangout.consumer.impl.dao;
 
-import com.cliffhangout.beans.Length;
 import com.cliffhangout.beans.Sector;
 import com.cliffhangout.beans.Way;
-import com.cliffhangout.consumer.contract.dao.LengthDao;
-import com.cliffhangout.consumer.contract.dao.QuotationDao;
 import com.cliffhangout.consumer.contract.dao.WayDao;
 import com.cliffhangout.consumer.impl.rowmapper.WayRM;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WayDaoImpl extends AbstractDaoImpl implements WayDao {

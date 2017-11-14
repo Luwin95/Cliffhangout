@@ -9,7 +9,6 @@ public abstract class AbstractDaoImpl {
     @Inject
     @Named("dataSourceCliffhangout")
     private DataSource dataSource;
-
     protected DataSource getDataSource() {
         return dataSource;
     }

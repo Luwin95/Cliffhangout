@@ -1,11 +1,7 @@
 package com.cliffhangout.webapp.actions;
 
 import com.cliffhangout.beans.Site;
-import com.cliffhangout.business.services.GetAllDepartmentsAndRegions;
-import com.cliffhangout.business.services.GetSite;
-import com.cliffhangout.business.services.SearchSite;
 import com.cliffhangout.webapp.AbstractAction;
-import com.opensymphony.xwork2.ActionSupport;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -216,8 +212,7 @@ public class SearchSiteAction extends AbstractAction {
                 criterias.put("criteria-way-number-min",this.criteriaWayNumberMin);
                 criterias.put("criteria-way-number-max",this.criteriaWayNumberMax);
             }
-            SearchSite searchSite = new SearchSite();
-            this.setSites(searchSite.search(criterias));
+            this.setSites(getManagerFactory().getSiteManager().search(criterias));
             if(sites.isEmpty())
             {
                 this.setResult("Aucun résultat n'a  été trouvé pour votre recherche");
@@ -227,12 +222,10 @@ public class SearchSiteAction extends AbstractAction {
                 return SUCCESS;
             }
         }else{
-            GetAllDepartmentsAndRegions getAllDepartmentsAndRegions = new GetAllDepartmentsAndRegions();
-            List<Object> entities = getAllDepartmentsAndRegions.displayAllDepartmentsAndRegions();
+            List<Object> entities = getManagerFactory().getDepartementRegionManager().displayAllDepartmentsAndRegions();
             departements = entities.get(0);
             regions = entities.get(1);
-            GetSite getSite = new GetSite();
-            lastSites = getSite.displayLastTenSite();
+            lastSites = getManagerFactory().getSiteManager().displayLastTenSite();
             return INPUT;
         }
     }

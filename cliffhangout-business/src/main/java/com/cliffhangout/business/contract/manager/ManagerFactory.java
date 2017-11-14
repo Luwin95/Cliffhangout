@@ -8,4 +8,8 @@ public interface ManagerFactory {
     void setSiteManager(SiteManager pSiteManager);
     UserManager getUserManager();
     void setUserManager(UserManager pUserManager);
+    CommentManager getCommentManager();
+    void setCommentManager(CommentManager pCommentManager);
+    DepartementRegionManager getDepartementRegionManager();
+    void setDepartementRegionManager(DepartementRegionManager departementRegionManager);
 }
