@@ -17,7 +17,7 @@ public class DepartementDaoImpl extends AbstractDaoImpl implements DepartementDa
     @Override
     public Departement find(String code){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM departement WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("SELECT * FROM departement LEFT JOIN region ON region.region_id = departement.region_id WHERE 1=1 ");
         if(code != null && !code.equals(""))
         {
             vSQL.append("AND departement_code=:code");
@@ -32,7 +32,7 @@ public class DepartementDaoImpl extends AbstractDaoImpl implements DepartementDa
     @Override
     public List<Departement> findAll(){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        String vSQL= "SELECT * FROM departement ORDER BY departement_code";
+        String vSQL= "SELECT * FROM departement LEFT JOIN region ON region.region_id = departement.region_id  ORDER BY departement_code";
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Departement> vRowMapper = new DepartementRM();
         List<Departement> vList = vJdbcTemplate.query(vSQL,vParams,vRowMapper);

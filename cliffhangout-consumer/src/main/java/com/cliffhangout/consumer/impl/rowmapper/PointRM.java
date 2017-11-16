@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PointRM implements RowMapper<Point> {
+public class PointRM extends AbstractRM implements RowMapper<Point> {
     @Override
     public Point mapRow(ResultSet rs, int rowNum) throws SQLException {
         Point point = new Point();

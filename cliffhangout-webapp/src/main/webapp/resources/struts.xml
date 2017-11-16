@@ -2,7 +2,6 @@
 <!DOCTYPE struts PUBLIC
         "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
         "http://struts.apache.org/dtds/struts-2.5.dtd">
-
 <struts>
     <constant name="struts.devMode" value="true" />
     <package name="default" namespace="/" extends="struts-default" >
@@ -21,6 +20,7 @@
             </result>
             <result name="input">/layout.jsp</result>
             <result name="error" >/layout.jsp</result>
+            <result name="notFound">/WEB-INF/404.jsp</result>
         </action>
         <action name="login" class="com.cliffhangout.webapp.actions.LoginAction" method="execute">
             <result name="success" type="redirect">/home.action</result>
@@ -42,7 +42,12 @@
         </interceptors>
         <default-interceptor-ref name="authStack"></default-interceptor-ref>
         <action name="home" class="com.cliffhangout.webapp.actions.SubscriberAction" method="execute">
-            <result name="success">/WEB-INF/subscriber/home.jsp</result>
+            <result name="success">/layout.jsp</result>
+            <result name="login" type="redirect">/login.action</result>
+        </action>
+        <action name="addSite" class="com.cliffhangout.webapp.actions.AddSiteAction" method="execute">
+            <result name="success">/layout.jsp</result>
+            <result name="input">/layout.jsp</result>
             <result name="login" type="redirect">/login.action</result>
         </action>
     </package>

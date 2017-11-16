@@ -84,15 +84,19 @@ public class SiteInfoAction extends AbstractAction implements SessionAware {
     {
         int id = Integer.parseInt(this.idSite);
         this.site = getManagerFactory().getSiteManager().displaySite(id);
-        if(commentBean.getContent() != null && session.containsKey("sessionUser"))
-        {
-            User author = (User) session.get("sessionUser");
-            getManagerFactory().getCommentManager().getParentSiteComment(parent, commentBean);
-            commentBean.setAuthor(author);
-            getManagerFactory().getCommentManager().addCommentSite(commentBean, site.getId());
-            return SUCCESS;
+        if(site!= null){
+            if(commentBean.getContent() != null && session.containsKey("sessionUser"))
+            {
+                User author = (User) session.get("sessionUser");
+                getManagerFactory().getCommentManager().getParentSiteComment(parent, commentBean);
+                commentBean.setAuthor(author);
+                getManagerFactory().getCommentManager().addCommentSite(commentBean, site.getId());
+                return SUCCESS;
+            }else{
+                return ERROR;
+            }
         }else{
-            return ERROR;
+            return "notFound";
         }
     }
 

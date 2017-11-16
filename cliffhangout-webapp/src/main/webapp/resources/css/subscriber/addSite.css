@@ -1,0 +1,10 @@
+body
+{
+    background: url('http://localhost:8080/resources/images/climber2.jpg') no-repeat center center fixed;
+    text-align: center;
+
+}
+
+label{
+    color:black!important;
+}

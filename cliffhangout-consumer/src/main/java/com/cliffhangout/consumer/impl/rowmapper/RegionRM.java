@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RegionRM implements RowMapper<Region> {
+public class RegionRM extends AbstractRM implements RowMapper<Region> {
     @Override
     public Region mapRow(ResultSet rs, int rowNum) throws SQLException {
         Region vRegion = new Region();

@@ -8,25 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TopoRM implements RowMapper<Topo> {
-    private UserDao userDao;
-    private SiteDao siteDao;
-
-    public UserDao getUserDao() {
-        return userDao;
-    }
-
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    public SiteDao getSiteDao() {
-        return siteDao;
-    }
-
-    public void setSiteDao(SiteDao siteDao) {
-        this.siteDao = siteDao;
-    }
+public class TopoRM extends AbstractRM implements RowMapper<Topo> {
 
     @Override
     public Topo mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -36,8 +18,8 @@ public class TopoRM implements RowMapper<Topo> {
         topo.setDescription(rs.getString("description"));
         topo.setFile(rs.getString("file"));
         topo.setBorrowed(rs.getBoolean("borrowed"));
-        topo.setOwner(userDao.find(rs.getInt("user_account_id")));
-        topo.setSites(siteDao.findAllByTopo(topo));
-        return null;
+        topo.setOwner(getDaoFactory().getUserDao().find(rs.getInt("user_account_id")));
+        topo.setSites(getDaoFactory().getSiteDao().findAllByTopo(topo));
+        return topo;
     }
 }

@@ -75,7 +75,7 @@ public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
     @Override
     public List<Way> findAllBySector(Sector sector){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM way WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("SELECT * FROM way LEFT JOIN quotation ON quotation.quotation_difficulty = way.quotation_difficulty WHERE 1=1 ");
         if(sector != null)
         {
             if(sector.getId()!=0)

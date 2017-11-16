@@ -8,25 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class WayRM implements RowMapper<Way> {
-    private QuotationDao quotationDao;
-    private LengthDao lengthDao;
-
-    public QuotationDao getQuotationDao() {
-        return quotationDao;
-    }
-
-    public void setQuotationDao(QuotationDao quotationDao) {
-        this.quotationDao = quotationDao;
-    }
-
-    public LengthDao getLengthDao() {
-        return lengthDao;
-    }
-
-    public void setLengthDao(LengthDao lengthDao) {
-        this.lengthDao = lengthDao;
-    }
+public class WayRM extends AbstractRM implements RowMapper<Way> {
 
     @Override
     public Way mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -36,8 +18,8 @@ public class WayRM implements RowMapper<Way> {
         way.setHeight(rs.getDouble("height"));
         way.setPointsNb(rs.getInt("points_nb"));
         way.setSectorId(rs.getInt("sector_id"));
-        way.setQuotation(quotationDao.find(rs.getInt("quotation_difficulty")));
-        way.setLengths(lengthDao.findAllByWay(way));
-        return null;
+        QuotationRM quotationRM = new QuotationRM();
+        way.setQuotation(quotationRM.mapRow(rs, rowNum));
+        return way;
     }
 }

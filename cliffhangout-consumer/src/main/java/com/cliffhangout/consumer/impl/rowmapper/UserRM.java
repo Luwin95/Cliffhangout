@@ -7,21 +7,12 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserRM implements RowMapper<User> {
-    private ImageDao imageDao;
-
-    public ImageDao getImageDao() {
-        return imageDao;
-    }
-
-    public void setImageDao(ImageDao imageDao) {
-        this.imageDao = imageDao;
-    }
+public class UserRM extends AbstractRM implements RowMapper<User> {
 
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
         User user = new User();
-        user.setId(rs.getInt("id"));
+        user.setId(rs.getInt("user_id"));
         user.setLogin(rs.getString("login"));
         user.setPassword(rs.getString("password"));
         user.setSalt(rs.getString("salt"));
@@ -29,7 +20,7 @@ public class UserRM implements RowMapper<User> {
         user.setRole(rs.getString("role"));
         if(rs.getInt("image_id")!=0)
         {
-            user.setImage(imageDao.find(rs.getInt("image_id")));
+            user.setImage(getDaoFactory().getImageDao().find(rs.getInt("image_id")));
         }
         return user;
     }

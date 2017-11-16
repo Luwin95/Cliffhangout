@@ -3,6 +3,7 @@ package com.cliffhangout.consumer.impl.dao;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.contract.dao.UserDao;
 import com.cliffhangout.consumer.impl.rowmapper.UserRM;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -28,7 +29,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
     @Override
     public void update(User user){
-        String vSQL = "UPDATE  user_account SET login=:login, password=:password, salt=:salt, email=:email, role=:role, image_id;image_id WHERE id=:id";
+        String vSQL = "UPDATE  user_account SET login=:login, password=:password, salt=:salt, email=:email, role=:role, image_id=:image_id WHERE id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("login", user.getLogin(), Types.VARCHAR);
         vParams.addValue("password", user.getPassword(), Types.VARCHAR);
@@ -58,31 +59,39 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
     @Override
     public User find(int id){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM comment WHERE 1=1 ");
-        if(id>0)
-        {
-            vSQL.append("AND id = :id");
-            vParams.addValue("id", id);
+        try{
+            MapSqlParameterSource vParams = new MapSqlParameterSource();
+            StringBuilder vSQL= new StringBuilder("SELECT *, id AS user_id FROM user_account WHERE 1=1 ");
+            if(id>0)
+            {
+                vSQL.append("AND id = :id");
+                vParams.addValue("id", id);
+            }
+            NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+            RowMapper<User> vRowMapper = new UserRM();
+            User user = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+            return user;
+        }catch (EmptyResultDataAccessException e){
+            return null;
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        RowMapper<User> vRowMapper = new UserRM();
-        User user = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
-        return user;
     }
 
     @Override
     public User findByLogin(String login){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM comment WHERE 1=1 ");
-        if(!login.equals(""))
-        {
-            vSQL.append("AND login = :login");
-            vParams.addValue("login", login);
+        try{
+            MapSqlParameterSource vParams = new MapSqlParameterSource();
+            StringBuilder vSQL= new StringBuilder("SELECT *, id AS user_id FROM user_account WHERE 1=1 ");
+            if(!login.equals(""))
+            {
+                vSQL.append("AND login = :login");
+                vParams.addValue("login", login);
+            }
+            NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+            RowMapper<User> vRowMapper = new UserRM();
+            User user = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+            return user;
+        }catch(EmptyResultDataAccessException e){
+            return null;
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        RowMapper<User> vRowMapper = new UserRM();
-        User user = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
-        return user;
     }
 }

@@ -8,18 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LengthRM implements RowMapper<Length> {
-
-    private PointDao pointDao;
-
-    public PointDao getPointDao() {
-        return pointDao;
-    }
-
-    public void setPointDao(PointDao pointDao) {
-        this.pointDao = pointDao;
-    }
-
+public class LengthRM extends AbstractRM implements RowMapper<Length> {
     @Override
     public Length mapRow(ResultSet rs, int rowNum) throws SQLException {
         Length length = new Length();
@@ -27,7 +16,6 @@ public class LengthRM implements RowMapper<Length> {
         length.setName(rs.getString("name"));
         length.setDescription(rs.getString("description"));
         length.setWayId(rs.getInt("way_id"));
-        length.setPoints(pointDao.findAllByLength(length));
         return length;
     }
 }

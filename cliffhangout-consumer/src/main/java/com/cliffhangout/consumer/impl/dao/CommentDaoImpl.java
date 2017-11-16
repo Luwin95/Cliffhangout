@@ -73,7 +73,7 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
     @Override
     public Comment find(int id){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM comment WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("SELECT  * FROM comment AS child LEFT JOIN comment AS parent ON child.parent_id = parent.id WHERE 1=1 ");
         if(id>0)
         {
             vSQL.append("AND id = :id");
@@ -88,7 +88,7 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
     @Override
     public List<Comment> findAllByParent(Comment parent){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM comment WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("SELECT  * FROM comment AS child LEFT JOIN comment AS parent ON child.parent_id = parent.id WHERE 1=1 ");
         if(parent != null)
         {
             if(parent.getId()!=0)
@@ -106,7 +106,12 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
     @Override
     public List<Comment> findAllBySite(Site site){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM comment_site INNER JOIN comment on comment_site.comment_id= comment.id WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("SELECT child.id AS child_id, child.content AS child_content, parent.id AS parent_id, parent.content AS parent_content, user_account.id AS user_id, user_account.* " +
+                "FROM comment_site  " +
+                "INNER JOIN comment AS child on comment_site.comment_id= child.id " +
+                "LEFT JOIN comment AS parent ON child.parent_id = parent.id " +
+                "LEFT JOIN user_account ON child.author_id= user_account.id " +
+                "WHERE 1=1 ");
         if(site != null)
         {
             if(site.getId()!=0)

@@ -3,6 +3,7 @@ package com.cliffhangout.business.impl.manager;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.business.contract.manager.UserManager;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 public class UserManagerImpl extends AbstractManagerImpl implements UserManager {
 
@@ -10,14 +11,22 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
     public User displayUser(int id)
     {
         User user = new User();
-        user = getDaoFactory().getUserDao().find(id);
+        try{
+            user = getDaoFactory().getUserDao().find(id);
+        }catch(EmptyResultDataAccessException e){
+            e.printStackTrace();
+        }
         return user;
     }
 
     public User getLoginUser(String username)
     {
         User user = new User();
-        user = getDaoFactory().getUserDao().findByLogin(username);
+        try{
+            user = getDaoFactory().getUserDao().findByLogin(username);
+        }catch(EmptyResultDataAccessException e){
+            e.printStackTrace();
+        }
         return user;
     }
 
@@ -38,7 +47,7 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
             throw new IllegalArgumentException("Le hash n'est pas valide");
         }
 
-        passwordChecked = BCrypt.checkpw(user.getPassword(), password);
+        passwordChecked = BCrypt.checkpw(password, user.getPassword());
 
         return passwordChecked;
     }
@@ -47,7 +56,16 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
     public boolean isInDatabase(String username)
     {
         User user = new User();
-        user = getDaoFactory().getUserDao().findByLogin(username);
-        return user.getId() != 0;
+        try{
+            user = getDaoFactory().getUserDao().findByLogin(username);
+            if(user!=null)
+            {
+                return user.getId() != 0;
+            }else{
+                return false;
+            }
+        }catch(EmptyResultDataAccessException e){
+            return false;
+        }
     }
 }

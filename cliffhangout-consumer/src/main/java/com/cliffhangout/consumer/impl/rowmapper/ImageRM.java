@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ImageRM implements RowMapper<Image> {
+public class ImageRM extends AbstractRM implements RowMapper<Image> {
     @Override
     public Image mapRow(ResultSet rs, int rowNum) throws SQLException {
         Image image = new Image();

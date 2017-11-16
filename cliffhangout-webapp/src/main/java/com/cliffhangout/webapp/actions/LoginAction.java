@@ -42,14 +42,6 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
         this.password = password;
     }
 
-    /*public LoginForm getLoginForm() {
-        return loginForm;
-    }
-
-    public void setLoginForm(LoginForm loginForm) {
-        this.loginForm = loginForm;
-    }*/
-
     public User getUser() {
         return user;
     }
@@ -70,19 +62,24 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
         return jsPages;
     }
 
-
     public String getTitle() {
         return title;
     }
+
     public String execute()
     {
-        user = getManagerFactory().getUserManager().getLoginUser(this.username);
-        if(user.getId()!=0 && getManagerFactory().getUserManager().validateCredentials(user,this.password))
+        if(username!=null)
         {
-            session.put("sessionUser", getUser());
-            return SUCCESS;
+            user = getManagerFactory().getUserManager().getLoginUser(this.username);
+            if(user.getId()!=0 && getManagerFactory().getUserManager().validateCredentials(user,this.password))
+            {
+                session.put("sessionUser", getUser());
+                return SUCCESS;
+            }else{
+                return ERROR;
+            }
         }else{
-            return ERROR;
+            return INPUT;
         }
     }
 
@@ -110,9 +107,9 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
         }
         if(this.password!= null && this.username!= null && this.password.length()>=5 && this.username.length()>2)
         {
-            if(getManagerFactory().getUserManager().isInDatabase(this.username)){
+            if(!getManagerFactory().getUserManager().isInDatabase(this.username)){
                 addFieldError("username", "Ce login est incorrect");
-            }else if(getManagerFactory().getUserManager().validateCredentials(getManagerFactory().getUserManager().getLoginUser(this.username),this.password))
+            }else if(!getManagerFactory().getUserManager().validateCredentials(getManagerFactory().getUserManager().getLoginUser(this.username),this.password))
             {
                 addFieldError("password", "Le mot de passe est incorrect");
             }

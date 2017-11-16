@@ -53,6 +53,7 @@
         <li><a href="<s:url action='search'/>">Rechercher un site</a></li>
         <s:if test="#session.sessionUser!= null ">
             <li><a href="<s:url action='logout'/>">Se déconnecter</a></li>
+            <li><a href="<s:url action='home' namespace="/subscriber"/>">Espace abonné</a></li>
         </s:if>
         <s:else>
             <li><a href="<s:url action='login'/>">Se connecter</a></li>
