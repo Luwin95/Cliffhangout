@@ -27,6 +27,11 @@
             <result name="input">/layout.jsp</result>
             <result name="error">/layout.jsp</result>
         </action>
+        <action name="signin" class="com.cliffhangout.webapp.actions.SigninAction" method="execute">
+            <result name="success" type="redirect">/home.action</result>
+            <result name="input">/layout.jsp</result>
+            <result name="error">/layout.jsp</result>
+        </action>
         <action name="logout" class="com.cliffhangout.webapp.actions.LogoutAction" method="execute">
             <result name="success" type="redirect">/home.action</result>
         </action>

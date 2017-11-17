@@ -13,18 +13,21 @@ import java.sql.*;
 public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     @Override
     public void create(User user){
-
         String vSQL = "INSERT INTO user_account(login, password, salt, email, role, image_id) VALUES(:login, :password, :salt, :email, :role, :image_id)";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("login", user.getLogin(), Types.VARCHAR);
         vParams.addValue("password", user.getPassword(), Types.VARCHAR);
-        vParams.addValue("salt", user.getSalt(), Types.VARCHAR);
+        vParams.addValue("salt", "test", Types.VARCHAR);
         vParams.addValue("email", user.getEmail(), Types.VARCHAR);
         vParams.addValue("role", user.getRole(), Types.VARCHAR);
-        vParams.addValue("image_id", user.getImage().getId(), Types.INTEGER);
-
+        if(user.getImage()!=null)
+        {
+            vParams.addValue("image_id", user.getImage().getId(), Types.INTEGER);
+        }else{
+            vParams.addValue("image_id", null, Types.NULL);
+        }
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        int vNbrLigneMaJ = vJdbcTemplate.update(vSQL, vParams);
     }
 
     @Override

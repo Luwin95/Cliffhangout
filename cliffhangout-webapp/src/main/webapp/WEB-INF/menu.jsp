@@ -49,7 +49,7 @@
 </div>
 <div class="menu">
     <ul>
-        <li><a href="<s:url action='home'/>">Accueil</a></li>
+        <li><a href="<s:url action='home' namespace="/"/>">Accueil</a></li>
         <li><a href="<s:url action='search'/>">Rechercher un site</a></li>
         <s:if test="#session.sessionUser!= null ">
             <li><a href="<s:url action='logout'/>">Se déconnecter</a></li>

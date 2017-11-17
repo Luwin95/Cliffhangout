@@ -38,6 +38,14 @@ public class AddSiteAction extends AbstractAction {
         this.siteBean = siteBean;
     }
 
+    public List<Sector> getSectorsBeans() {
+        return sectorsBeans;
+    }
+
+    public void setSectorsBeans(List<Sector> sectorsBeans) {
+        this.sectorsBeans = sectorsBeans;
+    }
+
     public String execute()
     {
         if(siteBean!=null)

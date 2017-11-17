@@ -4,6 +4,13 @@ import com.cliffhangout.beans.User;
 import com.cliffhangout.business.contract.manager.UserManager;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 public class UserManagerImpl extends AbstractManagerImpl implements UserManager {
 
@@ -19,6 +26,7 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
         return user;
     }
 
+    @Override
     public User getLoginUser(String username)
     {
         User user = new User();
@@ -67,5 +75,21 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
         }catch(EmptyResultDataAccessException e){
             return false;
         }
+    }
+
+    @Override
+    public void signinNewSubscriber(User user) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                String encryptedPassword= hashPassword(user.getPassword());
+                user.setPassword(encryptedPassword);
+                user.setRole("USER");
+                getDaoFactory().getUserDao().create(user);
+            }
+        });
+
     }
 }

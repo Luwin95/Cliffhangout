@@ -1,16 +1,17 @@
-
 $(function(){
-    var cptSector= 0;
+    var cptSector= $('.sectorItem').length;
     var cptWay=0;
     var cptLength=0;
     var cptPoint=0;
 
-    var sectorTemplate = $('#sectorTemplate');
+
+    var sectorTemplate = $('#sectorTemplate').html();
     if(cptSector<1)
     {
-        addSector(sectorTemplate);
+        addSector(sectorTemplate)
     }
 
+    addDeleteSector(cptSector);
     $('#addSector').click(function(e)
     {
         addSector(sectorTemplate);
@@ -18,21 +19,20 @@ $(function(){
 
     function addSector(sectorTemplate)
     {
-        var sectorHTML = sectorTemplate.replace(/__IDX__/, cptSector);
-        addDeleteSector(sectorHTML);
+        var sectorHTML = sectorTemplate.replace(/__IDX__/g, cptSector).replace(/__REALIDX__/g, (cptSector+1));
         $('#sectors').append(sectorHTML);
+        console.log(sectorHTML);
+        addDeleteSector(cptSector);
         cptSector++;
     }
 
-    function addDeleteSector(sectorHTML)
+    function addDeleteSector(cpt)
     {
-        var deleteSector = $('<button id="deleteSector['+cptSector+']" class="btn btn-danger">Supprimer Secteur</button>');
-        sectorHTML.append(deleteSector);
-        deleteSector.click(function(e)
+        $('#deleteSector['+cpt+']').click(function(e)
         {
             if(cptSector>1)
             {
-                sectorHTML.remove();
+                $('#sector['+cpt+']').remove();
                 e.preventDefault();
                 cptSector--;
             }else{

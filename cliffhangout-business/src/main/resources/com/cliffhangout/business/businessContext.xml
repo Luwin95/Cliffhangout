@@ -7,6 +7,7 @@
 
     <bean id="abstractManager" abstract="true">
         <property name="daoFactory" ref="daoFactory"/>
+        <property name="platformTransactionManager" ref="txManagerCliffhangout"/>
     </bean>
     <!-- ===== Déclaration des Managers ===== -->
     <bean id="siteManager" class="com.cliffhangout.business.impl.manager.SiteManagerImpl" parent="abstractManager">
@@ -22,5 +23,8 @@
         <property name="userManager" ref="userManager"/>
         <property name="commentManager" ref="commentManager"/>
         <property name="departementRegionManager" ref="departementRegionManager"/>
+    </bean>
+    <bean id="txManagerCliffhangout" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceCliffhangout"/>
     </bean>
 </beans>

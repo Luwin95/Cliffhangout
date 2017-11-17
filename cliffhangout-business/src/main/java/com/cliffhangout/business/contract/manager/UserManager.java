@@ -8,4 +8,5 @@ public interface UserManager {
     User getLoginUser(String username);
     boolean validateCredentials(User user, String password);
     boolean isInDatabase(String username);
+    void signinNewSubscriber(User user);
 }

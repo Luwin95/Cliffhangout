@@ -51,12 +51,6 @@ input[type="text"], input[type="password"]
     background : rgba(255,255,255,0.5);
 }
 
-.errorMessage
-{
-    margin-left:15px;
-    color:red;
-}
-
 .success
 {
     color:green;

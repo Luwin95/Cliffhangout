@@ -1,0 +1,25 @@
+body
+{
+    background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
+}
+.page
+{
+    bottom:0;
+}
+
+.container
+{
+    background: rgba(0,0,0,0.8);
+    margin-top:50vh;
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+}
+
+h1
+{
+    text-align: center;
+}
+
+.submitForm
+{
+    margin-bottom:20px;
+}
