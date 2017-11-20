@@ -8,6 +8,8 @@ import com.cliffhangout.consumer.impl.rowmapper.ImageRM;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,8 +24,10 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
         vParams.addValue("alt", image.getAlt(), Types.VARCHAR);
         vParams.addValue("title", image.getTitle(),  Types.VARCHAR);
         vParams.addValue("path", image.getPath(),  Types.VARCHAR);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        vJdbcTemplate.update(vSQL, vParams,keyHolder, new String[] {"id"});
+        image.setId((int) keyHolder.getKey());
     }
 
     @Override
@@ -66,7 +70,7 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
     @Override
     public List<Image> findAllBySite(Site site){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("Select image.* from site_image INNER JOIN image on site_image.image_id= image.id  WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("Select image.*, image.id AS imageId from site_image INNER JOIN image on site_image.image_id= image.id  WHERE 1=1 ");
         if(site != null)
         {
             if(site.getId()!=0)
@@ -84,7 +88,7 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
     @Override
     public List<Image> findAllBySector(Sector sector){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("Select image.* from sector_image INNER JOIN image on sector_image.image_id= image.id WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("Select image.* from sector_image, image.id AS imageId INNER JOIN image on sector_image.image_id= image.id WHERE 1=1 ");
         if(sector != null)
         {
             if(sector.getId()!=0)

@@ -2,7 +2,15 @@ package com.cliffhangout.webapp.actions;
 
 import com.cliffhangout.beans.User;
 import com.cliffhangout.webapp.AbstractAction;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.struts2.ServletActionContext;
+
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SigninAction extends AbstractAction {
     private String page = "/WEB-INF/signin.jsp";
@@ -11,6 +19,9 @@ public class SigninAction extends AbstractAction {
     private String title = "S'inscrire";
     private User userBean;
     private String passwordConfirmation;
+    private File upload;
+    private String uploadContentType;
+    private String uploadFileName;
 
     public String getPage() {
         return page;
@@ -44,12 +55,39 @@ public class SigninAction extends AbstractAction {
         this.passwordConfirmation = paswordConfirmation;
     }
 
+    public File getUpload() {
+        return upload;
+    }
+
+    public void setUpload(File upload) {
+        this.upload = upload;
+    }
+
+    public String getUploadContentType() {
+        return uploadContentType;
+    }
+
+    public void setUploadContentType(String uploadContentType) {
+        this.uploadContentType = uploadContentType;
+    }
+
+    public String getUploadFileName() {
+        return uploadFileName;
+    }
+
+    public void setUploadFileName(String uploadFileName) {
+        this.uploadFileName = uploadFileName;
+    }
+
     public String execute()
     {
         if(userBean!=null)
         {
-            getManagerFactory().getUserManager().signinNewSubscriber(userBean);
-            return SUCCESS;
+            if(upload !=null)
+            {
+                getManagerFactory().getUserManager().addProfileImage(upload, uploadContentType, uploadFileName, userBean);
+            }
+            return getManagerFactory().getUserManager().signinNewSubscriber(userBean);
         }else{
             return INPUT;
         }

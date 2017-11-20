@@ -11,7 +11,7 @@
             <p>Faites découvrir à la communauté vos emplacements d'escalade préférés !
                 Partagés votre expérience des lieux en notant la difficulté des différentes voies ainsi qu'en décrivant chaque secteur et longueurs.
             </p>
-            <a href="#" class="btn-cliffhangout col-xs-offset-4 col-xs-4">Créer un site</a>
+            <a href="<s:url action="addSite"/>" class="btn-cliffhangout col-xs-offset-4 col-xs-4">Créer un site</a>
         </div>
         <div class="col-xs-5 col-xs-offset-2">
             <h2>Espace Topos</h2>

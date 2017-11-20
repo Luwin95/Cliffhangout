@@ -64,7 +64,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     public User find(int id){
         try{
             MapSqlParameterSource vParams = new MapSqlParameterSource();
-            StringBuilder vSQL= new StringBuilder("SELECT *, id AS user_id FROM user_account WHERE 1=1 ");
+            StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.id AS user_id, image.id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.id WHERE 1=1 ");
             if(id>0)
             {
                 vSQL.append("AND id = :id");
@@ -83,7 +83,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     public User findByLogin(String login){
         try{
             MapSqlParameterSource vParams = new MapSqlParameterSource();
-            StringBuilder vSQL= new StringBuilder("SELECT *, id AS user_id FROM user_account WHERE 1=1 ");
+            StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.id AS user_id, image.id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.id WHERE 1=1 ");
             if(!login.equals(""))
             {
                 vSQL.append("AND login = :login");

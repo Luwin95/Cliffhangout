@@ -21,7 +21,6 @@
                     <button class="button-profile" id="menu1" data-toggle="dropdown">
                         <%--<img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${sessionScope.sessionUser.image.path}"/>"/>--%>
                         <img src="/resources/images/user/<s:property value="%{#session.sessionUser.image.path}"/>"/>
-                        <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a href="#">Mon profil</a></li>
@@ -42,7 +41,7 @@
             </s:else>
         </s:if>
         <s:else>
-            <li><a href="#">S'inscrire</a></li>
+            <li><a href="<s:url action='signin'/>">S'inscrire</a></li>
             <li><a href="<s:url action='login'/>">Se connecter</a></li>
         </s:else>
     </ul>

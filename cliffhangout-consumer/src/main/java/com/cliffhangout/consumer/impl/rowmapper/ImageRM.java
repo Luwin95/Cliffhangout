@@ -10,7 +10,7 @@ public class ImageRM extends AbstractRM implements RowMapper<Image> {
     @Override
     public Image mapRow(ResultSet rs, int rowNum) throws SQLException {
         Image image = new Image();
-        image.setId(rs.getInt("id"));
+        image.setId(rs.getInt("imageId"));
         image.setAlt(rs.getString("alt"));
         image.setTitle(rs.getString("title"));
         image.setPath(rs.getString("path"));

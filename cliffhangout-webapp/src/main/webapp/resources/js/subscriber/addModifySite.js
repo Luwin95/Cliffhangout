@@ -1,15 +1,12 @@
 $(function(){
     var cptSector= $('.sectorItem').length;
+    console.log(cptSector);
     var cptWay=0;
     var cptLength=0;
     var cptPoint=0;
 
 
     var sectorTemplate = $('#sectorTemplate').html();
-    if(cptSector<1)
-    {
-        addSector(sectorTemplate)
-    }
 
     addDeleteSector(cptSector);
     $('#addSector').click(function(e)

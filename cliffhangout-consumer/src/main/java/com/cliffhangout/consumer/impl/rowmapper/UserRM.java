@@ -20,7 +20,8 @@ public class UserRM extends AbstractRM implements RowMapper<User> {
         user.setRole(rs.getString("role"));
         if(rs.getInt("image_id")!=0)
         {
-            user.setImage(getDaoFactory().getImageDao().find(rs.getInt("image_id")));
+            ImageRM imageRM = new ImageRM();
+            user.setImage(imageRM.mapRow(rs, rowNum));
         }
         return user;
     }

@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public interface CommentDao {
-    void create(Comment comment) ;
+    void create(Comment comment);
     void createCommentSite(int site_id, Comment comment) ;
     void createCommentTopo(int topo_id, Comment comment) ;
     void update(Comment comment);

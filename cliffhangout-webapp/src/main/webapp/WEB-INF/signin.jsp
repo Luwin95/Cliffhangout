@@ -3,7 +3,7 @@
          pageEncoding="UTF-8"%>
 <div class="container">
     <h1>S'inscrire à Cliffhangout</h1>
-    <form method="post" class="form-horizontal" data-toggle="validator">
+    <form method="post" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data" id="newSubscriber">
         <div class="form-group row">
             <label for="login" class="col-xs-offset-3 col-xs-2">Login</label>
             <div class="col-xs-4">
@@ -50,6 +50,16 @@
         <div class="row">
             <div class="col-xs-offset-3 col-xs-6">
                 <s:fielderror fieldName="userBean.email" cssClass="errorMessage"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="profileImage" class="col-xs-offset-3 col-xs-2">Image de profil</label>
+            <div class="col-xs-4">
+                <input type="file" name="upload" id="profileImage" class="col-sm-4 form-control" value="Ajouter une image de profile"
+                       accept="image/jpeg,image/gif,image/png,image/bmp"
+                       data-filesize="1000"
+                       data-error="Taille du fichier incorrecte"/>
+                <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="row">

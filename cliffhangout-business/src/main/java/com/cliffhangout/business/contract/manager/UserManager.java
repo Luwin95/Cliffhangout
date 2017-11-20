@@ -1,6 +1,7 @@
 package com.cliffhangout.business.contract.manager;
 
 import com.cliffhangout.beans.User;
+import java.io.File;
 
 public interface UserManager {
     User displayUser(int id);
@@ -8,5 +9,6 @@ public interface UserManager {
     User getLoginUser(String username);
     boolean validateCredentials(User user, String password);
     boolean isInDatabase(String username);
-    void signinNewSubscriber(User user);
+    String signinNewSubscriber(User user);
+    void addProfileImage(File profileImage, String profileImageContentType, String profileImageFileName, User user);
 }
