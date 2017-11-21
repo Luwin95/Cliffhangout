@@ -9,39 +9,42 @@
             <label for="siteName" class="col-xs-offset-3 col-xs-2">Nom : </label>
             <div class="col-xs-4">
                 <input type="text" name="siteBean.name" class="form-control" id="siteName"
+                       value="<s:property value="siteBean.name"/>"
                        data-minlength="2"
-                       data-error="Le nom de site doit faire deux caractères au minimum"
-                       required/>
+                       data-error="Le nom de site doit faire deux caractères au minimum"/>
                 <div class="help-block with-errors"></div>
+                <s:fielderror fieldName="siteBean.name" cssClass="errorMessage"/>
             </div>
         </div>
         <div class="form-group row">
             <label for="siteDescription" class="col-xs-offset-3 col-xs-2">Description : </label>
             <div class="col-xs-4">
                 <textarea id="siteDescription" name="siteBean.description" class="form-control"
-                          data-error="La description du site ne peut être vide"
-                          required></textarea>
+                          data-error="La description du site ne peut être vide"><s:property value="siteBean.description"/></textarea>
                 <div class="help-block with-errors"></div>
+                <s:fielderror fieldName="siteBean.description" cssClass="errorMessage"/>
             </div>
         </div>
         <div class="form-group row">
             <label for="siteLocation" class="col-xs-offset-3 col-xs-2">Commune : </label>
             <div class="col-xs-4">
                 <input type="text" name="siteBean.location" class="form-control" id="siteLocation"
+                       value="<s:property value="siteBean.location"/>"
                        data-minlength="2"
-                       data-error="Le nom de la commune du site doit faire deux caractères au minimum"
-                       required/>
+                       data-error="Le nom de la commune du site doit faire deux caractères au minimum"/>
                 <div class="help-block with-errors"></div>
+                <s:fielderror fieldName="siteBean.location" cssClass="errorMessage"/>
             </div>
         </div>
         <div class="form-group row">
             <label for="sitePostcode" class="col-xs-offset-3 col-xs-2">Code postal : </label>
             <div class="col-xs-4">
                 <input name ="siteBean.postcode" type="number" class="form-control" id="sitePostcode"
+                       value="<s:property value="siteBean.postcode"/>"
                        data-minlength="5"
-                       data-error="Un code postale est composé de 5 caractères"
-                       required/>
+                       data-error="Un code postale est composé de 5 caractères"/>
                 <div class="help-block with-errors"></div>
+                <s:fielderror fieldName="siteBean.postcode" cssClass="errorMessage"/>
             </div>
         </div>
         <div id="sectors">
@@ -53,19 +56,23 @@
                             <label for="sectorName[<s:property value="%{#status.index}"/>]" class="col-xs-offset-3 col-xs-2">Nom : </label>
                             <div class="col-xs-4">
                                 <input type="text" name="siteBean.sectors[<s:property value="%{#status.index}"/>].name" class="form-control" id="sectorName[<s:property value="%{#status.index}"/>]"
+                                       value="<s:property value="siteBean.sectors[%{#status.index}].name"/>"
                                        data-minlength="2"
-                                       data-error="Le nom du secteur doit faire deux caractères au minimum"
-                                       required/>
+                                       data-error="Le nom du secteur doit faire deux caractères au minimum"/>
                                 <div class="help-block with-errors"></div>
+                                <s:set name="fieldName" value="siteBean.sectors[%{#status.index}].name"/>
+                                <s:fielderror fieldName="%{#fieldName}" cssClass="errorMessage"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="sectorDescription[<s:property value="%{#status.index}"/>]" class="col-xs-offset-3 col-xs-2">Description : </label>
                             <div class="col-xs-4">
                                 <input type="text" name="siteBean.sectors[<s:property value="%{#status.index}"/>].description" class="form-control" id="sectorDescription[<s:property value="%{#status.index}"/>]"
-                                       data-error="La description du secteur ne peut être vide"
-                                       required/>
+                                       value="<s:property value="siteBean.sectors[%{#status.index}].description"/>"
+                                       data-error="La description du secteur ne peut être vide"/>
                                 <div class="help-block with-errors"></div>
+                                <s:set name="fieldName" value="siteBean.sectors[%{#status.index}].description"/>
+                                <s:fielderror fieldName="%{#fieldName}" cssClass="errorMessage"/>
                             </div>
                         </div>
                         <div class="row">
@@ -89,8 +96,7 @@
                 <label for="sectorName[__IDX__]" class="col-xs-offset-3 col-xs-2">Nom : </label>
                 <div class="col-xs-4">
                     <input type="text" name="siteBean.sectors[__IDX__].name" class="form-control" id="sectorName[__IDX__]" data-minlength="2"
-                           data-error="Le nom du secteur doit faire deux caractères au minimum"
-                           required/>
+                           data-error="Le nom du secteur doit faire deux caractères au minimum"/>
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
@@ -98,8 +104,7 @@
                 <label for="sectorDescription[__IDX__]" class="col-xs-offset-3 col-xs-2">Description : </label>
                 <div class="col-xs-4">
                     <input type="text" name="siteBean.sectors[__IDX__].description" class="form-control" id="sectorDescription[__IDX__]"
-                           data-error="La description du secteur ne peut être vide"
-                           required/>
+                           data-error="La description du secteur ne peut être vide"/>
                     <div class="help-block with-errors"></div>
                 </div>
             </div>

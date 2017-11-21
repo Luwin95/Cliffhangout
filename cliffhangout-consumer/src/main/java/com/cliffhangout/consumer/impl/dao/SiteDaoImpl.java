@@ -8,6 +8,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+
 import java.sql.*;
 import java.util.List;
 
@@ -15,7 +18,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
 
     @Override
     public void create(Site site){
-        String vSQL = "INSERT INTO site(name, description, location, postcode, latitude, longitude, user_account_id, departement_code, region_id) VALUES(:name, :description, :location, :postcode, :latitude, :longitude, :user_account_id, :department_code, :region_id)";
+        String vSQL = "INSERT INTO site(name, description, location, postcode, latitude, longitude, user_account_id, departement_code, region_id) VALUES(:name, :description, :location, :postcode, :latitude, :longitude, :user_account_id, :departement_code, :region_id)";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("name", site.getName(), Types.VARCHAR);
         vParams.addValue("description", site.getDescription(), Types.VARCHAR);
@@ -26,8 +29,10 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
         vParams.addValue("user_account_id", site.getCreator().getId(), Types.INTEGER);
         vParams.addValue("departement_code", site.getDepartement().getCode(), Types.VARCHAR);
         vParams.addValue("region_id", site.getRegion().getId(), Types.INTEGER);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"site_id"});
+        site.setId((int) keyHolder.getKey());
     }
 
     @Override

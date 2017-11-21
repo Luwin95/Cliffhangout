@@ -24,7 +24,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a href="#">Mon profil</a></li>
-                        <li><a href="<s:url action='logout'/>">Se déconnecter</a></li>
+                        <li><a href="<s:url action='logout' namespace="/"/>">Se déconnecter</a></li>
                     </ul>
                 </li>
             </s:if>
@@ -35,27 +35,27 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a href="#">Mon profil</a></li>
-                        <li><a href="<s:url action='logout'/>">Se déconnecter</a></li>
+                        <li><a href="<s:url action='logout' namespace="/"/>">Se déconnecter</a></li>
                     </ul>
                 </li>
             </s:else>
         </s:if>
         <s:else>
-            <li><a href="<s:url action='signin'/>">S'inscrire</a></li>
-            <li><a href="<s:url action='login'/>">Se connecter</a></li>
+            <li><a href="<s:url action='signin' namespace="/"/>">S'inscrire</a></li>
+            <li><a href="<s:url action='login' namespace="/"/>">Se connecter</a></li>
         </s:else>
     </ul>
 </div>
 <div class="menu">
     <ul>
         <li><a href="<s:url action='home' namespace="/"/>">Accueil</a></li>
-        <li><a href="<s:url action='search'/>">Rechercher un site</a></li>
+        <li><a href="<s:url action='search' namespace="/"/>">Rechercher un site</a></li>
         <s:if test="#session.sessionUser!= null ">
-            <li><a href="<s:url action='logout'/>">Se déconnecter</a></li>
+            <li><a href="<s:url action='logout' namespace="/"/>">Se déconnecter</a></li>
             <li><a href="<s:url action='home' namespace="/subscriber"/>">Espace abonné</a></li>
         </s:if>
         <s:else>
-            <li><a href="<s:url action='login'/>">Se connecter</a></li>
+            <li><a href="<s:url action='login' namespace="/"/>">Se connecter</a></li>
         </s:else>
     </ul>
 </div>

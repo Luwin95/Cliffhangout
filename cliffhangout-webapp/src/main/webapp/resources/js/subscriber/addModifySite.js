@@ -1,5 +1,5 @@
 $(function(){
-    var cptSector= $('.sectorItem').length;
+    var cptSector= $('.sectorItem').length-1;
     console.log(cptSector);
     var cptWay=0;
     var cptLength=0;
@@ -16,7 +16,7 @@ $(function(){
 
     function addSector(sectorTemplate)
     {
-        var sectorHTML = sectorTemplate.replace(/__IDX__/g, cptSector).replace(/__REALIDX__/g, (cptSector+1));
+        var sectorHTML = sectorTemplate.replace(/__IDX__/g, cptSector+1).replace(/__REALIDX__/g, (cptSector+1));
         $('#sectors').append(sectorHTML);
         console.log(sectorHTML);
         addDeleteSector(cptSector);

@@ -6,6 +6,9 @@ import com.cliffhangout.business.contract.manager.SiteManager;
 import com.cliffhangout.consumer.contract.dao.QuotationDao;
 import com.cliffhangout.consumer.contract.dao.SiteDao;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.*;
 
@@ -229,7 +232,8 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
 
     }
 
-    private void buildSiteDependencies(Site site)
+    @Override
+    public void buildSiteDependencies(Site site)
     {
         site.setImages(getDaoFactory().getImageDao().findAllBySite(site));
         site.setSectors(getDaoFactory().getSectorDao().findAllBySite(site));
@@ -248,4 +252,44 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
         }
     }
 
+    @Override
+    public void addSite(Site site) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                identifyDepartement(site);
+                getDaoFactory().getSiteDao().create(site);
+                addSiteDependencies(site);
+            }
+        });
+    }
+
+    @Override
+    public void addSiteDependencies(Site site) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                for (Sector sector : site.getSectors())
+                {
+                    sector.setSiteId(site.getId());
+                    getDaoFactory().getSectorDao().create(sector);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void identifyDepartement(Site site) {
+        if(site.getPostcode().substring(0,2).equals("97"))
+        {
+            site.setDepartement(getDaoFactory().getDepartementDao().find(site.getPostcode().substring(0,3)));
+        }else{
+            site.setDepartement(getDaoFactory().getDepartementDao().find(site.getPostcode().substring(0,2)));
+        }
+        site.setRegion(site.getDepartement().getRegion());
+    }
 }

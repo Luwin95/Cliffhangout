@@ -92,7 +92,6 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
                     user.setPassword(encryptedPassword);
                     user.setRole("USER");
                     getDaoFactory().getUserDao().create(user);
-
                 }
             });
             return "success";

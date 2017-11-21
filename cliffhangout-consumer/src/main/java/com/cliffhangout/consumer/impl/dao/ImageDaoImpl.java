@@ -26,7 +26,7 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
         vParams.addValue("path", image.getPath(),  Types.VARCHAR);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams,keyHolder, new String[] {"id"});
+        vJdbcTemplate.update(vSQL, vParams,keyHolder, new String[] {"image_id"});
         image.setId((int) keyHolder.getKey());
     }
 

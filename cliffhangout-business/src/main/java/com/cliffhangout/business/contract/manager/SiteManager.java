@@ -10,4 +10,8 @@ public interface SiteManager {
     Site displaySite(int id);
     List<Site> displayLastTenSite();
     List<Site> search(Hashtable criterias);
+    void buildSiteDependencies(Site site);
+    void addSite(Site site);
+    void addSiteDependencies(Site site);
+    void identifyDepartement(Site site);
 }

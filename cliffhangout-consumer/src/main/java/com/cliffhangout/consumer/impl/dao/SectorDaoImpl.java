@@ -9,6 +9,8 @@ import com.cliffhangout.consumer.impl.rowmapper.SectorRM;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,8 +25,10 @@ public class SectorDaoImpl extends AbstractDaoImpl implements SectorDao {
         vParams.addValue("name", sector.getName(), Types.VARCHAR);
         vParams.addValue("description", sector.getDescription(), Types.VARCHAR);
         vParams.addValue("site_id", sector.getSiteId());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"sector_id"});
+        sector.setId((int) keyHolder.getKey());
     }
 
     @Override
