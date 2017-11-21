@@ -26,7 +26,7 @@ public class PointDaoImpl extends AbstractDaoImpl implements PointDao {
 
     @Override
     public void update(Point point){
-        String vSQL = "UPDATE point SET name=:name, description=:description, length_id=:length_id WHERE id=:id";
+        String vSQL = "UPDATE point SET name=:name, description=:description, length_id=:length_id WHERE point_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("name", point.getName(), Types.VARCHAR);
         vParams.addValue("description", point.getDescription(), Types.VARCHAR);
@@ -38,7 +38,7 @@ public class PointDaoImpl extends AbstractDaoImpl implements PointDao {
 
     @Override
     public void delete(Point point){
-        String vSQL = "DELETE FROM point WHERE id=:id";
+        String vSQL = "DELETE FROM point WHERE point_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("id", point.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -60,7 +60,7 @@ public class PointDaoImpl extends AbstractDaoImpl implements PointDao {
         StringBuilder vSQL= new StringBuilder("SELECT * FROM point WHERE 1=1 ");
         if(id>0)
         {
-            vSQL.append("AND id = :id");
+            vSQL.append("AND point_id = :id");
             vParams.addValue("id", id);
         }
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -77,7 +77,7 @@ public class PointDaoImpl extends AbstractDaoImpl implements PointDao {
         {
             if(length.getId()!=0)
             {
-                vSQL.append("AND length_id=:length_id ORDER BY id");
+                vSQL.append("AND length_id=:length_id ORDER BY point_id");
                 vParams.addValue("length_id", length.getId());
             }
         }

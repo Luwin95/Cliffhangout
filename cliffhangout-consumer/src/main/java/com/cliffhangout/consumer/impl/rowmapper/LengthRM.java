@@ -12,7 +12,7 @@ public class LengthRM extends AbstractRM implements RowMapper<Length> {
     @Override
     public Length mapRow(ResultSet rs, int rowNum) throws SQLException {
         Length length = new Length();
-        length.setId(rs.getInt("id"));
+        length.setId(rs.getInt("length_id"));
         length.setName(rs.getString("name"));
         length.setDescription(rs.getString("description"));
         length.setWayId(rs.getInt("way_id"));

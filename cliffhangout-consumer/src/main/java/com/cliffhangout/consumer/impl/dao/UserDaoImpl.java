@@ -13,11 +13,10 @@ import java.sql.*;
 public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     @Override
     public void create(User user){
-        String vSQL = "INSERT INTO user_account(login, password, salt, email, role, image_id) VALUES(:login, :password, :salt, :email, :role, :image_id)";
+        String vSQL = "INSERT INTO user_account(login, password, email, role, image_id) VALUES(:login, :password,:email, :role, :image_id)";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("login", user.getLogin(), Types.VARCHAR);
         vParams.addValue("password", user.getPassword(), Types.VARCHAR);
-        vParams.addValue("salt", "test", Types.VARCHAR);
         vParams.addValue("email", user.getEmail(), Types.VARCHAR);
         vParams.addValue("role", user.getRole(), Types.VARCHAR);
         if(user.getImage()!=null)
@@ -32,11 +31,10 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
     @Override
     public void update(User user){
-        String vSQL = "UPDATE  user_account SET login=:login, password=:password, salt=:salt, email=:email, role=:role, image_id=:image_id WHERE id=:id";
+        String vSQL = "UPDATE  user_account SET login=:login, password=:password, email=:email, role=:role, image_id=:image_id WHERE id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("login", user.getLogin(), Types.VARCHAR);
         vParams.addValue("password", user.getPassword(), Types.VARCHAR);
-        vParams.addValue("salt", user.getSalt(), Types.VARCHAR);
         vParams.addValue("email", user.getEmail(), Types.VARCHAR);
         vParams.addValue("role", user.getRole(), Types.VARCHAR);
         if(user.getImage().getId() !=0)
@@ -64,10 +62,10 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     public User find(int id){
         try{
             MapSqlParameterSource vParams = new MapSqlParameterSource();
-            StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.id AS user_id, image.id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.id WHERE 1=1 ");
+            StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.user_account_id AS user_id, image.image_id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.image_id WHERE 1=1 ");
             if(id>0)
             {
-                vSQL.append("AND id = :id");
+                vSQL.append("AND user_account_id = :id");
                 vParams.addValue("id", id);
             }
             NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -83,7 +81,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     public User findByLogin(String login){
         try{
             MapSqlParameterSource vParams = new MapSqlParameterSource();
-            StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.id AS user_id, image.id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.id WHERE 1=1 ");
+            StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.user_account_id AS user_id, image.image_id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.image_id WHERE 1=1 ");
             if(!login.equals(""))
             {
                 vSQL.append("AND login = :login");

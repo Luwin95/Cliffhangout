@@ -32,7 +32,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
 
     @Override
     public void update(Site site){
-        String vSQL = "UPDATE site SET name=:name, description=:description, location=:location, postcode=:postcode, latitude=:latitude, longitude=:longitude, user_account_id=:user_account_id, departement_code=:departement_code, region_id=:region_id WHERE id=:id";
+        String vSQL = "UPDATE site SET name=:name, description=:description, location=:location, postcode=:postcode, latitude=:latitude, longitude=:longitude, user_account_id=:user_account_id, departement_code=:departement_code, region_id=:region_id WHERE site_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("name", site.getName(), Types.VARCHAR);
         vParams.addValue("description", site.getDescription(), Types.VARCHAR);
@@ -50,7 +50,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
 
     @Override
     public void delete(Site site){
-        String vSQL = "DELETE FROM site WHERE id=:id";
+        String vSQL = "DELETE FROM site WHERE site_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("id", site.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -60,14 +60,14 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
     @Override
     public Site find(int id){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.id AS user_id, region.region_name, departement.departement_name from site " +
-                "LEFT JOIN user_account ON site.user_account_id = user_account.id " +
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name from site " +
+                "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
                 "LEFT JOIN region ON site.region_id=region.region_id " +
                 "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
                 "WHERE 1=1");
         if(id>0)
         {
-            vSQL.append("AND site.id = :id ORDER BY site.id");
+            vSQL.append("AND site.site_id = :id ORDER BY site.site_id");
             vParams.addValue("id", id);
         }
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -78,7 +78,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
 
     @Override
     public List<Site> findAllSites(){
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM site ORDER BY id");
+        StringBuilder vSQL= new StringBuilder("SELECT * FROM site ORDER BY site_id");
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
         RowMapper<Site> vRowMapper = new SiteRM();
         List<Site> vList = vJdbcTemplate.query(vSQL.toString(),vRowMapper);
@@ -117,11 +117,11 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
 
     @Override
     public List<Site> findLastTen(){
-        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.id AS user_id, region.region_name, departement.departement_name FROM site " +
-                "LEFT JOIN user_account ON site.user_account_id = user_account.id " +
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
+                "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
                 "LEFT JOIN region ON site.region_id=region.region_id " +
                 "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
-                "ORDER BY site.id DESC LIMIT 10");
+                "ORDER BY site.site_id DESC LIMIT 10");
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
         RowMapper<Site> vRowMapper = new SiteRM();
         List<Site> vList = vJdbcTemplate.query(vSQL.toString(),vRowMapper);

@@ -27,7 +27,7 @@ public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
 
     @Override
     public void update(Way way){
-        String vSQL = "UPDATE way SET name=:name, height=:height, quotation_difficulty=:quotation_difficulty, points_nb=:points_nb, sector_id=:sector_id WHERE id=:id";
+        String vSQL = "UPDATE way SET name=:name, height=:height, quotation_difficulty=:quotation_difficulty, points_nb=:points_nb, sector_id=:sector_id WHERE way_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("name", way.getName(), Types.VARCHAR);
         vParams.addValue("height", way.getHeight(), Types.REAL);
@@ -41,7 +41,7 @@ public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
 
     @Override
     public void delete(Way way){
-        String vSQL = "DELETE FROM way WHERE id=:id";
+        String vSQL = "DELETE FROM way WHERE way_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("id", way.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -63,7 +63,7 @@ public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
         StringBuilder vSQL= new StringBuilder("SELECT * FROM way WHERE 1=1 ");
         if(id>0)
         {
-            vSQL.append("AND id = :id");
+            vSQL.append("AND way_id = :id");
             vParams.addValue("id", id);
         }
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -80,7 +80,7 @@ public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
         {
             if(sector.getId()!=0)
             {
-                vSQL.append("AND sector_id=:sector_id ORDER BY id");
+                vSQL.append("AND sector_id=:sector_id ORDER BY way_id");
                 vParams.addValue("sector_id", sector.getId());
             }
         }

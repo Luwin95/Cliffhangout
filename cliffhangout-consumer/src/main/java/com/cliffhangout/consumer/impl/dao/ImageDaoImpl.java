@@ -32,21 +32,21 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
 
     @Override
     public void update(Image image){
-        String vSQL = "UPDATE image SET alt=:alt, path=:path, title=:title WHERE id=:id";
+        String vSQL = "UPDATE image SET alt=:alt, path=:path, title=:title WHERE image_id=:image_id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("alt", image.getAlt(), Types.VARCHAR);
         vParams.addValue("title", image.getTitle(),  Types.VARCHAR);
         vParams.addValue("path", image.getPath(),  Types.VARCHAR);
-        vParams.addValue("id", image.getId(), Types.INTEGER);
+        vParams.addValue("image_id", image.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         vJdbcTemplate.update(vSQL, vParams);
     }
 
     @Override
     public void delete(Image image){
-        String vSQL = "DELETE FROM image WHERE id=:id";
+        String vSQL = "DELETE FROM image WHERE image_id=:image_id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", image.getId(), Types.INTEGER);
+        vParams.addValue("image_id", image.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         vJdbcTemplate.update(vSQL, vParams);
     }
@@ -58,8 +58,8 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
         StringBuilder vSQL= new StringBuilder("SELECT * FROM image WHERE 1=1 ");
         if(id>0)
         {
-            vSQL.append("AND id = :id");
-            vParams.addValue("id", id);
+            vSQL.append("AND image_id = :image_id");
+            vParams.addValue("image_id", id);
         }
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Image> vRowMapper = new ImageRM();
@@ -70,7 +70,7 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
     @Override
     public List<Image> findAllBySite(Site site){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("Select image.*, image.id AS imageId from site_image INNER JOIN image on site_image.image_id= image.id  WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("Select image.*, image.image_id AS imageId from site_image INNER JOIN image on site_image.image_id= image.image_id  WHERE 1=1 ");
         if(site != null)
         {
             if(site.getId()!=0)
@@ -88,7 +88,7 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
     @Override
     public List<Image> findAllBySector(Sector sector){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("Select image.* from sector_image, image.id AS imageId INNER JOIN image on sector_image.image_id= image.id WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("Select image.* from sector_image, image.image_id AS imageId INNER JOIN image on sector_image.image_id= image.image_id WHERE 1=1 ");
         if(sector != null)
         {
             if(sector.getId()!=0)

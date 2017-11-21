@@ -15,7 +15,6 @@ public class UserRM extends AbstractRM implements RowMapper<User> {
         user.setId(rs.getInt("user_id"));
         user.setLogin(rs.getString("login"));
         user.setPassword(rs.getString("password"));
-        user.setSalt(rs.getString("salt"));
         user.setEmail(rs.getString("email"));
         user.setRole(rs.getString("role"));
         if(rs.getInt("image_id")!=0)

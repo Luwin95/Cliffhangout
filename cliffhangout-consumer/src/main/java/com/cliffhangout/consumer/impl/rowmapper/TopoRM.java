@@ -13,7 +13,7 @@ public class TopoRM extends AbstractRM implements RowMapper<Topo> {
     @Override
     public Topo mapRow(ResultSet rs, int rowNum) throws SQLException {
         Topo topo = new Topo();
-        topo.setId(rs.getInt("id"));
+        topo.setId(rs.getInt("topo_id"));
         topo.setName(rs.getString("name"));
         topo.setDescription(rs.getString("description"));
         topo.setFile(rs.getString("file"));

@@ -12,7 +12,7 @@ public class SectorRM extends AbstractRM implements RowMapper<Sector> {
     @Override
     public Sector mapRow(ResultSet rs, int rowNum) throws SQLException {
         Sector sector = new Sector();
-        sector.setId(rs.getInt("id"));
+        sector.setId(rs.getInt("sector_id"));
         sector.setName(rs.getString("name"));
         sector .setDescription(rs.getString("description"));
         sector.setSiteId(rs.getInt("site_id"));

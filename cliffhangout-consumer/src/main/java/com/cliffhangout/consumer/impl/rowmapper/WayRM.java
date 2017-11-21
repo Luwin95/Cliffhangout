@@ -13,7 +13,7 @@ public class WayRM extends AbstractRM implements RowMapper<Way> {
     @Override
     public Way mapRow(ResultSet rs, int rowNum) throws SQLException {
         Way way = new Way();
-        way.setId(rs.getInt("id"));
+        way.setId(rs.getInt("way_id"));
         way.setName(rs.getString("name"));
         way.setHeight(rs.getDouble("height"));
         way.setPointsNb(rs.getInt("points_nb"));

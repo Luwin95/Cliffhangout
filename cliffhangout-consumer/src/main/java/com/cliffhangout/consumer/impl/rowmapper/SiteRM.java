@@ -12,7 +12,7 @@ public class SiteRM extends AbstractRM implements RowMapper<Site> {
     @Override
     public Site mapRow(ResultSet rs, int rowNum) throws SQLException {
         Site site = new Site();
-        site.setId(rs.getInt("id"));
+        site.setId(rs.getInt("site_id"));
         site.setName(rs.getString("name"));
         site.setDescription(rs.getString("description"));
         site.setLocation(rs.getString("location"));

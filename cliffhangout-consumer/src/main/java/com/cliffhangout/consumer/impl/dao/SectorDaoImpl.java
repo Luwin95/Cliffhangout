@@ -29,7 +29,7 @@ public class SectorDaoImpl extends AbstractDaoImpl implements SectorDao {
 
     @Override
     public void update(Sector sector){
-        String vSQL = "UPDATE sector SET name=:name, description=:description, site_id=:site_id WHERE id=:id";
+        String vSQL = "UPDATE sector SET name=:name, description=:description, site_id=:site_id WHERE sector_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("name", sector.getName(), Types.VARCHAR);
         vParams.addValue("description", sector.getDescription(), Types.VARCHAR);
@@ -41,7 +41,7 @@ public class SectorDaoImpl extends AbstractDaoImpl implements SectorDao {
 
     @Override
     public void delete(Sector sector){
-        String vSQL = "DELETE FROM sector WHERE id=:id";
+        String vSQL = "DELETE FROM sector WHERE sector_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("id", sector.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -63,7 +63,7 @@ public class SectorDaoImpl extends AbstractDaoImpl implements SectorDao {
         StringBuilder vSQL= new StringBuilder("SELECT * FROM sector WHERE 1=1 ");
         if(id>0)
         {
-            vSQL.append("AND id = :id");
+            vSQL.append("AND sector_id = :id");
             vParams.addValue("id", id);
         }
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());

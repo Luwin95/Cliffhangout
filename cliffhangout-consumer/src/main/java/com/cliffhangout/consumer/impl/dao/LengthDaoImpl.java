@@ -29,7 +29,7 @@ public class LengthDaoImpl extends AbstractDaoImpl implements LengthDao {
 
     @Override
     public void update(Length length) {
-        String vSQL = "UPDATE length SET name=:name, description=:description, way_id=:way_id WHERE id=:id";
+        String vSQL = "UPDATE length SET name=:name, description=:description, way_id=:way_id WHERE length_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("name", length.getName(), Types.VARCHAR);
         vParams.addValue("description", length.getDescription(), Types.VARCHAR);
@@ -41,7 +41,7 @@ public class LengthDaoImpl extends AbstractDaoImpl implements LengthDao {
 
     @Override
     public void delete(Length length){
-        String vSQL = "DELETE FROM length WHERE id=:id";
+        String vSQL = "DELETE FROM length WHERE length_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("id", length.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -63,7 +63,7 @@ public class LengthDaoImpl extends AbstractDaoImpl implements LengthDao {
         StringBuilder vSQL= new StringBuilder("SELECT * FROM length WHERE 1=1 ");
         if(id>0)
         {
-            vSQL.append("AND id = :id");
+            vSQL.append("AND length_id = :id");
             vParams.addValue("id", id);
         }
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());

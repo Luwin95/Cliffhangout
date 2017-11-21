@@ -31,7 +31,7 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
 
     @Override
     public void update(Topo topo){
-        String vSQL = "UPDATE topo SET name=:name, description=:description, file=:file, borrowed=:borrowed, user_account_id=:user_account_id WHERE id=:id";
+        String vSQL = "UPDATE topo SET name=:name, description=:description, file=:file, borrowed=:borrowed, user_account_id=:user_account_id WHERE topo_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("name", topo.getName(), Types.VARCHAR);
         vParams.addValue("description", topo.getDescription(), Types.VARCHAR);
@@ -45,7 +45,7 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
 
     @Override
     public void delete(Topo topo){
-        String vSQL = "DELETE FROM topo WHERE id=:id";
+        String vSQL = "DELETE FROM topo WHERE topo_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("id", topo.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
@@ -58,7 +58,7 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
         StringBuilder vSQL= new StringBuilder("SELECT * FROM length WHERE 1=1 ");
         if(id>0)
         {
-            vSQL.append("AND id = :id");
+            vSQL.append("AND topo_id = :id");
             vParams.addValue("id", id);
         }
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());

@@ -60,9 +60,9 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     public List<Site> search(Hashtable criterias)
     {
         try{
-            String sqlStatement = "SELECT site.*, user_account.*, user_account.id AS user_id, region.region_name, departement.departement_name " +
+            String sqlStatement = "SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name " +
                     "FROM site " +
-                    "LEFT JOIN user_account ON site.user_account_id = user_account.id " +
+                    "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
                     "LEFT JOIN region ON site.region_id=region.region_id " +
                     "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
                     "WHERE";
@@ -112,7 +112,7 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
                     }
                 }
             }
-            sqlStatement+= " ORDER BY site.id;";
+            sqlStatement+= " ORDER BY site.site_id;";
             sites = getDaoFactory().getSiteDao().findAllBySearchCriteria(sqlStatement);
 
             for(Site site : sites)
