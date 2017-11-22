@@ -68,5 +68,14 @@
                 <param name="actionName">home</param>
             </result>
         </action>
+        <action name="addTopoSearch" class="com.cliffhangout.webapp.actions.AddTopoSearchAction" method="execute">
+            <result name="success">/layout.jsp</result>
+            <result name="input">/layout.jsp</result>
+        </action>
+        <action name="addTopo" class="com.cliffhangout.webapp.actions.AddTopoAction" method="execute">
+            <result name="success">/layout.jsp</result>
+            <result name="input">/layout.jsp</result>
+            <result name="search" type="redirect">/subscriber/addTopoSearch.action</result>
+        </action>
     </package>
 </struts>

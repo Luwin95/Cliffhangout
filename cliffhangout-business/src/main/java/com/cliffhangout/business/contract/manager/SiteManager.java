@@ -12,6 +12,7 @@ public interface SiteManager {
     List<Site> displayLastTenSite();
     List<Site> search(Hashtable criterias);
     List<Site> displayCreatorSites(User user);
+    List<Site> displaySitesChosen(List<String> siteToAdd, List<Site> sites);
     void buildSiteDependencies(Site site);
     void addSite(Site site);
     void addSiteDependencies(Site site);

@@ -248,6 +248,16 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     }
 
     @Override
+    public List<Site> displaySitesChosen(List<String> siteToAdd, List<Site> sites) {
+        List<Site> sitesToreturn = new ArrayList<>();
+        for(String siteId : siteToAdd)
+        {
+            sitesToreturn.add(sites.get(Integer.parseInt(siteId)));
+        }
+        return sitesToreturn;
+    }
+
+    @Override
     public void buildSiteDependencies(Site site)
     {
         site.setImages(getDaoFactory().getImageDao().findAllBySite(site));

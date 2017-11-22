@@ -12,7 +12,7 @@ $(function(){
         addSector(sectorTemplate);
     });
 
-    $('.addWay').each(function () {
+    /*$('.addWay').each(function () {
         $(this).click(function(e)
         {
             var currentSector = $(this).attr("id");
@@ -22,13 +22,22 @@ $(function(){
             console.log(cptWay);
             addWay(wayTemplate, currentSector, cptWay);
         });
-    });
+    });*/
 
     function addSector(sectorTemplate)
     {
         var sectorHTML = sectorTemplate.replace(/__IDX__/g, cptSector+1).replace(/__REALIDX__/g, (cptSector+1));
         $('#sectors').append(sectorHTML);
         addDeleteSector(cptSector);
+        $('#addWay['+(cptSector-1)+']').click(function(e)
+        {
+            var currentSector = $(this).attr("id");
+            currentSector = currentSector.match(/\[(.*?)\]/)[1];
+            console.log(currentSector);
+            var cptWay = $('#sector['+currentSector+']Ways').length;
+            console.log(cptWay);
+            addWay(wayTemplate, currentSector, cptWay);
+        });
         cptSector++;
     }
 
