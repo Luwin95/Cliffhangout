@@ -233,6 +233,21 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     }
 
     @Override
+    public List<Site> displayCreatorSites(User user) {
+        try{
+            List<Site> sites = getDaoFactory().getSiteDao().findCreatorSites(user);
+            for(Site site : sites)
+            {
+                buildSiteDependencies(site);
+            }
+            return sites;
+        }catch(EmptyResultDataAccessException e)
+        {
+            return null;
+        }
+    }
+
+    @Override
     public void buildSiteDependencies(Site site)
     {
         site.setImages(getDaoFactory().getImageDao().findAllBySite(site));
@@ -291,5 +306,65 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
             site.setDepartement(getDaoFactory().getDepartementDao().find(site.getPostcode().substring(0,2)));
         }
         site.setRegion(site.getDepartement().getRegion());
+    }
+
+    @Override
+    public void deleteSite(int id) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                Site site = displaySite(id);
+                deleteSiteDependencies(site);
+                getDaoFactory().getSiteDao().delete(id);
+            }
+        });
+    }
+
+    @Override
+    public void deleteSiteDependencies(Site site) {
+        if(site.getSectors()!=null)
+        {
+            for(Sector sector : site.getSectors())
+            {
+                if(sector.getWays()!=null)
+                {
+                    for(Way way : sector.getWays())
+                    {
+                        if(way.getLengths() !=null)
+                        {
+                            for(Length length : way.getLengths())
+                            {
+                                if(length.getPoints() != null)
+                                {
+                                    for(Point point : length.getPoints())
+                                    {
+                                        getDaoFactory().getPointDao().delete(point);
+                                    }
+                                }
+                                getDaoFactory().getLengthDao().delete(length);
+                            }
+                        }
+                        getDaoFactory().getWayDao().delete(way);
+                    }
+                }
+                getDaoFactory().getSectorDao().delete(sector);
+            }
+        }
+        if(site.getImages()!=null)
+        {
+            for(Image image : site.getImages())
+            {
+                getDaoFactory().getImageDao().delete(image);
+            }
+        }
+        if(site.getComments()!=null)
+        {
+            for(Comment comment : site.getComments())
+            {
+                getDaoFactory().getCommentDao().delete(comment);
+            }
+        }
     }
 }

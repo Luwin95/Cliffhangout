@@ -2,6 +2,7 @@ package com.cliffhangout.consumer.impl.dao;
 
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Topo;
+import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.contract.dao.*;
 import com.cliffhangout.consumer.impl.rowmapper.SiteRM;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -54,10 +55,10 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
     }
 
     @Override
-    public void delete(Site site){
+    public void delete(int id){
         String vSQL = "DELETE FROM site WHERE site_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", site.getId(), Types.INTEGER);
+        vParams.addValue("id", id, Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         vJdbcTemplate.update(vSQL, vParams);
     }
@@ -133,4 +134,25 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
         return vList;
     }
 
+    @Override
+    public List<Site> findCreatorSites(User user) {
+        MapSqlParameterSource vParams = new MapSqlParameterSource();
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
+                "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
+                "LEFT JOIN region ON site.region_id=region.region_id " +
+                "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
+                "WHERE 1=1 ");
+        if(user != null)
+        {
+            if(user.getId()!=0)
+            {
+                vSQL.append("AND site.user_account_id=:user_id ORDER BY site_id");
+                vParams.addValue("user_id", user.getId());
+            }
+        }
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+        RowMapper<Site> vRowMapper = new SiteRM();
+        List<Site> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        return vList;
+    }
 }

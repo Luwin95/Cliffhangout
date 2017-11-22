@@ -63,5 +63,10 @@
             <result name="input">/layout.jsp</result>
             <result name="login" type="redirect">/login.action</result>
         </action>
+        <action name="removeSite" class="com.cliffhangout.webapp.actions.RemoveSiteAction" method="execute">
+            <result name="success" type="redirectAction">
+                <param name="actionName">home</param>
+            </result>
+        </action>
     </package>
 </struts>

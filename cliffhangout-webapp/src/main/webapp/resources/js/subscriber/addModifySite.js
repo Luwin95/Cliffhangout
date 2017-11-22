@@ -5,18 +5,23 @@ $(function(){
     var wayTemplate = $('#wayTemplate').html();
 
 
+
     addDeleteSector(cptSector);
     $('#addSector').click(function(e)
     {
         addSector(sectorTemplate);
-        $('.addWay').click(function(e)
+    });
+
+    $('.addWay').each(function () {
+        $(this).click(function(e)
         {
             var currentSector = $(this).attr("id");
-            currentSector = currentSector.match(/\[(.*?)\]/);
+            currentSector = currentSector.match(/\[(.*?)\]/)[1];
             console.log(currentSector);
             var cptWay = $('#sector['+currentSector+']Ways').length;
+            console.log(cptWay);
             addWay(wayTemplate, currentSector, cptWay);
-        })
+        });
     });
 
     function addSector(sectorTemplate)
@@ -44,14 +49,20 @@ $(function(){
 
     function addWay(wayTemplate, currentSector, cptWay)
     {
-        var wayHTML = wayTemplate.replace(/__IDX__/g, cptWay+1).replace(/__REALIDX__/g, cptWay+1).replace(/__SECTORIDX__/g, currentSector);
-        $('#sector['+currentSector+']ways').append(wayHTML);
+        var wayHTML = wayTemplate.replace(/__IDX__/g, cptWay).replace(/__REALIDX__/g, cptWay).replace(/__SECTORIDX__/g, currentSector);
+        console.log(wayHTML);
+        $('#sector['+currentSector+']Ways').append(wayHTML);
+        addDeleteWay(currentSector, cptWay);
+        cptWay++;
     }
 
-    function addDeleteWay()
+    function addDeleteWay(currentSector, cptWay)
     {
-        
+        $('#deleteSector['+currentSector+']Way['+cptWay+']').click(function(e)
+        {
+            $('#way['+cptWay+']').remove();
+            e.preventDefault();
+            cptWay--;
+        })
     }
-
-
 });

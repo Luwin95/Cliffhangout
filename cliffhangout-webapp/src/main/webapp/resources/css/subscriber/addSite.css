@@ -13,3 +13,8 @@ label{
 {
     margin-top: 20px;
 }
+
+.addWay, .deleteSector
+{
+    margin-bottom: 10px;
+}
