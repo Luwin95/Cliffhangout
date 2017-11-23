@@ -248,11 +248,14 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     }
 
     @Override
-    public List<Site> displaySitesChosen(List<String> siteToAdd, List<Site> sites) {
+    public List<Site> displaySitesChosen(List<String> siteToAdd) {
         List<Site> sitesToreturn = new ArrayList<>();
         for(String siteId : siteToAdd)
         {
-            sitesToreturn.add(sites.get(Integer.parseInt(siteId)));
+            if(siteId!=null)
+            {
+                sitesToreturn.add(getDaoFactory().getSiteDao().find(Integer.parseInt(siteId)));
+            }
         }
         return sitesToreturn;
     }
@@ -375,6 +378,40 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
             {
                 getDaoFactory().getCommentDao().delete(comment);
             }
+        }
+        getDaoFactory().getSiteDao().deleteSiteTopo(site);
+    }
+
+    @Override
+    public void isInSession(List<Site> sitesInSession, List<Site> sitesTocheck)
+    {
+        int cpt =0;
+        List<Site> sitesToRemove = new ArrayList<>();
+        for(Site siteInSession : sitesInSession)
+        {
+            for(Site siteTocheck : sitesTocheck)
+            {
+                if(siteTocheck.getId() == siteInSession.getId())
+                {
+                    cpt ++;
+                    sitesToRemove.add(siteTocheck);
+                }
+            }
+        }
+        sitesTocheck.removeAll(sitesToRemove);
+    }
+
+    @Override
+    public void removeSitesChosen(List<String> sitesChosen, Map<String, Object> session) {
+        List<Site> tempSites = displaySitesChosen(sitesChosen);
+        List<Site> sitesInSession = (List<Site>) session.get("sitesTopo");
+        session.remove("sitesTopo");
+        isInSession(tempSites, sitesInSession);
+        if(sitesInSession.size()!=0)
+        {
+            session.put("sitesTopo", sitesInSession);
+        }else{
+            session.put("sitesTopo", null);
         }
     }
 }

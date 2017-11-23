@@ -113,3 +113,7 @@ select
 {
     color: black !important;
 }
+
+.btn{
+    text-align: center;
+}

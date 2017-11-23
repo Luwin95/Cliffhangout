@@ -37,6 +37,16 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
     }
 
     @Override
+    public void createSiteTopo(Site site,Topo topo) {
+        String vSQL = "INSERT INTO site_topo(site_id, topo_id) VALUES(:site_id, :topo_id)";
+        MapSqlParameterSource vParams = new MapSqlParameterSource();
+        vParams.addValue("site_id", site.getId(), Types.INTEGER);
+        vParams.addValue("topo_id", topo.getId(), Types.INTEGER);
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+        vJdbcTemplate.update(vSQL, vParams);
+    }
+
+    @Override
     public void update(Site site){
         String vSQL = "UPDATE site SET name=:name, description=:description, location=:location, postcode=:postcode, latitude=:latitude, longitude=:longitude, user_account_id=:user_account_id, departement_code=:departement_code, region_id=:region_id WHERE site_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
@@ -59,6 +69,15 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
         String vSQL = "DELETE FROM site WHERE site_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("id", id, Types.INTEGER);
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+        vJdbcTemplate.update(vSQL, vParams);
+    }
+
+    @Override
+    public void deleteSiteTopo(Site site) {
+        String vSQL = "DELETE FROM site_topo WHERE site_id=:id";
+        MapSqlParameterSource vParams = new MapSqlParameterSource();
+        vParams.addValue("id", site.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         vJdbcTemplate.update(vSQL, vParams);
     }
@@ -94,12 +113,17 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
     @Override
     public List<Site> findAllByTopo(Topo topo){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM site_topo LEFT JOIN site on site.id = site_topo.site_id WHERE 1=1 ");
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site_topo " +
+                "LEFT JOIN site ON site.site_id = site_topo.site_id " +
+                "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
+                "LEFT JOIN region ON site.region_id=region.region_id " +
+                "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
+                "WHERE 1=1 ");
         if(topo != null)
         {
             if(topo.getId()!=0)
             {
-                vSQL.append("AND topo_id=:topo_id ORDER BY id");
+                vSQL.append("AND topo_id=:topo_id ORDER BY site.site_id");
                 vParams.addValue("topo_id", topo.getId());
             }
         }

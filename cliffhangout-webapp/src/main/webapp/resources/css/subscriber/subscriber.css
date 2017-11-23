@@ -16,12 +16,6 @@ body
     margin-bottom: 10px;
 }
 
-.pageContent
-{
-    margin-top: 50vh;
-    transform: translateY(-50%);
-}
-
 .container
 {
     background: rgba(0,0,0,0.8);

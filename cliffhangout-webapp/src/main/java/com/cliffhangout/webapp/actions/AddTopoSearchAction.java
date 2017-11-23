@@ -2,12 +2,14 @@ package com.cliffhangout.webapp.actions;
 
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.webapp.AbstractAction;
+import org.apache.struts2.interceptor.SessionAware;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
-public class AddTopoSearchAction extends AbstractAction{
+public class AddTopoSearchAction extends AbstractAction implements SessionAware{
     private String page = "/WEB-INF/subscriber/addTopoSearch.jsp";
     private String stylesheets = "search.css";
     private String jsPages = "search.js";
@@ -29,9 +31,11 @@ public class AddTopoSearchAction extends AbstractAction{
     private String criteriaWayNumberMax ="";
     private String result;
     private List<Site> sites = new ArrayList<Site>();
-    private String title = "Sélectionner les sites du topo";
+    private String title = "Sélectionner les sites du topos";
     private List<String> siteToAdd;
+    private List<String> sitesToRemove;
     private List<Site> sitesChosen;
+    Map<String, Object> session;
 
     public String getPage() {
         return page;
@@ -189,7 +193,32 @@ public class AddTopoSearchAction extends AbstractAction{
         this.siteToAdd = siteToAdd;
     }
 
+    public List<String> getSitesToRemove() {
+        return sitesToRemove;
+    }
+
+    public void setSitesToRemove(List<String> sitesToRemove) {
+        this.sitesToRemove = sitesToRemove;
+    }
+
+    public List<Site> getSitesChosen() {
+        return sitesChosen;
+    }
+
+    public void setSitesChosen(List<Site> sitesChosen) {
+        this.sitesChosen = sitesChosen;
+    }
+
+    @Override
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
+    }
+
     public String execute(){
+        if(session.containsKey("sitesTopo") && session.get("sitesTopo")!=null)
+        {
+            setSitesChosen((List<Site>) session.get("sitesTopo"));
+        }
         if(this.siteName != null || (this.addCriteria && (this.criteriaWays || this.criteriaQuotation || this.criteriaLocation))) {
             Hashtable criterias = new Hashtable();
             criterias.put("site-name", siteName);
@@ -223,10 +252,24 @@ public class AddTopoSearchAction extends AbstractAction{
                 this.setResult("Votre recherche a aboutie à " + sites.size() + " résultats");
                 return SUCCESS;
             }
-        }else if(siteToAdd != null)
+        }else if(siteToAdd != null) {
+            List<Site> tempSites = getManagerFactory().getSiteManager().displaySitesChosen(siteToAdd);
+            if (tempSites != null) {
+                if (session.containsKey("sitesTopo")) {
+                    List<Site> sitesTopo = (List<Site>) session.get("sitesTopo");
+                    getManagerFactory().getSiteManager().isInSession(sitesTopo, tempSites);
+                    session.remove("sitesTopo");
+                    sitesTopo.addAll(tempSites);
+                    session.put("sitesTopo", sitesTopo);
+                } else {
+                    session.put("sitesTopo", tempSites);
+                }
+            }
+            return "search";
+        }else if (sitesToRemove != null)
         {
-            sitesChosen.addAll(getManagerFactory().getSiteManager().displaySitesChosen(siteToAdd,sites));
-            return SUCCESS;
+            getManagerFactory().getSiteManager().removeSitesChosen(sitesToRemove, session);
+            return "search";
         }else{
             List<Object> entities = getManagerFactory().getDepartementRegionManager().displayAllDepartmentsAndRegions();
             departements = entities.get(0);

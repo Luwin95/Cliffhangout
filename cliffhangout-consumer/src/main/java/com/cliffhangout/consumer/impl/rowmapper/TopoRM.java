@@ -18,8 +18,8 @@ public class TopoRM extends AbstractRM implements RowMapper<Topo> {
         topo.setDescription(rs.getString("description"));
         topo.setFile(rs.getString("file"));
         topo.setBorrowed(rs.getBoolean("borrowed"));
-        topo.setOwner(getDaoFactory().getUserDao().find(rs.getInt("user_account_id")));
-        topo.setSites(getDaoFactory().getSiteDao().findAllByTopo(topo));
+        UserRM userRM = new UserRM();
+        topo.setOwner(userRM.mapRow(rs, rowNum));
         return topo;
     }
 }

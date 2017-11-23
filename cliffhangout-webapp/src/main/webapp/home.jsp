@@ -32,8 +32,8 @@
                 <img src="/resources/images/lenses-ridge.jpg"/>
             </div>
 
-            <h2>Accédez à notre espace de partage de topo pour faciliter vos prochaines journées grimpe</h2>
-            <a href="#" class="btn-cliffhangout">Espace prêt de topo</a>
+            <h2>Accédez à notre espace de partage de topos pour faciliter vos prochaines journées grimpe</h2>
+            <a href="#" class="btn-cliffhangout">Espace prêt de topos</a>
         </div>
     </div>
 </div>

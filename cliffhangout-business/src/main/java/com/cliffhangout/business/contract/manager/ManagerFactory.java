@@ -12,4 +12,6 @@ public interface ManagerFactory {
     void setCommentManager(CommentManager pCommentManager);
     DepartementRegionManager getDepartementRegionManager();
     void setDepartementRegionManager(DepartementRegionManager departementRegionManager);
+    TopoManager getTopoManager();
+    void setTopoManager(TopoManager topoManager);
 }

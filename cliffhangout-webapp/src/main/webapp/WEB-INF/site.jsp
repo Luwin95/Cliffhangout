@@ -95,8 +95,8 @@
                     <%-- Liste des topos disponibles pour le site --%>
                 </s:if>
                 <s:else>
-                    <p>Ce site d'escalade n'est lié à aucun topo</p>
-                    <p class="aside-footer"><button class="btn-cliffhangout">Ajouter un topo</button></p>
+                    <p>Ce site d'escalade n'est lié à aucun topos</p>
+                    <p class="aside-footer"><button class="btn-cliffhangout">Ajouter un topos</button></p>
                 </s:else>
             </aside>
         </div>

@@ -1,19 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <div class="search">
-    <h1>Les sites d'escalade</h1>
+    <h1>Choisir les sites que votre topos concernera</h1>
     <div class="container page-section">
         <div class="row">
-            <form method="post" class=" col-md-offset-2 col-md-8 search-form">
-                <div class="row">
-                    <input type="text" placeholder="Rechercher un site" class="search-input col-xs-10" name="siteName" id="search-input" required/>
-                    <button type="submit" class="search-button col-xs-2" id="search_button1"><i class="glyphicon glyphicon-search"></i></button>
-                </div>
-                <div class="row">
-                    <s:checkbox name="addCriteria" id="addCriteria" label="Ajouter critères de recherche"/>
-                    <div class="criterias">
-                        <p>
-                            <s:checkbox name="criteriaLocation" id="criteria-location" label="Localisation"/>
+            <s:if test='%{result == "" || result==null}'>
+                <form method="post" class=" col-md-offset-2 col-md-8 search-form">
+                    <div class="row">
+                        <input type="text" placeholder="Rechercher un site" class="search-input col-xs-10" name="siteName" id="search-input" required/>
+                        <button type="submit" class="search-button col-xs-2" id="search_button1"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                    <div class="row">
+                        <s:checkbox name="addCriteria" id="addCriteria" label="Ajouter critères de recherche"/>
+                        <div class="criterias">
+                            <p>
+                                    <s:checkbox name="criteriaLocation" id="criteria-location" label="Localisation"/>
                             <div class="criterias-location">
                                 <label for="region"><input type="radio" name="criteriaLocationValue" value="region" checked/>Régions</label>
                                 <select id="region" name="criteriaRegion">
@@ -32,9 +33,9 @@
                                     </s:iterator>
                                 </select>
                             </div>
-                        </p>
-                        <p>
-                            <s:checkbox name="criteriaQuotation" id="criteria-cotation" label="Cotations"/>
+                            </p>
+                            <p>
+                                    <s:checkbox name="criteriaQuotation" id="criteria-cotation" label="Cotations"/>
                             <div class="criterias-cotation">
                                 <label><input type="radio" name="criteriaQuotationValue" value="minimum" checked/>Cotations minimale</label>
                                 <div class="criteria-cotation-min">
@@ -58,9 +59,9 @@
                                     </select>
                                 </div>
                             </div>
-                        </p>
-                        <p>
-                            <s:checkbox name="criteriaWays" id="criteria-ways" label="Nombre de voies"/>
+                            </p>
+                            <p>
+                                    <s:checkbox name="criteriaWays" id="criteria-ways" label="Nombre de voies"/>
                             <div class="criterias-ways">
                                 <label for="way-number-min">Nombre de voies minimum</label>
                                 <input id="way-number-min" type="number" name="criteriaWayNumberMin"/>
@@ -68,15 +69,16 @@
                                 <label for="way-number-max">Nombre de voies maximum</label>
                                 <input id="way-number-max" type="number" name="criteriaWayNumberMax"/>
                             </div>
-                        </p>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-offset-5 col-xs-2">
-                            <input type="submit" value="Rechercher" class="btn-cliffhangout " id="search_button2"/>
+                            </p>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-offset-5 col-xs-2">
+                                <input type="submit" value="Rechercher" class="btn-cliffhangout " id="search_button2"/>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </s:if>
         </div>
         <s:if test='%{result != "" && result!=null}'>
             <div class="results">
@@ -117,18 +119,19 @@
                     </s:if>
                 </form>
             </div>
+            <a href="<s:url action="addTopoSearch"/>" class="btn btn-info">Effectuer une nouvelle recherche</a>
         </s:if>
         <s:if test='%{sitesChosen != null}'>
             <h3>Sites sélectionnés</h3>
             <ul>
-                <s:iterator value="sitesChosen">
-                    <li><s:property value="name"/> (département : <s:property value="departement.name"/>)</li>
-                </s:iterator>
+                <form method="post">
+                    <s:iterator value="sitesChosen">
+                        <li><input type="checkbox" name="sitesToRemove[<s:property value="id"/>]" value="<s:property value="id"/>"/> <s:property value="name"/> (département : <s:property value="departement.name"/>)</li>
+                    </s:iterator>
+                    <input type="submit" class="btn btn-danger" value="Supprimer les sites sélectionnés"/>
+                </form>
             </ul>
-            <form method="post">
-                <input name="nextAction" type="hidden" value="nextAction"/>
-                <input type="submit" value="Passer à la création du topo" class="btn btn-warning"/>
-            </form>
+            <a href="<s:url action="addTopo"/>" class="btn btn-warning">Passer à la création du topos</a>
         </s:if>
     </div>
 </div>

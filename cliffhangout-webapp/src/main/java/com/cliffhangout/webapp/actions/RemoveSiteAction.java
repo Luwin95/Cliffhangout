@@ -16,8 +16,13 @@ public class RemoveSiteAction extends AbstractAction {
 
     @Override
     public String execute() throws Exception {
-        int id = Integer.parseInt(this.idSite);
-        getManagerFactory().getSiteManager().deleteSite(id);
-        return SUCCESS;
+        if(!idSite.equals(""))
+        {
+            int id = Integer.parseInt(this.idSite);
+            getManagerFactory().getSiteManager().deleteSite(id);
+            return SUCCESS;
+        }else{
+            return "home";
+        }
     }
 }

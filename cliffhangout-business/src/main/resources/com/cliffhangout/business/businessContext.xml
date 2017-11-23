@@ -16,6 +16,7 @@
     <bean id="userManager" class="com.cliffhangout.business.impl.manager.UserManagerImpl" parent="abstractManager"/>
     <bean id="commentManager" class="com.cliffhangout.business.impl.manager.CommentManagerImpl" parent="abstractManager"/>
     <bean id="departementRegionManager" class="com.cliffhangout.business.impl.manager.DepartementRegionManagerImpl" parent="abstractManager"/>
+    <bean id="topoManager" class="com.cliffhangout.business.impl.manager.TopoManagerImpl" parent="abstractManager"/>
 
     <!-- ===== ManagerFactory ===== -->
     <bean id="managerFactory" class="com.cliffhangout.business.impl.ManagerFactoryImpl">
@@ -23,6 +24,7 @@
         <property name="userManager" ref="userManager"/>
         <property name="commentManager" ref="commentManager"/>
         <property name="departementRegionManager" ref="departementRegionManager"/>
+        <property name="topoManager" ref="topoManager"/>
     </bean>
     <bean id="txManagerCliffhangout" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSourceCliffhangout"/>

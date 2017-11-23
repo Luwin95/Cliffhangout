@@ -1,6 +1,7 @@
 package com.cliffhangout.webapp.actions;
 
 import com.cliffhangout.beans.Site;
+import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.webapp.AbstractAction;
 import org.apache.struts2.interceptor.SessionAware;
@@ -14,6 +15,7 @@ public class SubscriberAction extends AbstractAction implements SessionAware {
     private String stylesheets = "/subscriber/subscriber.css";
     private String jsPages = "/subscriber/signin.js";
     private List<Site> creatorSites;
+    private List<Topo> creatorTopos;
     Map<String, Object> session;
 
     public String getTitle() {
@@ -40,6 +42,14 @@ public class SubscriberAction extends AbstractAction implements SessionAware {
         this.creatorSites = creatorSites;
     }
 
+    public List<Topo> getCreatorTopos() {
+        return creatorTopos;
+    }
+
+    public void setCreatorTopos(List<Topo> creatorTopos) {
+        this.creatorTopos = creatorTopos;
+    }
+
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
@@ -48,6 +58,7 @@ public class SubscriberAction extends AbstractAction implements SessionAware {
     public String execute(){
         if(session.containsKey("sessionUser")) {
             setCreatorSites(getManagerFactory().getSiteManager().displayCreatorSites((User) session.get("sessionUser")));
+            setCreatorTopos(getManagerFactory().getTopoManager().displayUserTopo((User) session.get("sessionUser")));
             return SUCCESS;
         }else{
             return ERROR;

@@ -7,6 +7,7 @@ public class ManagerFactoryImpl implements ManagerFactory {
     private UserManager userManager;
     private CommentManager commentManager;
     private DepartementRegionManager departementRegionManager;
+    private TopoManager topoManager;
 
     @Override
     public SiteManager getSiteManager() {
@@ -46,5 +47,15 @@ public class ManagerFactoryImpl implements ManagerFactory {
     @Override
     public void setDepartementRegionManager(DepartementRegionManager departementRegionManager) {
         this.departementRegionManager = departementRegionManager;
+    }
+
+    @Override
+    public TopoManager getTopoManager() {
+        return topoManager;
+    }
+
+    @Override
+    public void setTopoManager(TopoManager topoManager) {
+        this.topoManager = topoManager;
     }
 }
