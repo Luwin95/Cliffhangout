@@ -103,4 +103,19 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
         List<Topo> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
         return vList;
     }
+
+    @Override
+    public List<Topo> findAllBorrowed() {
+        MapSqlParameterSource vParams = new MapSqlParameterSource();
+        StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id " +
+                "FROM topo " +
+                "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
+                "WHERE 1=1 ");
+        vSQL.append("AND topo.borrowed=:borrowed ORDER BY topo.topo_id");
+        vParams.addValue("borrowed", true);
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+        RowMapper<Topo> vRowMapper = new TopoRM();
+        List<Topo> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        return vList;
+    }
 }

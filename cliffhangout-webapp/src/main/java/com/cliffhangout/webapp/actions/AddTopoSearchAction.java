@@ -35,6 +35,7 @@ public class AddTopoSearchAction extends AbstractAction implements SessionAware{
     private List<String> siteToAdd;
     private List<String> sitesToRemove;
     private List<Site> sitesChosen;
+    public String idTopo;
     Map<String, Object> session;
 
     public String getPage() {
@@ -177,6 +178,14 @@ public class AddTopoSearchAction extends AbstractAction implements SessionAware{
         return sites;
     }
 
+    public String getIdTopo() {
+        return idTopo;
+    }
+
+    public void setIdTopo(String idTopo) {
+        this.idTopo = idTopo;
+    }
+
     public void setSites(List<Site> sites) {
         this.sites = sites;
     }
@@ -219,6 +228,10 @@ public class AddTopoSearchAction extends AbstractAction implements SessionAware{
         {
             setSitesChosen((List<Site>) session.get("sitesTopo"));
         }
+        if(idTopo != null)
+        {
+
+        }
         if(this.siteName != null || (this.addCriteria && (this.criteriaWays || this.criteriaQuotation || this.criteriaLocation))) {
             Hashtable criterias = new Hashtable();
             criterias.put("site-name", siteName);
@@ -237,7 +250,6 @@ public class AddTopoSearchAction extends AbstractAction implements SessionAware{
                 } else if (criteriaQuotationValue.equals("maximum")) {
                     criterias.put("criteria-cotation-max-value", this.criteriaQuotationMaxValue);
                 }
-
             }
             if (this.criteriaWays) {
                 criterias.put("criteria-ways", this.criteriaWays);

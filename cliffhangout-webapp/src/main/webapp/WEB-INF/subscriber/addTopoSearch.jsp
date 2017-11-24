@@ -5,6 +5,11 @@
     <div class="container page-section">
         <div class="row">
             <s:if test='%{result == "" || result==null}'>
+                <s:if test="%{idTopo !=null}">
+                    <s:url var="topoEditSearchUrl" action="editTopoSearch">
+                        <s:param name="idTopo"><s:property value="idTopo"/></s:param>
+                    </s:url>
+                </s:if>
                 <form method="post" class=" col-md-offset-2 col-md-8 search-form">
                     <div class="row">
                         <input type="text" placeholder="Rechercher un site" class="search-input col-xs-10" name="siteName" id="search-input" required/>
@@ -131,7 +136,15 @@
                     <input type="submit" class="btn btn-danger" value="Supprimer les sites sélectionnés"/>
                 </form>
             </ul>
-            <a href="<s:url action="addTopo"/>" class="btn btn-warning">Passer à la création du topos</a>
+            <s:if test="%{idTopo != null}">
+                <s:url var="topoEditUrl" action="editTopo">
+                    <s:param name="idTopo"><s:property value="idTopo"/></s:param>
+                </s:url>
+                <a href="${topoEditUrl}" class="btn btn-warning">Passer à la modification du topo</a>
+            </s:if>
+            <s:else>
+                <a href="<s:url action="addTopo"/>" class="btn btn-warning">Passer à la création du topo</a>
+            </s:else>
         </s:if>
     </div>
 </div>

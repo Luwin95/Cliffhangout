@@ -13,6 +13,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,9 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
     @Override
     public Topo displayTopo(int id) {
         try{
-            return getDaoFactory().getTopoDao().find(id);
+            Topo topo = getDaoFactory().getTopoDao().find(id);
+            buildTopoDependencies(topo);
+            return topo;
         }catch (EmptyResultDataAccessException e)
         {
             return null;
@@ -106,5 +109,89 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
     @Override
     public void deleteTopoDependencies(Topo topo) {
         getDaoFactory().getTopoDao().deleteSiteTopo(topo);
+    }
+
+    @Override
+    public void editTopo(Topo topo, Topo topoToEdit, Map<String, Object> session) {
+        List<Site> sitesChosen = (List<Site>)session.get("sitesTopo");
+        List<Site> commonSites= new ArrayList<>();
+        List<Site> sitesTemp = new ArrayList<>();
+        for(Site site: topoToEdit.getSites())
+        {
+            for(Site siteChosen: sitesChosen)
+            {
+                if(siteChosen.getId()== site.getId())
+                {
+                    commonSites.add(site);
+                }
+            }
+        }
+        List<Site> sitesToAdd= sitesChosen;
+        for(Site site: commonSites)
+        {
+            for(Site siteChosen: sitesChosen)
+            {
+                if(siteChosen.getId()== site.getId())
+                {
+                    sitesTemp.add(siteChosen);
+                }
+            }
+        }
+        sitesToAdd.removeAll(sitesTemp);
+        List<Site> sitesToRemove = topoToEdit.getSites();
+        sitesToRemove.removeAll(commonSites);
+        session.remove("sitesTopo");
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        topoToEdit.setName(topo.getName());
+        topoToEdit.setDescription(topo.getDescription());
+        topoToEdit.setBorrowed(topo.isBorrowed());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                getDaoFactory().getTopoDao().update(topoToEdit);
+                if(sitesToAdd.size()>0)
+                {
+                    for(Site site: sitesToAdd)
+                    {
+                        getDaoFactory().getSiteDao().createSiteTopo(site, topoToEdit);
+                    }
+                }
+                if(sitesToRemove.size()>0)
+                {
+                    for(Site site: sitesToRemove)
+                    {
+                        getDaoFactory().getSiteDao().deleteSiteTopo(site);
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public void editTopo(Topo topo, Topo topoToEdit, File upload, String uploadFileName, String uploadContentType, Map<String, Object> session) {
+        String userDir = "E:\\P3\\cliffhangout-webapp\\src\\main\\webapp\\";
+        userDir = userDir.replaceAll("\\\\", "/");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yy_H_mm_ss");
+        Date date = new Date();
+        String topoToDeleteFileName = userDir+"resources/topos/"+topoToEdit.getFile();
+        topoToEdit.setFile(dateFormat.format(date)+uploadFileName);
+        uploadFileName = "resources/topos/"+dateFormat.format(date)+uploadFileName;
+        String fullfilename = userDir+uploadFileName;
+
+        File topoToDelete = new File(topoToDeleteFileName);
+
+        File importedTopo = new File(fullfilename);
+        try{
+            editTopo(topo, topoToEdit, session);
+        }finally {
+            try{
+                FileUtils.deleteQuietly(topoToDelete);
+                FileUtils.copyFile(upload, importedTopo);
+            }catch(IOException e){
+            }
+        }
     }
 }

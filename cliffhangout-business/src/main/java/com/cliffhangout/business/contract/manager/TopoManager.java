@@ -14,4 +14,6 @@ public interface TopoManager {
     void buildTopoDependencies(Topo topo);
     void deleteTopo(int id);
     void deleteTopoDependencies(Topo topo);
+    void editTopo(Topo topo, Topo topoToEdit, Map<String, Object> session);
+    void editTopo(Topo topo, Topo topoToEdit, File upload, String uploadFileName, String uploadContentType, Map<String, Object> session);
 }

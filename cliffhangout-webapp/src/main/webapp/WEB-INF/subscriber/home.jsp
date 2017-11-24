@@ -19,7 +19,7 @@
                 <p>Réunissez vos expériences de différents sites dans un topos et partager le avec la communauté via un système prêt.
                     Consulter les topos existants et disponible partagé par vos camarades grimpeurs!
                 </p>
-                <a href="#" class="btn-cliffhangout col-xs-offset-4 col-xs-4">Espace topos</a>
+                <a href="<s:url action="addTopoSearch" namespace="/subscriber"/> " class="btn-cliffhangout col-xs-offset-4 col-xs-4">Espace topos</a>
             </div>
         </div>
         <div class="row">
@@ -105,7 +105,10 @@
                                 <td><s:property value="file"/></td>
                                 <td><s:property value="description"/> </td>
                                 <td><s:if test="%{borrowed==true}">Oui</s:if><s:else>Non</s:else></td>
-                                <td><a href="" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <s:url var="topoEditUrl" action="editTopo">
+                                    <s:param name="idTopo"><s:property value="id"/></s:param>
+                                </s:url>
+                                <td><a href="${topoEditUrl}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td>
                                 <s:url var="topoDeleteUrl" action="removeTopo">
                                     <s:param name="idTopo"><s:property value="id"/></s:param>
                                 </s:url>

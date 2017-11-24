@@ -9,22 +9,40 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-public class AddTopoAction extends AbstractAction implements SessionAware{
-
+public class EditTopoAction extends AbstractAction implements SessionAware {
+    private String idTopo;
+    private Topo topoBean;
+    private Topo topoToEdit;
     private String page = "/WEB-INF/subscriber/addTopoForm.jsp";
     private String stylesheets = "signin.css";
-    private String title = "Créer topo";
+    private String title = "Modifier topo";
     private File upload;
     private String uploadContentType;
     private String uploadFileName;
-    private Topo topoBean;
-    private List<String> sitesToRemove;
-    private List<Site> sitesChosen;
     Map<String, Object> session;
 
-    @Override
-    public void setSession(Map<String, Object> session) {
-        this.session = session;
+    public String getIdTopo() {
+        return idTopo;
+    }
+
+    public void setIdTopo(String idTopo) {
+        this.idTopo = idTopo;
+    }
+
+    public Topo getTopoBean() {
+        return topoBean;
+    }
+
+    public void setTopoBean(Topo topoBean) {
+        this.topoBean = topoBean;
+    }
+
+    public Topo getTopoToEdit() {
+        return topoToEdit;
+    }
+
+    public void setTopoToEdit(Topo topoToEdit) {
+        this.topoToEdit = topoToEdit;
     }
 
     public String getPage() {
@@ -33,6 +51,10 @@ public class AddTopoAction extends AbstractAction implements SessionAware{
 
     public String getStylesheets() {
         return stylesheets;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public File getUpload() {
@@ -59,53 +81,41 @@ public class AddTopoAction extends AbstractAction implements SessionAware{
         this.uploadFileName = uploadFileName;
     }
 
-    public Topo getTopoBean() {
-        return topoBean;
-    }
-
-    public void setTopoBean(Topo topoBean) {
-        this.topoBean = topoBean;
-    }
-
-    public List<String> getSitesToRemove() {
-        return sitesToRemove;
-    }
-
-    public void setSitesToRemove(List<String> sitesToRemove) {
-        this.sitesToRemove = sitesToRemove;
-    }
-
-    public List<Site> getSitesChosen() {
-        return sitesChosen;
-    }
-
-    public void setSitesChosen(List<Site> sitesChosen) {
-        this.sitesChosen = sitesChosen;
+    @Override
+    public void setSession(Map<String, Object> session) {
+        this.session = session;
     }
 
     @Override
-    public String execute(){
-        if(session.containsKey("sitesTopo") && session.get("sitesTopo") != null)
+    public String execute() throws Exception {
+        if(idTopo !=null)
         {
-            setSitesChosen((List<Site>) session.get("sitesTopo"));
-            if(topoBean != null && upload != null)
+            setTopoToEdit(getManagerFactory().getTopoManager().displayTopo(Integer.parseInt(idTopo)));
+            if(!session.containsKey("sitesTopo"))
             {
-                getManagerFactory().getTopoManager().addTopo(topoBean, upload, uploadFileName, uploadContentType, session);
-                return SUCCESS;
-            }else if (sitesToRemove != null)
+                session.put("sitesTopo", topoToEdit.getSites());
+            }
+            if(topoToEdit!=null)
             {
-                getManagerFactory().getSiteManager().removeSitesChosen(sitesToRemove, session);
-                if(session.get("sitesTopo")!=null)
+
+                if(topoBean != null)
                 {
-                    return INPUT;
+                    if(upload != null)
+                    {
+                        getManagerFactory().getTopoManager().editTopo(topoBean, topoToEdit, upload, uploadFileName, uploadContentType, session);
+                        return SUCCESS;
+                    }else{
+                        getManagerFactory().getTopoManager().editTopo(topoBean, topoToEdit, session);
+                        return SUCCESS;
+                    }
                 }else{
-                    return "search";
+                    return INPUT;
                 }
             }else{
-                return INPUT;
+                return "home";
             }
         }else{
-            return "search";
+            return "home";
         }
     }
 

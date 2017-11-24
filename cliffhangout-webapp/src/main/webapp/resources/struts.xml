@@ -75,11 +75,18 @@
             <result name="success">/layout.jsp</result>
             <result name="input">/layout.jsp</result>
             <result name="search" type="redirect">/subscriber/addTopoSearch.action</result>
+            <result name="error" type="redirect">/subscriber/addTopoSearch.action</result>
         </action>
         <action name="addTopo" class="com.cliffhangout.webapp.actions.AddTopoAction" method="execute">
             <result name="success" type="redirect">/subscriber/home.action</result>
             <result name="input">/layout.jsp</result>
             <result name="search" type="redirect">/subscriber/addTopoSearch.action</result>
+        </action>
+        <action name="editTopo" class="com.cliffhangout.webapp.actions.EditTopoAction" method="execute">
+            <result name="success" type="redirect">/subscriber/home.action</result>
+            <result name="input">/layout.jsp</result>
+            <result name="search" type="redirect">/subscriber/editTopoSearch.action</result>
+            <result name="home" type="redirect">/subscriber/home.action</result>
         </action>
         <action name="removeTopo" class="com.cliffhangout.webapp.actions.RemoveTopoAction">
             <result name="success" type="redirectAction">
@@ -87,6 +94,21 @@
             </result>
             <result name="home" type="redirectAction">
                 <param name="actionName">/subscriber/home.action</param>
+            </result>
+        </action>
+        <action name="editTopoSearch" class="com.cliffhangout.webapp.actions.AddTopoSearchAction" method="execute">
+            <result name="success" type="dispatcher">
+                <param name = "location">/layout.jsp</param>
+                <param name="idTopo">${idTopo}</param>
+            </result>
+            <result name="input">/layout.jsp</result>
+            <result name="search" type="redirectAction">
+                <param name="actionName">/subscriber/editTopoSearch.action</param>
+                <param name="idTopo">${idTopo}</param>
+            </result>
+            <result name="error" type="redirectAction">
+                <param name="actionName">/subscriber/editTopoSearch.action</param>
+                <param name="idTopo">${idTopo}</param>
             </result>
         </action>
     </package>
