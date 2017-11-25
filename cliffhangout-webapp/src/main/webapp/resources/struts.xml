@@ -111,5 +111,12 @@
                 <param name="idTopo">${idTopo}</param>
             </result>
         </action>
+        <action name="topoSearch" class="com.cliffhangout.webapp.actions.TopoSearch">
+            <result name="success">/layout.jsp</result>
+        </action>
+        <action name="topoBorrowing" class="">
+            <result name="success" type="redirect">/subscriber/topoBorrowing.action</result>
+            <result name="input">/layout".jsp</result>
+        </action>
     </package>
 </struts>

@@ -85,6 +85,21 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
     }
 
     @Override
+    public List<Topo> displayTopoToBorrow(User user) {
+        try{
+            List<Topo> topos = getDaoFactory().getTopoDao().findAllBorrowed(user);
+            for(Topo topo : topos)
+            {
+                buildTopoDependencies(topo);
+            }
+            return topos;
+        }catch (EmptyResultDataAccessException e)
+        {
+            return null;
+        }
+    }
+
+    @Override
     public void buildTopoDependencies(Topo topo) {
         topo.setSites(getDaoFactory().getSiteDao().findAllByTopo(topo));
     }
@@ -194,4 +209,6 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
             }
         }
     }
+
+
 }

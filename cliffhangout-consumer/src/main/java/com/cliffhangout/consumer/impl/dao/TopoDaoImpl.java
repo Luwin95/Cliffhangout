@@ -1,11 +1,8 @@
 package com.cliffhangout.consumer.impl.dao;
 
-import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
-import com.cliffhangout.consumer.contract.dao.SiteDao;
 import com.cliffhangout.consumer.contract.dao.TopoDao;
-import com.cliffhangout.consumer.contract.dao.UserDao;
 import com.cliffhangout.consumer.impl.rowmapper.TopoRM;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -15,7 +12,6 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
 import java.util.List;
-import java.util.Set;
 
 public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
 
@@ -105,12 +101,20 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
     }
 
     @Override
-    public List<Topo> findAllBorrowed() {
+    public List<Topo> findAllBorrowed(User user) {
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id " +
                 "FROM topo " +
                 "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
                 "WHERE 1=1 ");
+        if(user != null)
+        {
+            if(user.getId()!=0)
+            {
+                vSQL.append("AND topo.user_account_id!=:user_id ");
+                vParams.addValue("user_id", user.getId());
+            }
+        }
         vSQL.append("AND topo.borrowed=:borrowed ORDER BY topo.topo_id");
         vParams.addValue("borrowed", true);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
