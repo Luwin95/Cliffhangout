@@ -113,10 +113,19 @@
         </action>
         <action name="topoSearch" class="com.cliffhangout.webapp.actions.TopoSearch">
             <result name="success">/layout.jsp</result>
+            <result name="downloadTopo" type="stream">
+                <param name="inputName">fileToDownload</param>
+                <param name="contentType">${contentType}</param>
+                <param name="contentLength">${fileSize}</param>
+                <param name="contentDisposition">${contentDisposition}</param>
+                <param name="contentCharSet">UTF-8</param>
+                <param name="allowCaching">true</param>
+            </result>
         </action>
-        <action name="topoBorrowing" class="">
-            <result name="success" type="redirect">/subscriber/topoBorrowing.action</result>
-            <result name="input">/layout".jsp</result>
+        <action name="topoBorrowing" class="com.cliffhangout.webapp.actions.TopoBorrowing">
+            <result name="success" type="redirect">/subscriber/home.action</result>
+            <result name="input">/layout.jsp</result>
+            <result name="notFound">/WEB-INF/404.jsp</result>
         </action>
     </package>
 </struts>

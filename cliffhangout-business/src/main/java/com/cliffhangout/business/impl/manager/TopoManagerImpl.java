@@ -30,7 +30,6 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
 
         topo.setFile(dateFormat.format(date)+uploadFileName);
         topo.setOwner(creator);
-        topo.setBorrowed(false);
         try
         {
             TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
@@ -210,5 +209,15 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
         }
     }
 
-
+    @Override
+    public void borrowTopo(Topo topo, Date startDate, Date endDate, Map<String, Object> session) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                getDaoFactory().getTopoDao().createBorrowing(topo, startDate, endDate, (User) session.get("sessionUser"));
+            }
+        });
+    }
 }

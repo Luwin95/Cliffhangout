@@ -16,6 +16,7 @@ public class DaoFactoryImpl implements DaoFactory {
     private TopoDao topoDao;
     private UserDao userDao;
     private WayDao  wayDao;
+    private BorrowDao borrowDao;
 
     @Override
     public CommentDao getCommentDao() {
@@ -135,5 +136,15 @@ public class DaoFactoryImpl implements DaoFactory {
     @Override
     public void setWayDao(WayDao pWayDao) {
         wayDao = pWayDao;
+    }
+
+    @Override
+    public BorrowDao getBorrowDao() {
+        return borrowDao;
+    }
+
+    @Override
+    public void setBorrowDao(BorrowDao borrowDao) {
+        this.borrowDao = borrowDao;
     }
 }

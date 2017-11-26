@@ -22,6 +22,7 @@
     <bean id="topoDao" class="com.cliffhangout.consumer.impl.dao.TopoDaoImpl" parent="abstractDao"/>
     <bean id="userDao" class="com.cliffhangout.consumer.impl.dao.UserDaoImpl" parent="abstractDao"/>
     <bean id="wayDao" class="com.cliffhangout.consumer.impl.dao.WayDaoImpl" parent="abstractDao"/>
+    <bean id="borrowDao" class="com.cliffhangout.consumer.impl.dao.BorrowDaoImpl" parent="abstractDao"/>
 
     <!-- ===== DaoFactoryImpl ===== -->
     <bean id="daoFactory" class="com.cliffhangout.consumer.impl.DaoFactoryImpl">
@@ -37,6 +38,7 @@
         <property name="topoDao" ref="topoDao"/>
         <property name="userDao" ref="userDao"/>
         <property name="wayDao" ref="wayDao"/>
+        <property name="borrowDao" ref="borrowDao"/>
     </bean>
 
     <bean id="abstractRM" abstract="true">
@@ -55,6 +57,7 @@
     <bean id="topoRM" class="com.cliffhangout.consumer.impl.rowmapper.TopoRM" parent="abstractRM"/>
     <bean id="wayRM" class="com.cliffhangout.consumer.impl.rowmapper.WayRM" parent="abstractRM"/>
     <bean id="userRM" class="com.cliffhangout.consumer.impl.rowmapper.UserRM" parent="abstractRM"/>
+    <bean id="borrowRM" class="com.cliffhangout.consumer.impl.rowmapper.BorrowRM" parent="abstractRM"/>
     <!--<bean id="dataSourceCliffhangout" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 
         <property name="driverClassName" value="org.postgresql.Driver" />

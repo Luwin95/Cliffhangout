@@ -28,4 +28,6 @@ public interface DaoFactory {
     void setUserDao(UserDao pUserDao);
     WayDao getWayDao();
     void setWayDao(WayDao pWayDao);
+    BorrowDao getBorrowDao();
+    void setBorrowDao(BorrowDao borrowDao);
 }

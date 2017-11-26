@@ -8,5 +8,7 @@ body
 .container
 {
     background-color : rgba(0,0,0,0.5);
+    margin-top:50vh;
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
 }
 

@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
+import java.util.Date;
 import java.util.List;
 
 public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
@@ -28,6 +29,18 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"topo_id"});
         topo.setId((int) keyHolder.getKey());
+    }
+
+    @Override
+    public void createBorrowing(Topo topo, Date startDate, Date endDate, User user) {
+        String vSQL = "INSERT INTO topo_borrowing(topo_id, user_account_id, start_date, end_date) VALUES(:topo_id, :user_account_id, :start_date, :end_date)";
+        MapSqlParameterSource vParams = new MapSqlParameterSource();
+        vParams.addValue("topo_id", topo.getId(), Types.INTEGER);
+        vParams.addValue("user_account_id", user.getId(), Types.INTEGER);
+        vParams.addValue("start_date", startDate, Types.DATE);
+        vParams.addValue("end_date", endDate, Types.DATE);
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+        vJdbcTemplate.update(vSQL, vParams);
     }
 
     @Override
