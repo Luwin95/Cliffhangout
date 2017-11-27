@@ -16,15 +16,16 @@
             </div>
             <div class="col-xs-5 col-xs-offset-2">
                 <h2>Espace Topos</h2>
-                <p>Réunissez vos expériences de différents sites dans un topos et partager le avec la communauté via un système prêt.
-                    Consulter les topos existants et disponible partagé par vos camarades grimpeurs!
+                <p>Bénéficiez des expériences de la communauté Cliffhangout via un système prêt de Topo.
+                    Consulter les topos existants et disponible partagé par vos camarades grimpeurs et réservez votre Topo!
                 </p>
-                <a href="<s:url action="addTopoSearch" namespace="/subscriber"/> " class="btn-cliffhangout col-xs-offset-4 col-xs-4">Espace topos</a>
+                <a href="<s:url action="topoSearch" namespace="/subscriber"/> " class="btn-cliffhangout col-xs-offset-4 col-xs-4">Espace prêt de topos</a>
             </div>
         </div>
         <div class="row">
+            <h2>Mes sites</h2>
+            <a href="<s:url action="addSite"/>" class="btn-cliffhangout col-xs-offset-4 col-xs-4">Créer un site</a>
             <s:if test="%{creatorSites!=null && creatorSites.size()!=0}">
-                <h2>Mes sites</h2>
                 <div class="table-responsive col-xs-offset-1 col-xs-10">
                     <table class="table table-hover table-bordered">
                         <thead>
@@ -83,8 +84,9 @@
             </s:if>
         </div>
         <div class="row">
+            <h2>Mes topos</h2>
+            <a href="<s:url action="addTopoSearch" namespace="/subscriber"/> " class="btn-cliffhangout col-xs-offset-4 col-xs-4">Créer un topo</a>
             <s:if test="%{creatorTopos!=null && creatorTopos.size()!=0}">
-                <h2>Mes topos</h2>
                 <div class="table-responsive col-xs-offset-1 col-xs-10">
                     <table class="table table-hover table-bordered">
                         <thead>
@@ -141,5 +143,58 @@
                 </div>
             </s:if>
         </div>
+        <s:if test="%{borrows !=null && borrows.size()>0}">
+            <h2>Mes emprunts</h2>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>Propriétaire</th>
+                        <th>Sites</th>
+                        <th>Début Prêt</th>
+                        <th>Fin Prêt</th>
+                        <th>Télécharger fichier</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <s:iterator value="borrows">
+                        <tr>
+                            <td><s:property value="topo.name"/></td>
+                            <td><s:property value="topo.description"/></td>
+                            <td><s:property value="topo.owner.login"/></td>
+                            <td>
+                                <ul>
+                                    <s:iterator value="topo.sites">
+                                        <s:url var="siteUrl" action="site" namespace="/">
+                                            <s:param name="idSite"><s:property value="id"/></s:param>
+                                        </s:url>
+                                        <li><a href="${siteUrl}"><s:property value="name"/></a> (Departement : <s:property value="departement.name"/>)</li>
+                                    </s:iterator>
+                                </ul>
+                            </td>
+                            <td><s:property value="startDate"/> </td>
+                            <td><s:property value="endDate"/> </td>
+                            <s:url var="topoDownload" action="topoSearch">
+                                <s:param name="fileName"><s:property value="topo.file"/></s:param>
+                            </s:url>
+                            <td>
+                                <s:if test="%{!startDate.equals(now)}">
+                                    <s:if test="%{!startDate.before(now) || !endDate.after(now)}">
+                                        <span style="color:red;">Topo non disponible (prêt non commencé ou terminé)</span>
+                                    </s:if>
+                                </s:if>
+                                <s:else>
+                                    <a href="${topoDownload}" class="btn btn-info">Télécharger topo</a>
+                                </s:else>
+                            </td>
+                        </tr>
+                    </s:iterator>
+                    </tbody>
+                </table>
+            </div>
+
+        </s:if>
     </div>
 </div>

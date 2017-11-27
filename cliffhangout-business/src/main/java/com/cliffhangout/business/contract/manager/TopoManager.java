@@ -18,5 +18,5 @@ public interface TopoManager {
     void deleteTopoDependencies(Topo topo);
     void editTopo(Topo topo, Topo topoToEdit, Map<String, Object> session);
     void editTopo(Topo topo, Topo topoToEdit, File upload, String uploadFileName, String uploadContentType, Map<String, Object> session);
-    void borrowTopo (Topo topo, Date startDate, Date endDate, Map<String, Object> session);
+    String borrowTopo (Topo topo, Date startDate, Date endDate, Map<String, Object> session);
 }

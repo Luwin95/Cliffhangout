@@ -21,6 +21,7 @@ public class TopoBorrowing extends AbstractAction implements SessionAware {
     private String page = "/WEB-INF/subscriber/topoBorrowForm.jsp";
     private String stylesheets = "/subscriber/topoBorrow.css";
     private Map<String, Object> session;
+    private String result;
 
     public Date getStartDate() {
         return startDate;
@@ -68,6 +69,14 @@ public class TopoBorrowing extends AbstractAction implements SessionAware {
         return stylesheets;
     }
 
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
@@ -82,8 +91,13 @@ public class TopoBorrowing extends AbstractAction implements SessionAware {
             {
                 if(startDate!=null && endDate!=null)
                 {
-                    getManagerFactory().getTopoManager().borrowTopo(topo, startDate, endDate, session);
-                    return SUCCESS;
+                    setResult(getManagerFactory().getTopoManager().borrowTopo(topo, startDate, endDate, session));
+                    if(result==null)
+                    {
+                        return SUCCESS;
+                    }else{
+                        return INPUT;
+                    }
                 }else{
                     return INPUT;
                 }

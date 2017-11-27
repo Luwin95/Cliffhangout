@@ -9,6 +9,9 @@
             <li><s:property value="name"/> ( Département : <s:property value="departement.name"/> )</li>
         </s:iterator>
     </ul>
+    <s:if test="%{result!= null}">
+        <p style="color: red;">${result}</p>
+    </s:if>
     <form method="post" class="form-horizontal" data-toggle="validator" id="newBorrowing">
         <div class="form-group row">
             <label for="startDate" class="col-xs-offset-3 col-xs-2">Date de début d'emprunt</label>

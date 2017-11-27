@@ -96,9 +96,10 @@ public class TopoSearch extends AbstractAction implements SessionAware{
     public String execute() throws Exception {
         setTopos(getManagerFactory().getTopoManager().displayTopoToBorrow((User) session.get("sessionUser")));
         setBorrows(getManagerFactory().getBorrowManager().displayBorrowByBorrower((User) session.get("sessionUser")));
-        getManagerFactory().getBorrowManager().checkBorrowedTopos(borrows, topos);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         setNow(sdf.parse(sdf.format(new Date())));
+        getManagerFactory().getBorrowManager().checkBorrowedTopos(borrows, topos, now);
+
         if(fileName!=null)
         {
             final File fileToDownload = new File(baseDownloadDir, fileName);

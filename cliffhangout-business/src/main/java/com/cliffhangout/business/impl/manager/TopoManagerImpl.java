@@ -1,5 +1,6 @@
 package com.cliffhangout.business.impl.manager;
 
+import com.cliffhangout.beans.Borrow;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
@@ -7,11 +8,13 @@ import com.cliffhangout.business.contract.manager.TopoManager;
 import org.apache.commons.io.FileUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,6 +126,7 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
     @Override
     public void deleteTopoDependencies(Topo topo) {
         getDaoFactory().getTopoDao().deleteSiteTopo(topo);
+        getDaoFactory().getBorrowDao().deleteBorrowByTopo(topo);
     }
 
     @Override
@@ -210,14 +214,43 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
     }
 
     @Override
-    public void borrowTopo(Topo topo, Date startDate, Date endDate, Map<String, Object> session) {
+    public String borrowTopo(Topo topo, Date startDate, Date endDate, Map<String, Object> session) {
         TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
-        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+        String result = vTransactionTemplate.execute(new TransactionCallback<String>() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus
-                                                                pTransactionStatus) {
-                getDaoFactory().getTopoDao().createBorrowing(topo, startDate, endDate, (User) session.get("sessionUser"));
+            public String doInTransaction(TransactionStatus status) {
+                String result = null;
+                Borrow borrow = null;
+                try{
+                    borrow = getDaoFactory().getBorrowDao().find( (User) session.get("sessionUser"), topo);
+                }catch(EmptyResultDataAccessException e)
+                {
+                    borrow = null;
+                }
+                if(borrow!=null)
+                {
+                    try{
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                        Date now = (sdf.parse(sdf.format(new Date())));
+                        if(borrow.getEndDate().before(now) || borrow.getEndDate().equals(now))
+                        {
+                            getDaoFactory().getBorrowDao().deleteBorrow(topo, (User) session.get("sessionUser"));
+                            getDaoFactory().getTopoDao().createBorrowing(topo, startDate, endDate, (User) session.get("sessionUser"));
+                            result = null;
+                        }else{
+                            result = "Vous avez déjà un emprunt de ce topo qui n'est pas arrivé à échéance";
+                        }
+                    }catch(ParseException e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    getDaoFactory().getTopoDao().createBorrowing(topo, startDate, endDate, (User) session.get("sessionUser"));
+                    result = null;
+                }
+                return result;
             }
+
         });
+        return result;
     }
 }

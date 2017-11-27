@@ -7,6 +7,7 @@ import com.cliffhangout.business.contract.manager.BorrowManager;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BorrowManagerImpl extends AbstractManagerImpl implements BorrowManager {
@@ -30,7 +31,7 @@ public class BorrowManagerImpl extends AbstractManagerImpl implements BorrowMana
     }
 
     @Override
-    public void checkBorrowedTopos(List<Borrow> borrows, List<Topo> topos) {
+    public void checkBorrowedTopos(List<Borrow> borrows, List<Topo> topos, Date now) {
         List<Topo> toposToRemove = new ArrayList<>();
         for(Borrow borrow : borrows)
         {
@@ -38,7 +39,13 @@ public class BorrowManagerImpl extends AbstractManagerImpl implements BorrowMana
             {
                 if(borrow.getTopo().getId() == topo.getId())
                 {
-                    toposToRemove.add(topo);
+                    if(!borrow.getEndDate().equals(now))
+                    {
+                        if(borrow.getEndDate().after(now))
+                        {
+                            toposToRemove.add(topo);
+                        }
+                    }
                 }
             }
         }
