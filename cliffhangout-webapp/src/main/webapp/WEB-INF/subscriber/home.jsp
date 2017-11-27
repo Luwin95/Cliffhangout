@@ -176,7 +176,7 @@
                             </td>
                             <td><s:property value="startDate"/> </td>
                             <td><s:property value="endDate"/> </td>
-                            <s:url var="topoDownload" action="topoSearch">
+                            <s:url var="topoDownload" action="home" namespace="/subscriber">
                                 <s:param name="fileName"><s:property value="topo.file"/></s:param>
                             </s:url>
                             <td>

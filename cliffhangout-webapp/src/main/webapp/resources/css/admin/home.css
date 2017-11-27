@@ -1,0 +1,9 @@
+body
+{
+    background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
+}
+
+h1
+{
+    text-align:center;
+}

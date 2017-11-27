@@ -11,4 +11,6 @@ public interface UserManager {
     boolean isInDatabase(String username);
     String signinNewSubscriber(User user);
     void addProfileImage(File profileImage, String profileImageContentType, String profileImageFileName, User user);
+    void editProfile(User user, User userSession);
+    void editProfile(User user, User userSession,File profileImage, String profileImageContentType, String profileImageFileName);
 }

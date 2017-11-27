@@ -4,8 +4,8 @@ import com.cliffhangout.beans.Image;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.business.contract.manager.UserManager;
 import org.apache.commons.io.FileUtils;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -48,7 +48,6 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
         String passwordHash = BCrypt.hashpw(password, salt);
         return passwordHash;
     }
-
 
     @Override
     public boolean validateCredentials(User user, String password)
@@ -130,5 +129,30 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
             }catch(IOException e){
             }
         }
+    }
+
+    @Override
+    public void editProfile(User user, User userSession) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                if(!user.getPassword().equals(""))
+                {
+                    String encryptedPassword= hashPassword(user.getPassword());
+                    userSession.setPassword(encryptedPassword);
+                }
+                userSession.setLogin(user.getLogin());
+                userSession.setEmail(user.getEmail());
+
+                getDaoFactory().getUserDao().update(userSession);
+            }
+        });
+    }
+
+    @Override
+    public void editProfile(User user, User userSession, File profileImage, String profileImageContentType, String profileImageFileName) {
+
     }
 }

@@ -28,6 +28,7 @@
             <result name="success" type="redirect">/home.action</result>
             <result name="input">/layout.jsp</result>
             <result name="error">/layout.jsp</result>
+            <result name="home" type="redirect">/home.action</result>
         </action>
         <action name="signin" class="com.cliffhangout.webapp.actions.SigninAction" method="execute">
             <interceptor-ref name="fileUpload">
@@ -43,7 +44,7 @@
         </action>
     </package>
 
-    <!-- Espace abonné - Droit USER nécessaire -->
+    <!-- Espace abonné - Droit USER ou ADMIN nécessaire -->
     <package name="subscriber" namespace="/subscriber" extends="struts-default">
         <interceptors>
             <interceptor name="authentication" class="com.cliffhangout.webapp.interceptors.AuthenticationInterceptor">
@@ -57,6 +58,14 @@
         <action name="home" class="com.cliffhangout.webapp.actions.SubscriberAction" method="execute">
             <result name="success">/layout.jsp</result>
             <result name="login" type="redirect">/login.action</result>
+            <result name="downloadTopo" type="stream">
+                <param name="inputName">fileToDownload</param>
+                <param name="contentType">${contentType}</param>
+                <param name="contentLength">${fileSize}</param>
+                <param name="contentDisposition">${contentDisposition}</param>
+                <param name="contentCharSet">UTF-8</param>
+                <param name="allowCaching">true</param>
+            </result>
         </action>
         <action name="addSite" class="com.cliffhangout.webapp.actions.AddSiteAction" method="execute">
             <result name="success">/layout.jsp</result>
@@ -70,23 +79,27 @@
             <result name="home" type="redirectAction">
                 <param name="actionName">/subscriber/home.action</param>
             </result>
+            <result name="login" type="redirect">/login.action</result>
         </action>
         <action name="addTopoSearch" class="com.cliffhangout.webapp.actions.AddTopoSearchAction" method="execute">
             <result name="success">/layout.jsp</result>
             <result name="input">/layout.jsp</result>
             <result name="search" type="redirect">/subscriber/addTopoSearch.action</result>
             <result name="error" type="redirect">/subscriber/addTopoSearch.action</result>
+            <result name="login" type="redirect">/login.action</result>
         </action>
         <action name="addTopo" class="com.cliffhangout.webapp.actions.AddTopoAction" method="execute">
             <result name="success" type="redirect">/subscriber/home.action</result>
             <result name="input">/layout.jsp</result>
             <result name="search" type="redirect">/subscriber/addTopoSearch.action</result>
+            <result name="login" type="redirect">/login.action</result>
         </action>
         <action name="editTopo" class="com.cliffhangout.webapp.actions.EditTopoAction" method="execute">
             <result name="success" type="redirect">/subscriber/home.action</result>
             <result name="input">/layout.jsp</result>
             <result name="search" type="redirect">/subscriber/editTopoSearch.action</result>
             <result name="home" type="redirect">/subscriber/home.action</result>
+            <result name="login" type="redirect">/login.action</result>
         </action>
         <action name="removeTopo" class="com.cliffhangout.webapp.actions.RemoveTopoAction">
             <result name="success" type="redirectAction">
@@ -95,6 +108,7 @@
             <result name="home" type="redirectAction">
                 <param name="actionName">/subscriber/home.action</param>
             </result>
+            <result name="login" type="redirect">/login.action</result>
         </action>
         <action name="editTopoSearch" class="com.cliffhangout.webapp.actions.AddTopoSearchAction" method="execute">
             <result name="success" type="dispatcher">
@@ -110,6 +124,7 @@
                 <param name="actionName">/subscriber/editTopoSearch.action</param>
                 <param name="idTopo">${idTopo}</param>
             </result>
+            <result name="login" type="redirect">/login.action</result>
         </action>
         <action name="topoSearch" class="com.cliffhangout.webapp.actions.TopoSearch">
             <result name="success">/layout.jsp</result>
@@ -121,11 +136,34 @@
                 <param name="contentCharSet">UTF-8</param>
                 <param name="allowCaching">true</param>
             </result>
+            <result name="login" type="redirect">/login.action</result>
         </action>
         <action name="topoBorrowing" class="com.cliffhangout.webapp.actions.TopoBorrowing">
             <result name="success" type="redirect">/subscriber/home.action</result>
             <result name="input">/layout.jsp</result>
             <result name="notFound">/WEB-INF/404.jsp</result>
+            <result name="login" type="redirect">/login.action</result>
+        </action>
+        <action name="editProfile" class="com.cliffhangout.webapp.actions.EditProfileAction">
+            <result name="success" type="redirect">/subscriber/home.action</result>
+            <result name="input">/layout.jsp</result>
+            <result name="notFound">/WEB-INF/404.jsp</result>
+            <result name="login" type="redirect">/login.action</result>
+        </action>
+    </package>
+    <package name="admin" namespace="/admin" extends="struts-default">
+        <interceptors>
+            <interceptor name="admin" class="com.cliffhangout.webapp.interceptors.AdminInterceptor">
+            </interceptor>
+            <interceptor-stack name="admStack">
+                <interceptor-ref name="admin"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="admStack"></default-interceptor-ref>
+        <action name="home" class="com.cliffhangout.webapp.actions.AdminAction" method="execute">
+            <result name="success">/layout.jsp</result>
+            <result name="login" type="redirect">/login.action</result>
         </action>
     </package>
 </struts>

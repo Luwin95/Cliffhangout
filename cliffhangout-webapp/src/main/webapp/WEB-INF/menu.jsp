@@ -23,7 +23,7 @@
                         <img src="/resources/images/user/<s:property value="%{#session.sessionUser.image.path}"/>"/>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Mon profil</a></li>
+                        <li><a href="<s:url action='editProfile' namespace="/subscriber"/>">Mon profil</a></li>
                         <li><a href="<s:url action='logout' namespace="/"/>">Se déconnecter</a></li>
                     </ul>
                 </li>

@@ -31,15 +31,18 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
     @Override
     public void update(User user){
-        String vSQL = "UPDATE  user_account SET login=:login, password=:password, email=:email, role=:role, image_id=:image_id WHERE id=:id";
+        String vSQL = "UPDATE  user_account SET login=:login, password=:password, email=:email, role=:role, image_id=:image_id WHERE user_account_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("login", user.getLogin(), Types.VARCHAR);
         vParams.addValue("password", user.getPassword(), Types.VARCHAR);
         vParams.addValue("email", user.getEmail(), Types.VARCHAR);
         vParams.addValue("role", user.getRole(), Types.VARCHAR);
-        if(user.getImage().getId() !=0)
+        if(user.getImage() !=null)
         {
-            vParams.addValue("image_id", user.getImage().getId(), Types.INTEGER);
+            if(user.getImage().getId() !=0)
+            {
+                vParams.addValue("image_id", user.getImage().getId(), Types.INTEGER);
+            }
         }else{
             vParams.addValue("image_id", null, Types.NULL);
         }
@@ -51,7 +54,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
     @Override
     public void delete(User user){
-        String vSQL = "DELETE FROM user_account WHERE id=:id";
+        String vSQL = "DELETE FROM user_account WHERE user_account_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("id", user.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());

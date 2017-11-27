@@ -68,18 +68,23 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
 
     public String execute()
     {
-        if(username!=null)
+        if(!session.containsKey("sessionUser"))
         {
-            user = getManagerFactory().getUserManager().getLoginUser(this.username);
-            if(user.getId()!=0 && getManagerFactory().getUserManager().validateCredentials(user,this.password))
+            if(username!=null)
             {
-                session.put("sessionUser", getUser());
-                return SUCCESS;
+                user = getManagerFactory().getUserManager().getLoginUser(this.username);
+                if(user.getId()!=0 && getManagerFactory().getUserManager().validateCredentials(user,this.password))
+                {
+                    session.put("sessionUser", getUser());
+                    return SUCCESS;
+                }else{
+                    return ERROR;
+                }
             }else{
-                return ERROR;
+                return INPUT;
             }
         }else{
-            return INPUT;
+            return "home";
         }
     }
 
