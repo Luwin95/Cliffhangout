@@ -21,7 +21,7 @@
                                 <th>Login</th>
                                 <th>Email</th>
                                 <th>Rôle</th>
-                                <th>Modifier</th>
+                                <th>Modifier les droits</th>
                                 <th>Supprimer</th>
                             </tr>
                         </thead>
@@ -31,7 +31,56 @@
                                 <td><s:property value="login"/></td>
                                 <td><s:property value="email"/></td>
                                 <td><s:property value="role"/> </td>
-                                <td><a href="" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <s:url var="userRightsUrl" action="editRights" namespace="/admin">
+                                    <s:param name="idUser"><s:property value="id"/></s:param>
+                                </s:url>
+                                <td>
+
+                                    <s:if test='%{role.equals("ADMIN")}'>
+                                        <button type="button" class="btn btn-danger" title="Delete" data-toggle="modal" data-target="#userRemoveRightsDialog<s:property value="id"/>">
+                                            <span class="glyphicon glyphicon-edit"></span> Supprimer Droits
+                                        </button>
+                                        <div class="modal fade" id="userRemoveRightsDialog<s:property value="id"/>" tabindex="-1" role="dialog" aria-labelledby="modalUserRemoveRights" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="modalUserRemoveRights">Suppression droits d'administrateur de l'utilisateur</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Voulez-vous vraiment supprimer les droits d'administrateur de cet utilisateur ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                        <a href="${userRightsUrl}" class="btn btn-danger">Confirmer</a>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </s:if>
+                                    <s:else>
+                                        <button type="button" class="btn btn-success" title="Delete" data-toggle="modal" data-target="#userAddRightsDialog<s:property value="id"/>">
+                                            <span class="glyphicon glyphicon-edit"></span> Ajouter droits
+                                        </button>
+                                        <div class="modal fade" id="userAddRightsDialog<s:property value="id"/>" tabindex="-1" role="dialog" aria-labelledby="modalUserAddRights" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="modalUserAddRights">Ajout droits d'administrateur de l'utilisateur</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Voulez-vous vraiment ajouter les droits d'administrateur à cet utilisateur ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                        <a href="${userRightsUrl}" class="btn btn-danger">Confirmer</a>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </s:else>
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#siteDialog<s:property value="id"/>">
                                         <span class="glyphicon glyphicon-remove"></span>
@@ -183,11 +232,12 @@
                 <div class="table-responsive col-xs-offset-1 col-xs-10">
                     <table class="table table-hover table-bordered">
                         <thead>
-                        <tr>
-                            <th>Commentaire</th>
-                            <th>Auteur</th>
-                            <th>Supprimer</th>
-                        </tr>
+                            <tr>
+                                <th>Commentaire</th>
+                                <th>Auteur</th>
+                                <th>Retirer Signalement</th>
+                                <th>Supprimer</th>
+                            </tr>
                         </thead>
                         <tbody>
                         <s:iterator value="comments">
@@ -195,22 +245,50 @@
                                 <td><a href="#"><s:property value="content"/></a></td>
                                 <td><s:property value="author.login"/></td>
                                 <td>
-                                    <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#topoDialog<s:property value="id"/>">
-                                        <span class="glyphicon glyphicon-remove"></span>
+                                    <s:url var="commentReportingUrl" action="deleteReportingOnComment" namespace="/admin">
+                                        <s:param name="idComment"><s:property value="id"/></s:param>
+                                    </s:url>
+                                    <button type="button" class="btn btn-warning btn-xs" title="deleteReporting" data-toggle="modal" data-target="#commentReportingDialog<s:property value="id"/>">
+                                        <span class="glyphicon glyphicon-edit"></span>
                                     </button>
-                                    <div class="modal fade" id="topoDialog<s:property value="id"/>" tabindex="-1" role="dialog" aria-labelledby="modalComments" aria-hidden="true">
+                                    <div class="modal fade" id="commentReportingDialog<s:property value="id"/>" tabindex="-1" role="dialog" aria-labelledby="modalCommentsReporting" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    <h4 class="modal-title" id="modalComments">Suppression de topo</h4>
+                                                    <h4 class="modal-title" id="modalReporting">Suppression du signalement du commentaire</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Voulez-vous vraiment supprimer ce topo ?
+                                                    Voulez-vous vraiment supprimer le signalement de ce commentaire ?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                                    <a href="" class="btn btn-danger">Confirmer</a>
+                                                    <a href="${commentReportingUrl}" class="btn btn-danger">Confirmer</a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                </td>
+                                <td>
+                                    <s:url var="commentDeleteUrl" action="deleteComment" namespace="/admin">
+                                        <s:param name="idComment"><s:property value="id"/></s:param>
+                                    </s:url>
+                                    <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#commentDialog<s:property value="id"/>">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                    <div class="modal fade" id="commentDialog<s:property value="id"/>" tabindex="-1" role="dialog" aria-labelledby="modalComments" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="modalComments">Suppression de commentaire</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Voulez-vous vraiment supprimer ce commentaire ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                    <a href="${commentDeleteUrl}" class="btn btn-danger">Confirmer</a>
                                                 </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->

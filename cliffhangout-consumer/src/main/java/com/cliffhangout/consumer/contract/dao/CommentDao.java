@@ -13,6 +13,7 @@ public interface CommentDao {
     void createCommentTopo(int topo_id, Comment comment) ;
     void update(Comment comment);
     void delete(Comment comment);
+    void deleteCommentSite(Comment comment);
     Comment find(int id);
     List<Comment> findAllByParent(Comment parent);
     List<Comment> findAllBySite(Site site);

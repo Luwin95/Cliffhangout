@@ -173,4 +173,22 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
     public List<User> displayAllUsers() {
         return getDaoFactory().getUserDao().findAll();
     }
+
+    @Override
+    public void editUserRights(User user) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                if(user.getRole().equals("ADMIN"))
+                {
+                    user.setRole("USER");
+                }else if(user.getRole().equals("USER")){
+                    user.setRole("ADMIN");
+                }
+                getDaoFactory().getUserDao().update(user);
+            }
+        });
+    }
 }

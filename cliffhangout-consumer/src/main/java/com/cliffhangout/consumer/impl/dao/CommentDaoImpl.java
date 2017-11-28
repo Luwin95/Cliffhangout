@@ -81,6 +81,7 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
 
     @Override
     public void delete(Comment comment){
+        deleteCommentSite(comment);
         String vSQL = "DELETE FROM comment WHERE comment_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("id", comment.getId(), Types.INTEGER);
@@ -89,37 +90,52 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
     }
 
     @Override
-    public Comment find(int id){
+    public void deleteCommentSite(Comment comment) {
+        String vSQL = "DELETE FROM comment_site WHERE comment_id=:id";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.* " +
-                "FROM comment AS child  " +
-                "LEFT JOIN comment AS parent ON child.parent_id = parent.comment_id " +
-                "LEFT JOIN user_account ON child.author_id= user_account.user_account_id " +
-                "WHERE 1=1 ");
-        if(id>0)
-        {
-            vSQL.append("AND child.comment_id = :id");
-            vParams.addValue("id", id);
-        }
+        vParams.addValue("id", comment.getId(), Types.INTEGER);
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        RowMapper<Comment> vRowMapper = new CommentRM();
-        Comment comment = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
-        return comment;
+        vJdbcTemplate.update(vSQL, vParams);
+    }
+
+    @Override
+    public Comment find(int id){
+        try{
+            MapSqlParameterSource vParams = new MapSqlParameterSource();
+            StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.*, image.image_id AS imageId, image.* " +
+                    "FROM comment AS child  " +
+                    "LEFT JOIN comment AS parent ON child.parent_id = parent.comment_id " +
+                    "LEFT JOIN user_account ON child.author_id= user_account.user_account_id " +
+                    "LEFT JOIN image ON image.image_id=user_account.image_id "+
+                    "WHERE 1=1 ");
+            if(id>0)
+            {
+                vSQL.append("AND child.comment_id = :id");
+                vParams.addValue("id", id);
+            }
+            NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+            RowMapper<Comment> vRowMapper = new CommentRM();
+            Comment comment = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+            return comment;
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override
     public List<Comment> findAllByParent(Comment parent){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.* " +
+        StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.*, image.image_id AS imageId, image.* " +
                 "FROM comment AS child  " +
                 "LEFT JOIN comment AS parent ON child.parent_id = parent.comment_id " +
                 "LEFT JOIN user_account ON child.author_id= user_account.user_account_id " +
+                "LEFT JOIN image ON image.image_id=user_account.image_id "+
                 "WHERE 1=1 ");
         if(parent != null)
         {
             if(parent.getId()!=0)
             {
-                vSQL.append("AND parent_id=:parent_id");
+                vSQL.append("AND child.parent_id=:parent_id");
                 vParams.addValue("parent_id", parent.getId());
             }
         }
@@ -131,26 +147,31 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
 
     @Override
     public List<Comment> findAllBySite(Site site){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.*, image.image_id AS imageId, image.* " +
-                "FROM comment_site  " +
-                "INNER JOIN comment AS child on comment_site.comment_id= child.comment_id " +
-                "LEFT JOIN comment AS parent ON child.parent_id = parent.comment_id " +
-                "LEFT JOIN user_account ON child.author_id= user_account.user_account_id " +
-                "LEFT JOIN image ON image.image_id=user_account.image_id "+
-                "WHERE 1=1 ");
-        if(site != null)
+        try
         {
-            if(site.getId()!=0)
+            MapSqlParameterSource vParams = new MapSqlParameterSource();
+            StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.*, image.image_id AS imageId, image.* " +
+                    "FROM comment_site  " +
+                    "INNER JOIN comment AS child on comment_site.comment_id= child.comment_id " +
+                    "LEFT JOIN comment AS parent ON child.parent_id = parent.comment_id " +
+                    "LEFT JOIN user_account ON child.author_id= user_account.user_account_id " +
+                    "LEFT JOIN image ON image.image_id=user_account.image_id "+
+                    "WHERE 1=1 ");
+            if(site != null)
             {
-                vSQL.append("AND site_id=:site_id");
-                vParams.addValue("site_id", site.getId());
+                if(site.getId()!=0)
+                {
+                    vSQL.append("AND site_id=:site_id");
+                    vParams.addValue("site_id", site.getId());
+                }
             }
+            NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+            RowMapper<Comment> vRowMapper = new CommentRM();
+            List<Comment> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+            return vList;
+        }catch(EmptyResultDataAccessException e){
+            return null;
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        RowMapper<Comment> vRowMapper = new CommentRM();
-        List<Comment> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
-        return vList;
     }
 
     @Override

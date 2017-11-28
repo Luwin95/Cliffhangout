@@ -51,6 +51,7 @@
         <div style="margin-left:20px;">
             <s:set var="cpt" value="%{#cpt+1}"/>
             <s:include value="comment.jsp"/>
+            <s:set var="cpt" value="%{#cpt-1}"/>
         </div>
     </s:if>
 </s:iterator>

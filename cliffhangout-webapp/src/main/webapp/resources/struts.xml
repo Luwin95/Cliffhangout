@@ -165,5 +165,23 @@
             <result name="success">/layout.jsp</result>
             <result name="login" type="redirect">/login.action</result>
         </action>
+        <action name="deleteComment" class="com.cliffhangout.webapp.actions.AdminRemoveCommentAction" method="execute">
+            <result name="success" type="redirect">/admin/home.action</result>
+            <result name="error" type="redirect">/admin/home.action</result>
+            <result name="home" type="redirect">/home.action</result>
+            <result name="login" type="redirect">/login.action</result>
+        </action>
+        <action name="deleteReportingOnComment" class="com.cliffhangout.webapp.actions.AdminRemoveReportingOnCommentAction" method="execute">
+            <result name="success" type="redirect">/admin/home.action</result>
+            <result name="error" type="redirect">/admin/home.action</result>
+            <result name="home" type="redirect">/home.action</result>
+            <result name="login" type="redirect">/login.action</result>
+        </action>
+        <action name="editRights" class="com.cliffhangout.webapp.actions.AdminEditUserRightsAction" method="execute">
+            <result name="success" type="redirect">/admin/home.action</result>
+            <result name="error" type="redirect">/admin/home.action</result>
+            <result name="home" type="redirect">/home.action</result>
+            <result name="login" type="redirect">/login.action</result>
+        </action>
     </package>
 </struts>

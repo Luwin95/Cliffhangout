@@ -59,6 +59,12 @@ public class CommentManagerImpl extends AbstractManagerImpl implements CommentMa
     }
 
     @Override
+    public Comment getComment(int id) {
+        Comment comment = getDaoFactory().getCommentDao().find(id);
+        return comment;
+    }
+
+    @Override
     public List<Comment> displayAllCommentsSignaled() {
         return getDaoFactory().getCommentDao().findAllSignaled();
     }
@@ -70,11 +76,50 @@ public class CommentManagerImpl extends AbstractManagerImpl implements CommentMa
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus
                                                                 pTransactionStatus) {
-                Comment commentToReport = getDaoFactory().getCommentDao().find(idComment);
+                Comment commentToReport = getComment(idComment);
                 if(!commentToReport.isReported())
                 {
                     commentToReport.setReported(true);
                     getDaoFactory().getCommentDao().update(commentToReport);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteReportingOnComment(Comment comment) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                if(comment.isReported())
+                {
+                    comment.setReported(false);
+                    getDaoFactory().getCommentDao().update(comment);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteComment(Comment comment) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                if(comment !=null)
+                {
+                    comment.setChildren(getDaoFactory().getCommentDao().findAllByParent(comment));
+                    if(comment.getChildren()!=null)
+                    {
+                        for(Comment child : comment.getChildren())
+                        {
+                            deleteComment(child);
+                        }
+                    }
+                    getDaoFactory().getCommentDao().delete(comment);
                 }
             }
         });
