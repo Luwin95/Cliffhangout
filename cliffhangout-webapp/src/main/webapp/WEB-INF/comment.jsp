@@ -13,7 +13,7 @@
         <div class="col-xs-1">
             <s:if test="%{author.image !=null}">
                 <div class="author-profile-img">
-                    <img src=/resources/images/user/<s:property value="author.image.path"/>"/>
+                    <img src="/resources/images/user/<s:property value="author.image.path"/>"/>
                 </div>
             </s:if>
             <s:else>
@@ -30,7 +30,11 @@
                 <s:if test="#session.sessionUser!= null">
                     <s:if test="%{#cpt<2}">
                         <button class="col-xs-5 btn-cliffhangout btn-cliffhangout-lg answer" id="<s:property value="id"/>">Répondre</button>
-                        <button class="col-xs-offset-2 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
+                        <s:form action="site" >
+                            <s:hidden name="idSite" value="%{idSite}"/>
+                            <input name="commentToReport" type="hidden" value="<s:property value="id"/>"/>
+                            <button type="submit" class="col-xs-offset-2 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
+                        </s:form>
                     </s:if>
                     <s:else>
                         <button class="col-xs-offset-7 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>

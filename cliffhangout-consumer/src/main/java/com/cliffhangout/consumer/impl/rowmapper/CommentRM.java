@@ -14,6 +14,7 @@ public class CommentRM extends AbstractRM implements RowMapper<Comment> {
         Comment vComment = new Comment();
         vComment.setId(rs.getInt("child_id"));
         vComment.setContent(rs.getString("child_content"));
+        vComment.setReported(rs.getBoolean("child_reported"));
         if(rs.getInt("parent_id") !=0)
         {
             ParentCommentRM parentCommentRM = new ParentCommentRM();

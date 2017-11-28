@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class UserManagerImpl extends AbstractManagerImpl implements UserManager {
 
@@ -104,9 +106,9 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
         userDir = userDir.replaceAll("\\\\", "/");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yy_H_mm_ss");
         Date date = new Date();
-
+        String path=dateFormat.format(date)+ UUID.randomUUID().toString()+"."+profileImageContentType.substring(6);
         Image image = new Image();
-        image.setPath(dateFormat.format(date)+profileImageFileName);
+        image.setPath(path);
         image.setTitle("Image profil utilisateur");
         image.setAlt("Image profil utilisateur "+profileImageFileName);
         try
@@ -121,7 +123,7 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
                 }
             });
         }finally{
-            profileImageFileName = "resources/images/user/"+dateFormat.format(date)+profileImageFileName;
+            profileImageFileName = "resources/images/user/"+path;
             String fullfilename = userDir+profileImageFileName;
             File importedImage = new File(fullfilename);
             try{
@@ -153,6 +155,22 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
 
     @Override
     public void editProfile(User user, User userSession, File profileImage, String profileImageContentType, String profileImageFileName) {
+        if(userSession.getImage()!=null)
+        {
+            String userDir = "E:\\P3\\cliffhangout-webapp\\src\\main\\webapp\\";
+            userDir = userDir.replaceAll("\\\\", "/");
+            String imageToDeleteName = userDir+"/resources/images/user"+userSession.getImage().getPath();
+            File imageToDelete = new File(imageToDeleteName);
+            FileUtils.deleteQuietly(imageToDelete);
+        }
+        User oldUser = userSession;
+        addProfileImage(profileImage, profileImageContentType, profileImageFileName, userSession);
+        getDaoFactory().getImageDao().delete(oldUser.getImage());
+        editProfile(user, userSession);
+    }
 
+    @Override
+    public List<User> displayAllUsers() {
+        return getDaoFactory().getUserDao().findAll();
     }
 }

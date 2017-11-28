@@ -4,11 +4,13 @@ import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.contract.dao.UserDao;
 import com.cliffhangout.consumer.impl.rowmapper.UserRM;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.sql.*;
+import java.util.List;
 
 public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     @Override
@@ -95,6 +97,19 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
             User user = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
             return user;
         }catch(EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    @Override
+    public List<User> findAll() {
+        try{
+            StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.user_account_id AS user_id, image.image_id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.image_id ");
+            JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
+            RowMapper<User> vRowMapper = new UserRM();
+            List<User> vList = vJdbcTemplate.query(vSQL.toString(),vRowMapper);
+            return vList;
+        }catch (EmptyResultDataAccessException e){
             return null;
         }
     }

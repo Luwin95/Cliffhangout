@@ -121,7 +121,7 @@
                             <div class="col-xs-1">
                                 <s:if test="%{author.image !=null}">
                                     <div class="author-profile-img">
-                                        <img src=/resources/images/user/<s:property value="author.image.path"/>"/>
+                                        <img src="/resources/images/user/<s:property value="author.image.path"/>"/>
                                     </div>
                                 </s:if>
                                 <s:else>
@@ -137,7 +137,11 @@
                                 <div class="row">
                                     <s:if test="#session.sessionUser!= null">
                                         <button class="col-xs-5 btn-cliffhangout answer" id="<s:property value="id"/>">Répondre</button>
-                                        <button class="col-xs-offset-2 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
+                                        <s:form action="site" >
+                                            <s:hidden name="idSite" value="%{idSite}"/>
+                                            <input name="commentToReport" type="hidden" value="<s:property value="id"/>"/>
+                                            <button type="submit" class="col-xs-offset-2 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
+                                        </s:form>
                                     </s:if>
                                     <s:else>
                                         <a href="<s:url action="login"/>">Se connecter</a> ou <a href="#">S'inscrire</a>

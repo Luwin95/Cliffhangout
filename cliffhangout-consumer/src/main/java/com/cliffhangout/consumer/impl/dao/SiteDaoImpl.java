@@ -103,7 +103,11 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
 
     @Override
     public List<Site> findAllSites(){
-        StringBuilder vSQL= new StringBuilder("SELECT * FROM site ORDER BY site_id");
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
+                "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
+                "LEFT JOIN region ON site.region_id=region.region_id " +
+                "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
+                "WHERE 1=1 ");
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
         RowMapper<Site> vRowMapper = new SiteRM();
         List<Site> vList = vJdbcTemplate.query(vSQL.toString(),vRowMapper);
@@ -133,7 +137,6 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
         return vList;
 
     }
-
 
     @Override
     public List<Site> findAllBySearchCriteria(String sqlStatement){

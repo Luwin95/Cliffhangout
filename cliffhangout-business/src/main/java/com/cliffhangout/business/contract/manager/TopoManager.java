@@ -13,6 +13,7 @@ public interface TopoManager {
     Topo displayTopo(int id);
     List<Topo> displayUserTopo(User user);
     List<Topo> displayTopoToBorrow(User user);
+    List<Topo> displayAllTopo();
     void buildTopoDependencies(Topo topo);
     void deleteTopo(int id);
     void deleteTopoDependencies(Topo topo);

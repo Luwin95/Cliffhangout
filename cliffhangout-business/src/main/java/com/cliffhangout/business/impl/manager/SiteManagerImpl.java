@@ -261,6 +261,16 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     }
 
     @Override
+    public List<Site> displayAllSites() {
+        List<Site> sites = getDaoFactory().getSiteDao().findAllSites();
+        for(Site site : sites)
+        {
+            buildSiteDependencies(site);
+        }
+        return sites;
+    }
+
+    @Override
     public void buildSiteDependencies(Site site)
     {
         site.setImages(getDaoFactory().getImageDao().findAllBySite(site));

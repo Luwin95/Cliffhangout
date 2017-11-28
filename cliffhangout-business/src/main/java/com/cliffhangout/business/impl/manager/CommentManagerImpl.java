@@ -2,6 +2,9 @@ package com.cliffhangout.business.impl.manager;
 
 import com.cliffhangout.beans.Comment;
 import com.cliffhangout.business.contract.manager.CommentManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,7 +15,15 @@ public class CommentManagerImpl extends AbstractManagerImpl implements CommentMa
     @Override
     public void addCommentSite(Comment comment, int idSite)
     {
-        getDaoFactory().getCommentDao().createCommentSite(idSite, comment);
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                comment.setReported(false);
+                getDaoFactory().getCommentDao().createCommentSite(idSite, comment);
+            }
+        });
     }
 
     @Override
@@ -45,5 +56,27 @@ public class CommentManagerImpl extends AbstractManagerImpl implements CommentMa
             Comment parentComment = getDaoFactory().getCommentDao().find(parentId);
             commentBean.setParent(parentComment);
         }
+    }
+
+    @Override
+    public List<Comment> displayAllCommentsSignaled() {
+        return getDaoFactory().getCommentDao().findAllSignaled();
+    }
+
+    @Override
+    public void reportComment(int idComment) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                Comment commentToReport = getDaoFactory().getCommentDao().find(idComment);
+                if(!commentToReport.isReported())
+                {
+                    commentToReport.setReported(true);
+                    getDaoFactory().getCommentDao().update(commentToReport);
+                }
+            }
+        });
     }
 }

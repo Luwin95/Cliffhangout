@@ -102,6 +102,16 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
     }
 
     @Override
+    public List<Topo> displayAllTopo() {
+        List<Topo> topos = getDaoFactory().getTopoDao().findAll();
+        for (Topo topo : topos)
+        {
+            buildTopoDependencies(topo);
+        }
+        return topos;
+    }
+
+    @Override
     public void buildTopoDependencies(Topo topo) {
         topo.setSites(getDaoFactory().getSiteDao().findAllByTopo(topo));
     }

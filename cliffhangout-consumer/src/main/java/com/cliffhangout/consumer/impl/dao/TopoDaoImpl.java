@@ -4,6 +4,8 @@ import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.contract.dao.TopoDao;
 import com.cliffhangout.consumer.impl.rowmapper.TopoRM;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -90,6 +92,21 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
         RowMapper<Topo> vRowMapper = new TopoRM();
         Topo topo = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
         return topo;
+    }
+
+    @Override
+    public List<Topo> findAll() {
+        try{
+            StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id " +
+                    "FROM topo " +
+                    "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id ");
+            JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
+            RowMapper<Topo> vRowMapper = new TopoRM();
+            List<Topo> vList = vJdbcTemplate.query(vSQL.toString(),vRowMapper);
+            return vList;
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override

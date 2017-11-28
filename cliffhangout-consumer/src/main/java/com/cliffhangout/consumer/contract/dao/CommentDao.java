@@ -16,4 +16,5 @@ public interface CommentDao {
     Comment find(int id);
     List<Comment> findAllByParent(Comment parent);
     List<Comment> findAllBySite(Site site);
+    List<Comment> findAllSignaled();
 }

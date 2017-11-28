@@ -4,6 +4,7 @@ import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.impl.dao.DaoException;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 public interface UserDao {
     void create(User user);
@@ -11,4 +12,5 @@ public interface UserDao {
     void delete(User user);
     User find(int id);
     User findByLogin (String login);
+    List<User> findAll();
 }

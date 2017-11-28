@@ -10,6 +10,7 @@ public class Comment {
     private List<Comment> children = new ArrayList<Comment>();
     private Comment parent;
     private User author;
+    private boolean reported;
 
     public int getId() {
         return id;
@@ -60,5 +61,11 @@ public class Comment {
         this.parent = parent;
     }
 
+    public boolean isReported() {
+        return reported;
+    }
 
+    public void setReported(boolean reported) {
+        this.reported = reported;
+    }
 }

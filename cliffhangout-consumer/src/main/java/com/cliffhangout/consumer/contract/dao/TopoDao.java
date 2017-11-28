@@ -15,6 +15,7 @@ public interface TopoDao {
     void delete (Topo topo);
     void deleteSiteTopo (Topo topo);
     Topo find(int id);
+    List<Topo> findAll();
     List<Topo> findAllByUser(User user);
     List<Topo> findAllBorrowed(User user);
 }

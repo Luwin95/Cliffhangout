@@ -34,7 +34,7 @@
                         <img src="/resources/images/user/icone-grimpeur.png"/>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Mon profil</a></li>
+                        <li><a href="<s:url action='editProfile' namespace="/subscriber"/>">Mon profil</a></li>
                         <li><a href="<s:url action='logout' namespace="/"/>">Se déconnecter</a></li>
                     </ul>
                 </li>
@@ -52,7 +52,10 @@
         <li><a href="<s:url action='search' namespace="/"/>">Rechercher un site</a></li>
         <s:if test="#session.sessionUser!= null ">
             <li><a href="<s:url action='logout' namespace="/"/>">Se déconnecter</a></li>
-            <li><a href="<s:url action='home' namespace="/subscriber"/>">Espace abonné</a></li>
+            <li><a href="<s:url action='home' namespace="/subscriber"/>">Espace Abonné</a></li>
+            <s:if test='%{#session.sessionUser.role.equals("ADMIN")}'>
+                <li><a href="<s:url action='home' namespace="/admin"/>">Espace Admin</a></li>
+            </s:if>
         </s:if>
         <s:else>
             <li><a href="<s:url action='login' namespace="/"/>">Se connecter</a></li>

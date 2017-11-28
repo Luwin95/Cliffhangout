@@ -2,6 +2,7 @@ package com.cliffhangout.business.contract.manager;
 
 import com.cliffhangout.beans.User;
 import java.io.File;
+import java.util.List;
 
 public interface UserManager {
     User displayUser(int id);
@@ -13,4 +14,5 @@ public interface UserManager {
     void addProfileImage(File profileImage, String profileImageContentType, String profileImageFileName, User user);
     void editProfile(User user, User userSession);
     void editProfile(User user, User userSession,File profileImage, String profileImageContentType, String profileImageFileName);
+    List<User> displayAllUsers();
 }

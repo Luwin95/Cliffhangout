@@ -27,6 +27,8 @@ public class SiteInfoAction extends AbstractAction implements SessionAware {
 
     private String parent;
 
+    private String commentToReport;
+
     public String getIdSite() {
         return idSite;
     }
@@ -80,20 +82,30 @@ public class SiteInfoAction extends AbstractAction implements SessionAware {
         this.parent = parent;
     }
 
+    public String getCommentToReport() {
+        return commentToReport;
+    }
+
+    public void setCommentToReport(String commentToReport) {
+        this.commentToReport = commentToReport;
+    }
+
     public String execute()
     {
         int id = Integer.parseInt(this.idSite);
         this.site = getManagerFactory().getSiteManager().displaySite(id);
-        if(site!= null){
-            if(commentBean.getContent() != null && session.containsKey("sessionUser"))
-            {
+        if(site!= null) {
+            if (commentBean.getContent() != null && session.containsKey("sessionUser")) {
                 User author = (User) session.get("sessionUser");
                 getManagerFactory().getCommentManager().getParentSiteComment(parent, commentBean);
                 commentBean.setAuthor(author);
                 getManagerFactory().getCommentManager().addCommentSite(commentBean, site.getId());
                 return SUCCESS;
+            }else if(commentToReport!=null){
+                getManagerFactory().getCommentManager().reportComment(Integer.parseInt(commentToReport));
+                return SUCCESS;
             }else{
-                return ERROR;
+                return INPUT;
             }
         }else{
             return "notFound";

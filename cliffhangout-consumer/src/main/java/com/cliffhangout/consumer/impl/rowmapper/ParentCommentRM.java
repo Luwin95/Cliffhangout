@@ -12,6 +12,7 @@ public class ParentCommentRM implements RowMapper<Comment> {
         Comment vComment = new Comment();
         vComment.setId(rs.getInt("parent_id"));
         vComment.setContent(rs.getString("parent_content"));
+        vComment.setReported(rs.getBoolean("parent_reported"));
         return vComment;
     }
 }
