@@ -90,6 +90,17 @@ public class EditTopoAction extends AbstractAction implements SessionAware {
     public String execute() throws Exception {
         if(idTopo !=null)
         {
+            if(session.containsKey("pageStatus"))
+            {
+                if(session.get("pageStatus").equals("add"))
+                {
+                    session.remove("sitesTopo");
+                    session.remove("pageStatus");
+                    session.put("pageStatus", "edit");
+                }
+            }else{
+                session.put("pageStatus", "edit");
+            }
             setTopoToEdit(getManagerFactory().getTopoManager().displayTopo(Integer.parseInt(idTopo)));
             if(!session.containsKey("sitesTopo"))
             {

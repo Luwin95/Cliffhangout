@@ -84,6 +84,8 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
         }
     }
 
+
+
     @Override
     public User findByLoginActive(String login){
         try{
@@ -114,5 +116,21 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
         }catch (EmptyResultDataAccessException e){
             return null;
         }
+    }
+
+    @Override
+    public boolean emailIsInDb(String email) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource());
+        Integer count = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM user_account  WHERE email=?", Integer.class, email);
+        return count != null && count > 0;
+    }
+
+    @Override
+    public boolean loginIsInDb(String login) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource());
+        Integer count = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM user_account  WHERE login=?", Integer.class, login);
+        return count != null && count > 0;
     }
 }

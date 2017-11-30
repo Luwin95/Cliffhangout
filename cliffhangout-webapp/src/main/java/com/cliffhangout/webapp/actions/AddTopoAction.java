@@ -85,6 +85,17 @@ public class AddTopoAction extends AbstractAction implements SessionAware{
 
     @Override
     public String execute(){
+        if(session.containsKey("pageStatus"))
+        {
+            if(session.get("pageStatus").equals("edit"))
+            {
+                session.remove("sitesTopo");
+                session.remove("pageStatus");
+                session.put("pageStatus", "add");
+            }
+        }else{
+            session.put("pageStatus", "add");
+        }
         if(session.containsKey("sitesTopo") && session.get("sitesTopo") != null)
         {
             setSitesChosen((List<Site>) session.get("sitesTopo"));

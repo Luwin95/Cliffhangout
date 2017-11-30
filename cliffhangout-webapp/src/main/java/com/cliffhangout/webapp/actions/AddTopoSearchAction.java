@@ -2,6 +2,7 @@ package com.cliffhangout.webapp.actions;
 
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.webapp.AbstractAction;
+import com.opensymphony.xwork2.ActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 
 import java.util.ArrayList;
@@ -224,69 +225,91 @@ public class AddTopoSearchAction extends AbstractAction implements SessionAware{
     }
 
     public String execute(){
-        if(session.containsKey("sitesTopo") && session.get("sitesTopo")!=null)
+        String actionName=ActionContext.getContext().getName();
+        if(!(idTopo == null && actionName.equals("editTopoSearch")))
         {
-            setSitesChosen((List<Site>) session.get("sitesTopo"));
-        }
-        if(idTopo != null)
-        {
-
-        }
-        if(this.siteName != null || (this.addCriteria && (this.criteriaWays || this.criteriaQuotation || this.criteriaLocation))) {
-            Hashtable criterias = new Hashtable();
-            criterias.put("site-name", siteName);
-            if (this.criteriaLocation) {
-                criterias.put("criteria-location", this.criteriaLocation);
-                if (this.criteriaLocationValue.equals("region")) {
-                    criterias.put("criteria-region", this.criteriaRegion);
-                } else if (this.criteriaLocationValue.equals("departement")) {
-                    criterias.put("criteria-departement", this.criteriaDepartement);
-                }
-            }
-            if (this.criteriaQuotation) {
-                criterias.put("criteria-cotation", this.criteriaQuotation);
-                if (this.criteriaQuotationValue.equals("minimum")) {
-                    criterias.put("criteria-cotation-min-value", this.criteriaQuotationMinValue);
-                } else if (criteriaQuotationValue.equals("maximum")) {
-                    criterias.put("criteria-cotation-max-value", this.criteriaQuotationMaxValue);
-                }
-            }
-            if (this.criteriaWays) {
-                criterias.put("criteria-ways", this.criteriaWays);
-                criterias.put("criteria-way-number-min", this.criteriaWayNumberMin);
-                criterias.put("criteria-way-number-max", this.criteriaWayNumberMax);
-            }
-            this.setSites(getManagerFactory().getSiteManager().search(criterias));
-            if (sites.isEmpty()) {
-                this.setResult("Aucun résultat n'a  été trouvé pour votre recherche");
-                return ERROR;
-            } else {
-                this.setResult("Votre recherche a aboutie à " + sites.size() + " résultats");
-                return SUCCESS;
-            }
-        }else if(siteToAdd != null) {
-            List<Site> tempSites = getManagerFactory().getSiteManager().displaySitesChosen(siteToAdd);
-            if (tempSites != null) {
-                if (session.containsKey("sitesTopo")) {
-                    List<Site> sitesTopo = (List<Site>) session.get("sitesTopo");
-                    getManagerFactory().getSiteManager().isInSession(sitesTopo, tempSites);
+            if(session.containsKey("pageStatus"))
+            {
+                if(actionName.equals("editTopoSearch") &&  session.get("pageStatus").equals("add"))
+                {
                     session.remove("sitesTopo");
-                    sitesTopo.addAll(tempSites);
-                    session.put("sitesTopo", sitesTopo);
-                } else {
-                    session.put("sitesTopo", tempSites);
+                    session.remove("pageStatus");
                 }
             }
-            return "search";
-        }else if (sitesToRemove != null)
-        {
-            getManagerFactory().getSiteManager().removeSitesChosen(sitesToRemove, session);
-            return "search";
+            if(idTopo!=null && actionName.equals("addTopoSearch"))
+            {
+                session.remove("sitesTopo");
+                session.remove("pageStatus");
+                setIdTopo(null);
+            }
+            if(actionName.equals("editTopoSearch"))
+            {
+                session.put("pageStatus", "edit");
+            }else{
+                session.put("pageStatus", "add");
+            }
+            if(session.containsKey("sitesTopo") && session.get("sitesTopo")!=null)
+            {
+                setSitesChosen((List<Site>) session.get("sitesTopo"));
+            }
+            if(this.siteName != null || (this.addCriteria && (this.criteriaWays || this.criteriaQuotation || this.criteriaLocation))) {
+                Hashtable criterias = new Hashtable();
+                criterias.put("site-name", siteName);
+                if (this.criteriaLocation) {
+                    criterias.put("criteria-location", this.criteriaLocation);
+                    if (this.criteriaLocationValue.equals("region")) {
+                        criterias.put("criteria-region", this.criteriaRegion);
+                    } else if (this.criteriaLocationValue.equals("departement")) {
+                        criterias.put("criteria-departement", this.criteriaDepartement);
+                    }
+                }
+                if (this.criteriaQuotation) {
+                    criterias.put("criteria-cotation", this.criteriaQuotation);
+                    if (this.criteriaQuotationValue.equals("minimum")) {
+                        criterias.put("criteria-cotation-min-value", this.criteriaQuotationMinValue);
+                    } else if (criteriaQuotationValue.equals("maximum")) {
+                        criterias.put("criteria-cotation-max-value", this.criteriaQuotationMaxValue);
+                    }
+                }
+                if (this.criteriaWays) {
+                    criterias.put("criteria-ways", this.criteriaWays);
+                    criterias.put("criteria-way-number-min", this.criteriaWayNumberMin);
+                    criterias.put("criteria-way-number-max", this.criteriaWayNumberMax);
+                }
+                this.setSites(getManagerFactory().getSiteManager().search(criterias));
+                if (sites.isEmpty()) {
+                    this.setResult("Aucun résultat n'a  été trouvé pour votre recherche");
+                    return ERROR;
+                } else {
+                    this.setResult("Votre recherche a aboutie à " + sites.size() + " résultats");
+                    return SUCCESS;
+                }
+            }else if(siteToAdd != null) {
+                List<Site> tempSites = getManagerFactory().getSiteManager().displaySitesChosen(siteToAdd);
+                if (tempSites != null) {
+                    if (session.containsKey("sitesTopo")) {
+                        List<Site> sitesTopo = (List<Site>) session.get("sitesTopo");
+                        getManagerFactory().getSiteManager().isInSession(sitesTopo, tempSites);
+                        session.remove("sitesTopo");
+                        sitesTopo.addAll(tempSites);
+                        session.put("sitesTopo", sitesTopo);
+                    } else {
+                        session.put("sitesTopo", tempSites);
+                    }
+                }
+                return "search";
+            }else if (sitesToRemove != null)
+            {
+                getManagerFactory().getSiteManager().removeSitesChosen(sitesToRemove, session);
+                return "search";
+            }else{
+                List<Object> entities = getManagerFactory().getDepartementRegionManager().displayAllDepartmentsAndRegions();
+                departements = entities.get(0);
+                regions = entities.get(1);
+                return INPUT;
+            }
         }else{
-            List<Object> entities = getManagerFactory().getDepartementRegionManager().displayAllDepartmentsAndRegions();
-            departements = entities.get(0);
-            regions = entities.get(1);
-            return INPUT;
+            return "home";
         }
     }
 }

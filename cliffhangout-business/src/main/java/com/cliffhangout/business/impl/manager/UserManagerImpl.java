@@ -82,6 +82,16 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
     }
 
     @Override
+    public boolean checkEmailInDb(String email) {
+        return getDaoFactory().getUserDao().emailIsInDb(email);
+    }
+
+    @Override
+    public boolean checkLoginInDb(String login) {
+        return getDaoFactory().getUserDao().loginIsInDb(login);
+    }
+
+    @Override
     public String signinNewSubscriber(User user) {
 
             TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());

@@ -13,4 +13,6 @@ public interface UserDao {
     User find(int id);
     User findByLoginActive (String login);
     List<User> findAll();
+    boolean emailIsInDb(String email);
+    boolean loginIsInDb(String login);
 }

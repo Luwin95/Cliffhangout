@@ -10,6 +10,8 @@ public interface UserManager {
     User getLoginUser(String username);
     boolean validateCredentials(User user, String password);
     boolean isInDatabase(String username);
+    boolean checkEmailInDb(String email);
+    boolean checkLoginInDb(String login);
     String signinNewSubscriber(User user);
     void addProfileImage(File profileImage, String profileImageContentType, String profileImageFileName, User user);
     void editProfile(User user, User userSession);

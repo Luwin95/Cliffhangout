@@ -104,6 +104,10 @@ public class SigninAction extends AbstractAction {
             {
                 addFieldError("userBean.login", "Le login doit faire plus de deux caractères");
             }
+            if(!userBean.getLogin().equals("") && userBean.getLogin().length() >2 && getManagerFactory().getUserManager().checkLoginInDb(userBean.getLogin()))
+            {
+                addFieldError("userBean.login", "Ce login est déjà utilisé");
+            }
             if(userBean.getPassword().equals(""))
             {
                 addFieldError("userBean.password", "Le mot de passe ne peut être vide");
@@ -118,6 +122,10 @@ public class SigninAction extends AbstractAction {
             if(!EmailValidator.getInstance().isValid(userBean.getEmail()))
             {
                 addFieldError("userBean.email", "L'email entré n'est pas valide");
+            }
+            if(EmailValidator.getInstance().isValid(userBean.getEmail()) && getManagerFactory().getUserManager().checkEmailInDb(userBean.getEmail()))
+            {
+                addFieldError("userBean.email", "Cet email est déja utilisé");
             }
         }
     }

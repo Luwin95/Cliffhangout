@@ -131,6 +131,7 @@
                 <param name="idTopo">${idTopo}</param>
             </result>
             <result name="login" type="redirect">/login.action</result>
+            <result name="home" type="redirect">/subscriber/home.action</result>
         </action>
         <action name="topoSearch" class="com.cliffhangout.webapp.actions.TopoSearch">
             <result name="success">/layout.jsp</result>
