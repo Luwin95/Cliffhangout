@@ -16,4 +16,5 @@ public interface UserManager {
     void editProfile(User user, User userSession,File profileImage, String profileImageContentType, String profileImageFileName);
     List<User> displayAllUsers();
     void editUserRights(User user);
+    void editAccountActivation(int idUser);
 }

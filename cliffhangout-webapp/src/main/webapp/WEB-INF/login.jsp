@@ -5,6 +5,13 @@
 <div class="container login-form">
     <div class="row">
         <h1>Se connecter à Cliffhangout</h1>
+        <s:if test="%{message!=null}">
+            <div class="row">
+                <div class="col-xs-offset-3 col-xs-6 alert alert-danger">
+                    <s:property value="message"/>
+                </div>
+            </div>
+        </s:if>
         <form method="post" class="col-xs-offset-3 col-xs-6">
             <div class="row">
                 <label for="login" class="col-sm-4">Login</label>
@@ -22,7 +29,7 @@
         </form>
     </div>
     <div class="row">
-        <p>Nouveau sur Cliffhangout ? <a href="#">Créer un compte</a></p>
+        <p>Nouveau sur Cliffhangout ? <a href="<s:url action="signin" namespace="/"/>">Créer un compte</a></p>
     </div>
 </div>
 

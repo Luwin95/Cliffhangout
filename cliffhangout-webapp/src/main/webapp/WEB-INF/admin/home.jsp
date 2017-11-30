@@ -22,7 +22,8 @@
                                 <th>Email</th>
                                 <th>Rôle</th>
                                 <th>Modifier les droits</th>
-                                <th>Supprimer</th>
+                                <th>Statut</th>
+                                <th>Activer/Désactiver</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,7 +36,6 @@
                                     <s:param name="idUser"><s:property value="id"/></s:param>
                                 </s:url>
                                 <td>
-
                                     <s:if test='%{role.equals("ADMIN")}'>
                                         <button type="button" class="btn btn-danger" title="Delete" data-toggle="modal" data-target="#userRemoveRightsDialog<s:property value="id"/>">
                                             <span class="glyphicon glyphicon-edit"></span> Supprimer Droits
@@ -59,7 +59,7 @@
                                         </div><!-- /.modal -->
                                     </s:if>
                                     <s:else>
-                                        <button type="button" class="btn btn-success" title="Delete" data-toggle="modal" data-target="#userAddRightsDialog<s:property value="id"/>">
+                                        <button type="button" class="btn btn-success" title="Add" data-toggle="modal" data-target="#userAddRightsDialog<s:property value="id"/>">
                                             <span class="glyphicon glyphicon-edit"></span> Ajouter droits
                                         </button>
                                         <div class="modal fade" id="userAddRightsDialog<s:property value="id"/>" tabindex="-1" role="dialog" aria-labelledby="modalUserAddRights" aria-hidden="true">
@@ -82,26 +82,62 @@
                                     </s:else>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#siteDialog<s:property value="id"/>">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
-                                    <div class="modal fade" id="siteDialog<s:property value="id"/>" tabindex="-1" role="dialog" aria-labelledby="modalUsers" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    <h4 class="modal-title" id="modalUsers">Suppression d'utilisateur</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Voulez-vous vraiment supprimer cet utilisateur ?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                                    <a href="#" class="btn btn-danger">Confirmer</a>
-                                                </div>
-                                            </div><!-- /.modal-content -->
-                                        </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->
+                                    <s:if test="%{active == true}">
+                                        ACTIF
+                                    </s:if>
+                                    <s:else>
+                                        INACTIF
+                                    </s:else>
+                                </td>
+                                <s:url var="userActivationUrl" action="editUserActivation" namespace="/admin">
+                                    <s:param name="idUser"><s:property value="id"/></s:param>
+                                </s:url>
+                                <td>
+                                    <s:if test="%{active == true}">
+                                        <button type="button" class="btn btn-danger" title="Delete" data-toggle="modal" data-target="#usersRemoveActivationDialog<s:property value="id"/>">
+                                            <span class="glyphicon glyphicon-remove"></span>Désactiver
+                                        </button>
+                                        <div class="modal fade" id="usersRemoveActivationDialog<s:property value="id"/>" tabindex="-1" role="dialog" aria-labelledby="modalRemoveUsersActivation" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="modalRemoveUsersActivation">Désactivation de compte utilisateur</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Voulez-vous vraiment désactiver cet utilisateur ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                        <a href="${userActivationUrl}" class="btn btn-danger">Confirmer</a>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </s:if>
+                                    <s:else>
+                                        <button type="button" class="btn btn-success" title="Delete" data-toggle="modal" data-target="#usersAddActivationDialog<s:property value="id"/>">
+                                            <span class="glyphicon glyphicon-add"></span>Activer
+                                        </button>
+                                        <div class="modal fade" id="usersAddActivationDialog<s:property value="id"/>" tabindex="-1" role="dialog" aria-labelledby="modalAddUsersActivation" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="modalAddUsersActivation">Activation de compte utilisateur</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Voulez-vous vraiment activer cet utilisateur ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                                        <a href="${userActivationUrl}" class="btn btn-danger">Confirmer</a>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </s:else>
+
                                 </td>
                             </tr>
                         </s:iterator>

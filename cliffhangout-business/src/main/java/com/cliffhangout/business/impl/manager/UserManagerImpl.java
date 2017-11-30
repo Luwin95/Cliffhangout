@@ -36,7 +36,7 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
     {
         User user = new User();
         try{
-            user = getDaoFactory().getUserDao().findByLogin(username);
+            user = getDaoFactory().getUserDao().findByLoginActive(username);
         }catch(EmptyResultDataAccessException e){
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
     @Override
     public String hashPassword(String password)
     {
-        String salt = BCrypt.gensalt(16);
+        String salt = BCrypt.gensalt();
         String passwordHash = BCrypt.hashpw(password, salt);
         return passwordHash;
     }
@@ -69,7 +69,7 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
     {
         User user = new User();
         try{
-            user = getDaoFactory().getUserDao().findByLogin(username);
+            user = getDaoFactory().getUserDao().findByLoginActive(username);
             if(user!=null)
             {
                 return user.getId() != 0;
@@ -92,6 +92,7 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
                     String encryptedPassword= hashPassword(user.getPassword());
                     user.setPassword(encryptedPassword);
                     user.setRole("USER");
+                    user.setActive(true);
                     getDaoFactory().getUserDao().create(user);
                 }
             });
@@ -186,6 +187,25 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
                     user.setRole("USER");
                 }else if(user.getRole().equals("USER")){
                     user.setRole("ADMIN");
+                }
+                getDaoFactory().getUserDao().update(user);
+            }
+        });
+    }
+
+    @Override
+    public void editAccountActivation(int idUser) {
+        User user = displayUser(idUser);
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                if(user.isActive())
+                {
+                    user.setActive(false);
+                }else{
+                    user.setActive(true);
                 }
                 getDaoFactory().getUserDao().update(user);
             }

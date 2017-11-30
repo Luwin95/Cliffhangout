@@ -55,7 +55,7 @@
                             <label for="sectorName[<s:property value="%{#status.index}"/>]" class="col-xs-offset-3 col-xs-2">Nom : </label>
                             <div class="col-xs-4">
                                 <input type="text" name="siteBean.sectors[<s:property value="%{#status.index}"/>].name" class="form-control" id="sectorName[<s:property value="%{#status.index}"/>]"
-                                       value="<s:property value="name"/>"
+                                       value="<s:property value="siteBean.sectors[%{#status.index}].name"/>"
                                        data-minlength="2"
                                        data-error="Le nom du secteur doit faire deux caractères au minimum"/>
                                 <div class="help-block with-errors"></div>
@@ -67,25 +67,16 @@
                             <label for="sectorDescription[<s:property value="%{#status.index}"/>]" class="col-xs-offset-3 col-xs-2">Description : </label>
                             <div class="col-xs-4">
                                 <input type="text" name="siteBean.sectors[<s:property value="%{#status.index}"/>].description" class="form-control" id="sectorDescription[<s:property value="%{#status.index}"/>]"
-                                       value="<s:property value="description"/>"
+                                       value="<s:property value="siteBean.sectors[%{#status.index}].description"/>"
                                        data-error="La description du secteur ne peut être vide"/>
                                 <div class="help-block with-errors"></div>
                                 <s:set name="fieldName" value="siteBean.sectors[%{#status.index}].description"/>
                                 <s:fielderror fieldName="%{#fieldName}" cssClass="errorMessage"/>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="sector[<s:property value="%{#status.index}"/>]NbWay" class="col-xs-offset-3 col-xs-2">Nombre de voies : </label>
-                            <div class="col-xs-4">
-                                <input type="number" name="wayNb[<s:property value="%{#status.index}"/>]" class="form-control" id="sector[<s:property value="%{#status.index}"/>]NbWay" value="<s:property value="wayNb[%{#status.index}]"/> "/>
-                                <div class="help-block with-errors"></div>
-                                <s:set name="fieldName" value="wayNb[%{#status.index}]"/>
-                                <s:fielderror fieldName="%{#fieldName}" cssClass="errorMessage"/>
-                            </div>
-                        </div>
-                        <div id="ways<s:property value="%{#status.index}"/>">
+                        <div id="sector[<s:property value="%{#status.index}"/>]Ways">
                             <s:set name="sectorWays" value="siteBean.sectors[%{#status.index}].ways"/>
-                            <s:if test="sectorWays!= null && %{#sectorWays.size}>0">
+                            <s:if test="sectorWays!= null && %{#sectorWays.size}>1">
                                 <s:iterator value="siteBean.sectors[%{#status.index}].ways" begin="1" status="statusWay">
                                     <div id="sector[<s:property value="%{#status.index}"/>]Way[<s:property value="%{#statusWay.index}"/>]" >
                                         <h3>Voie n°<s:property value="%{#statusWay.index}"/></h3>
@@ -99,64 +90,29 @@
                                         <div class="form-group row">
                                             <label for="sector[<s:property value="%{#status.index}"/>]WayHeight[<s:property value="%{#statusWay.index}"/>]" class="col-xs-offset-3 col-xs-2">Hauteur (en m) : </label>
                                             <div class="col-xs-4">
-                                                <input type="number" name="siteBean.sectors[<s:property value="%{#status.index}"/>].ways[<s:property value="%{#statusWay.index}"/>].heightString" class="form-control" id="sector[<s:property value="%{#status.index}"/>]WayHeight[<s:property value="%{#statusWay.index}"/>]"/>
+                                                <input type="number" name="siteBean.sectors[<s:property value="%{#status.index}"/>].ways[<s:property value="%{#statusWay.index}"/>].height" class="form-control" id="sector[<s:property value="%{#status.index}"/>]WayHeight[<s:property value="%{#statusWay.index}"/>]"/>
                                                 <div class="help-block with-errors"></div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="sector[<s:property value="%{#status.index}"/>]WayQuotation[<s:property value="%{#statusWay.index}"/>]" class="col-xs-offset-3 col-xs-2">Hauteur (en m) : </label>
                                             <div class="col-xs-4">
-                                                <select name="siteBean.sectors[<s:property value="%{#status.index}"/>].ways[<s:property value="%{#statusWay.index}"/>].quotation.name" id="sector[<s:property value="%{#status.index}"/>]WayQuotation[<s:property value="%{#statusWay.index}"/>]">
+                                                <select name="siteBean.sectors[<s:property value="%{#status.index}"/>].ways[<s:property value="%{#statusWay.index}"/>].quotation" id="sector[<s:property value="%{#status.index}"/>]WayQuotation[<s:property value="%{#statusWay.index}"/>]">
                                                     <s:iterator status="cotation" begin="3" end="9" step="1">
-                                                        <option><s:property value="%{#cotation.index +3}"/>a</option>
-                                                        <option><s:property value="%{#cotation.index +3}"/>b</option>
-                                                        <option><s:property value="%{#cotation.index +3}"/>c</option>
+                                                        <option value="<s:property value="%{#cotation.index+1}"/>"><s:property value="%{#cotation.index +3}"/>a</option>
+                                                        <option value="<s:property value="%{#cotation.index+2}"/>"><s:property value="%{#cotation.index +3}"/>b</option>
+                                                        <option value="<s:property value="%{#cotation.index+3}"/>"><s:property value="%{#cotation.index +3}"/>c</option>
                                                     </s:iterator>
                                                 </select>
                                                 <div class="help-block with-errors"></div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <button id="deleteSector[<s:property value="%{#status.index}"/>]Way[<s:property value="%{#statusWay.index}"/>]" class="btn btn-danger">Supprimer Voie</button>
+                                            <div class="row">
+                                                <button id="deleteSector[<s:property value="%{#status.index}"/>]Way[<s:property value="%{#statusWay.index}"/>]" class="btn btn-danger">Supprimer Voie</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </s:iterator>
                             </s:if>
-                            <s:else>
-                                <div id="sector[<s:property value="%{#status.index}"/>]Way[0]" >
-                                    <h3>Voie n°1</h3>
-                                    <div class="form-group row">
-                                        <label for="sector[<s:property value="%{#status.index}"/>]WayName[0]" class="col-xs-offset-3 col-xs-2">Nom : </label>
-                                        <div class="col-xs-4">
-                                            <input type="text" name="siteBean.sectors[<s:property value="%{#status.index}"/>].ways[0].name" class="form-control" id="sector[<s:property value="%{#status.index}"/>]WayName[0]"/>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="sector[<s:property value="%{#status.index}"/>]WayHeight[0]" class="col-xs-offset-3 col-xs-2">Hauteur (en m) : </label>
-                                        <div class="col-xs-4">
-                                            <input type="number" name="siteBean.sectors[<s:property value="%{#status.index}"/>].ways[0].heightString" class="form-control" id="sector[<s:property value="%{#status.index}"/>]WayHeight[0]"/>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="sector[<s:property value="%{#status.index}"/>]WayQuotation[0]" class="col-xs-offset-3 col-xs-2">Hauteur (en m) : </label>
-                                        <div class="col-xs-4">
-                                            <select name="siteBean.sectors[<s:property value="%{#status.index}"/>].ways[0].quotation.name" id="sector[<s:property value="%{#status.index}"/>]WayQuotation[0]">
-                                                <s:iterator status="cotation" begin="3" end="9" step="1">
-                                                    <option><s:property value="%{#cotation.index +3}"/>a</option>
-                                                    <option><s:property value="%{#cotation.index +3}"/>b</option>
-                                                    <option><s:property value="%{#cotation.index +3}"/>c</option>
-                                                </s:iterator>
-                                            </select>
-                                            <div class="help-block with-errors"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <button id="deleteSector[<s:property value="%{#status.index}"/>]Way[0]" class="btn btn-danger">Supprimer Voie</button>
-                                    </div>
-                                </div>
-                            </s:else>
                         </div>
                         <div class="row">
                             <button class="btn btn-info addWay" id="addWay[<s:property value="%{#status.index}"/>]">Ajouter une voie</button>
@@ -215,14 +171,14 @@
             <div class="form-group row">
                 <label for="sector[__SECTORIDX__]WayHeight[__IDX__]" class="col-xs-offset-3 col-xs-2">Hauteur (en m) : </label>
                 <div class="col-xs-4">
-                    <input type="number" name="siteBean.sectors[__SECTORIDX__].ways[__IDX__].heightString" class="form-control" id="sector[__SECTORIDX__]WayHeight[__IDX__]"/>
+                    <input type="number" name="siteBean.sectors[__SECTORIDX__].ways[__IDX__].height" class="form-control" id="sector[__SECTORIDX__]WayHeight[__IDX__]"/>
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="sector[__SECTORIDX__]WayQuotation[__IDX__]" class="col-xs-offset-3 col-xs-2">Hauteur (en m) : </label>
                 <div class="col-xs-4">
-                    <select name="siteBean.sectors[__SECTORIDX__].ways[__IDX__].quotation.name" id="sector[__SECTORIDX__]WayQuotation[__IDX__]">
+                    <select name="siteBean.sectors[__SECTORIDX__].ways[__IDX__].quotation" id="sector[__SECTORIDX__]WayQuotation[__IDX__]">
                         <s:iterator status="cotation" begin="3" end="9" step="1">
                             <option value="<s:property value="%{#cotation.index+1}"/>"><s:property value="%{#cotation.index +3}"/>a</option>
                             <option value="<s:property value="%{#cotation.index+2}"/>"><s:property value="%{#cotation.index +3}"/>b</option>
@@ -232,7 +188,7 @@
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="row">
-                    <button id="deleteSector[__SECTORIDX__]Way[__IDX__]" class="btn btn-danger">Supprimer Voie</button><br/>
+                    <button id="deleteSector[__SECTORIDX__]Way[__IDX__]" class="btn btn-danger">Supprimer Voie</button>
                 </div>
             </div>
         </div>

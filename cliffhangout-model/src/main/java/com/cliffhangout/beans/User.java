@@ -8,6 +8,7 @@ public class User {
     private String email;
     private String role;
     private Image image;
+    private boolean active;
 
     public int getId() {
         return id;
@@ -57,5 +58,11 @@ public class User {
         this.image = image;
     }
 
+    public boolean isActive() {
+        return active;
+    }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

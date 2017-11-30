@@ -12,6 +12,7 @@ public class Way {
     private Quotation quotation;
     private int pointsNb;
     private int sectorId;
+    private String heightString;
     private List<Length> lengths = new ArrayList<Length>();
 
 
@@ -37,6 +38,14 @@ public class Way {
 
     public void setHeight(double height) {
         this.height = height;
+    }
+
+    public String getHeightString() {
+        return heightString;
+    }
+
+    public void setHeightString(String heightString) {
+        this.heightString = heightString;
     }
 
     public Quotation getQuotation() {

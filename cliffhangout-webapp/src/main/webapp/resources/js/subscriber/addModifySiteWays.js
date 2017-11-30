@@ -1,16 +1,6 @@
 $(function(){
     var cptSector= $('.sectorItem').length-1;
-
-    var sectorTemplate = $('#sectorTemplate').html();
     var wayTemplate = $('#wayTemplate').html();
-
-
-
-    addDeleteSector(cptSector);
-    $('#addSector').click(function(e)
-    {
-        addSector(sectorTemplate);
-    });
 
     $('.addWay').each(function () {
         $(this).click(function(e)
@@ -19,35 +9,34 @@ $(function(){
             currentSector = currentSector.match(/\[(.*?)\]/)[1];
             console.log(currentSector);
             var selectorName = "#ways"+currentSector;
-            var cptWay = $(selectorName).children().length;
-            console.log(cptWay);
+            var cptWay = $(selectorName).length-1;
             addWay(wayTemplate, currentSector, cptWay);
         });
     });
 
-    function addSector(sectorTemplate)
-    {
-        var sectorHTML = sectorTemplate.replace(/__IDX__/g, cptSector+1).replace(/__REALIDX__/g, (cptSector+1));
-        $('#sectors').append(sectorHTML);
-        addDeleteSector(cptSector);
-        //addWayAdding(cptSector);
-        cptSector++;
-    }
-
-    function addDeleteSector(cpt)
-    {
-        $('#deleteSector['+cpt+']').click(function(e)
+    $('.deleteWay').each(function () {
+        $(this).click(function(e)
         {
-            if(cptSector>1)
+            var currentSector = $(this).attr("id");
+            currentSector = currentSector.match(/\[(.*?)\]/)[1];
+            console.log(currentSector);
+            var selectorName = "#ways"+currentSector;
+            //var currentWay = currentSector.match(/^.*\[\]\[(.*?)\]$/gm)[1];
+            //console.log(currentWay);
+            var wayToDelete = $(this).parent().parent();
+            var ways = wayToDelete.parent();
+            console.log(ways.children().length);
+            if(ways.children().length > 1)
             {
-                $('#sector['+cpt+']').remove();
-                e.preventDefault();
-                cptSector--;
-            }else{
-                alert('Un site doit posséder au moins un secteur');
+                wayToDelete.remove();
+                var cptWay=0;
+                ways.find('h3').each(function() {
+                    $(this).text('Voie n°'+(cptWay+1));
+                    cptWay++;
+                });
             }
         });
-    }
+    });
 
     function addWayAdding(cptSector)
     {
@@ -66,19 +55,27 @@ $(function(){
     {
         var wayHTML = wayTemplate.replace(/__IDX__/g, cptWay).replace(/__REALIDX__/g, cptWay+1).replace(/__SECTORIDX__/g, currentSector);
         console.log(wayHTML);
+        console.log($("#sector["+(currentSector)+"]Ways").html());
+        //$('#sector['+currentSector+']Ways').append(wayHTML);
         var selectorName = "#ways"+currentSector;
         console.log(selectorName);
-        $(selectorName).append(wayHTML);
+        var $waysSelector = $(selectorName);
+        console.log($waysSelector.html());
+        if($waysSelector.length)
+        {
+            console.log("ça marche");
+        }
+        $waysSelector.append(wayHTML);
         addDeleteWay(currentSector, cptWay);
+        cptWay++;
     }
 
-    function addDeleteWay(currentSector, cptWay)
+    function addDeleteWay(currentSector, wayToDelete, button)
     {
-        $('#deleteSector['+currentSector+']Way['+cptWay+']').click(function(e)
+        button.click(function(e)
         {
-            $('#way['+cptWay+']').remove();
+
             e.preventDefault();
-            cptWay--;
         })
     }
 });

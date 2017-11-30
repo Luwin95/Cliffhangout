@@ -17,6 +17,7 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
     private String stylesheets = "login.css";
     private String jsPages = "login.js";
     private String title = "Login";
+    private String message;
 
     public void setSession(Map session) {
         this.session = session;
@@ -66,6 +67,14 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
         return title;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public String execute()
     {
         if(!session.containsKey("sessionUser"))
@@ -73,11 +82,12 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
             if(username!=null)
             {
                 user = getManagerFactory().getUserManager().getLoginUser(this.username);
-                if(user.getId()!=0 && getManagerFactory().getUserManager().validateCredentials(user,this.password))
+                if(user!=null && getManagerFactory().getUserManager().validateCredentials(user,this.password))
                 {
                     session.put("sessionUser", getUser());
                     return SUCCESS;
                 }else{
+                    setMessage("Informations de connexion incorrectes");
                     return ERROR;
                 }
             }else{
@@ -108,15 +118,6 @@ public class LoginAction extends AbstractAction implements RequestAware, Session
             }
             if(!this.password.equals("") && this.password.length()<5){
                 addFieldError("password", "Le  mot de passe ne doit pas faire moins de cinq caractères");
-            }
-        }
-        if(this.password!= null && this.username!= null && this.password.length()>=5 && this.username.length()>2)
-        {
-            if(!getManagerFactory().getUserManager().isInDatabase(this.username)){
-                addFieldError("username", "Ce login est incorrect");
-            }else if(!getManagerFactory().getUserManager().validateCredentials(getManagerFactory().getUserManager().getLoginUser(this.username),this.password))
-            {
-                addFieldError("password", "Le mot de passe est incorrect");
             }
         }
     }

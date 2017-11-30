@@ -3,9 +3,11 @@ package com.cliffhangout.webapp.actions;
 import com.cliffhangout.beans.Sector;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.User;
+import com.cliffhangout.beans.Way;
 import com.cliffhangout.webapp.AbstractAction;
 import org.apache.struts2.interceptor.SessionAware;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +17,7 @@ public class AddSiteAction extends AbstractAction implements SessionAware {
     private String stylesheets = "/subscriber/addSite.css";
     private String jsPages = "/subscriber/addModifySite.js";
     private Site siteBean;
+    private List<String> wayNb;
     Map<String, Object> session;
 
     public String getTitle() {
@@ -41,6 +44,14 @@ public class AddSiteAction extends AbstractAction implements SessionAware {
         this.siteBean = siteBean;
     }
 
+    public List<String> getWayNb() {
+        return wayNb;
+    }
+
+    public void setWayNb(List<String> wayNb) {
+        this.wayNb = wayNb;
+    }
+
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
@@ -53,7 +64,18 @@ public class AddSiteAction extends AbstractAction implements SessionAware {
             if(session.containsKey("sessionUser"))
             {
                 siteBean.setCreator((User) session.get("sessionUser"));
-                getManagerFactory().getSiteManager().addSite(siteBean);
+                for(String nb : wayNb)
+                {
+                    List<Way> ways= new ArrayList<>();
+                    for(int i=0; i<Integer.parseInt(nb); i++)
+                    {
+                        Way wayToAdd = new Way();
+                        ways.add(wayToAdd);
+                    }
+                    siteBean.getSectors().get(wayNb.indexOf(nb)).setWays(ways);
+                }
+                //getManagerFactory().getSiteManager().addSite(siteBean);
+                session.put("siteBean", siteBean);
                 return SUCCESS;
             }else{
                 return ERROR;
@@ -91,7 +113,7 @@ public class AddSiteAction extends AbstractAction implements SessionAware {
             {
                 addFieldError("siteBean.postcode", "Le code postale entré n'est pas valide");
             }
-            if(siteBean.getSectors() != null)
+if(siteBean.getSectors() != null)
             {
                 for(int i = 1; i<siteBean.getSectors().size(); i++)
                 {

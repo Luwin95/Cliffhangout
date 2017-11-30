@@ -17,6 +17,7 @@ public class UserRM extends AbstractRM implements RowMapper<User> {
         user.setPassword(rs.getString("password"));
         user.setEmail(rs.getString("email"));
         user.setRole(rs.getString("role"));
+        user.setActive(rs.getBoolean("active"));
         if(rs.getInt("image_id")!=0)
         {
             ImageRM imageRM = new ImageRM();
