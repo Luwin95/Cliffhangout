@@ -28,7 +28,7 @@ public class SubscriberAction extends AbstractAction implements SessionAware {
     Map<String, Object> session;
     private Date now;
     private String fileName;
-    private final File baseDownloadDir = new File("E:/P3/cliffhangout-webapp/src/main/webapp/resources/topos/");
+    private final File baseDownloadDir = new File("E:/UploadCliffhangout/topos/");
     private InputStream inputStream;
     private long fileSize;
 

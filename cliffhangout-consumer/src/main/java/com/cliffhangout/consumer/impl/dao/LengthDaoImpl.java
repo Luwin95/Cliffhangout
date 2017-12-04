@@ -9,6 +9,8 @@ import com.cliffhangout.consumer.impl.rowmapper.LengthRM;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,8 +25,10 @@ public class LengthDaoImpl extends AbstractDaoImpl implements LengthDao {
         vParams.addValue("name", length.getName(), Types.VARCHAR);
         vParams.addValue("description", length.getDescription(), Types.VARCHAR);
         vParams.addValue("way_id", length.getWayId());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"length_id"});
+        length.setId((int) keyHolder.getKey());
     }
 
     @Override

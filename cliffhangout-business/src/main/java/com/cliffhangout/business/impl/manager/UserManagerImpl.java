@@ -113,8 +113,7 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
     public void addProfileImage(File profileImage, String profileImageContentType, String profileImageFileName, User user) {
         /*ServletContext context = ServletActionContext.getServletContext();
             String userDir = context.getRealPath("/");*/
-        String userDir = "E:\\P3\\cliffhangout-webapp\\src\\main\\webapp\\";
-        userDir = userDir.replaceAll("\\\\", "/");
+        String userDir = getUploadDirectory().replaceAll("\\\\", "/");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yy_H_mm_ss");
         Date date = new Date();
         String path=dateFormat.format(date)+ UUID.randomUUID().toString()+"."+profileImageContentType.substring(6);
@@ -122,6 +121,8 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
         image.setPath(path);
         image.setTitle("Image profil utilisateur");
         image.setAlt("Image profil utilisateur "+profileImageFileName);
+        profileImageFileName = "/images/user/"+path;
+        String fullfilename = userDir+profileImageFileName;
         try
         {
             TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
@@ -134,8 +135,6 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
                 }
             });
         }finally{
-            profileImageFileName = "resources/images/user/"+path;
-            String fullfilename = userDir+profileImageFileName;
             File importedImage = new File(fullfilename);
             try{
                 FileUtils.copyFile(profileImage, importedImage);
@@ -168,9 +167,8 @@ public class UserManagerImpl extends AbstractManagerImpl implements UserManager 
     public void editProfile(User user, User userSession, File profileImage, String profileImageContentType, String profileImageFileName) {
         if(userSession.getImage()!=null)
         {
-            String userDir = "E:\\P3\\cliffhangout-webapp\\src\\main\\webapp\\";
-            userDir = userDir.replaceAll("\\\\", "/");
-            String imageToDeleteName = userDir+"/resources/images/user"+userSession.getImage().getPath();
+            String userDir = getUploadDirectory().replaceAll("\\\\", "/");
+            String imageToDeleteName = getUploadDirectory()+"/images/user"+userSession.getImage().getPath();
             File imageToDelete = new File(imageToDeleteName);
             FileUtils.deleteQuietly(imageToDelete);
         }

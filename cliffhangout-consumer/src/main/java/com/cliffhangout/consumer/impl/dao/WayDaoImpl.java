@@ -7,6 +7,8 @@ import com.cliffhangout.consumer.impl.rowmapper.WayRM;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
 import java.util.List;
@@ -14,15 +16,17 @@ import java.util.List;
 public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
     @Override
     public void create(Way way){
-        String vSQL = "INSERT INTO way(name, height, quotation_difficulty, points_nb, sector_id) VALUES(:name, :height, :quotation_difficulty, :points_nb, : sector_id)";
+        String vSQL = "INSERT INTO way(name, height, quotation_difficulty, points_nb, sector_id) VALUES(:name, :height, :quotation_difficulty, :points_nb, :sector_id)";
         MapSqlParameterSource vParams = new MapSqlParameterSource();
         vParams.addValue("name", way.getName(), Types.VARCHAR);
         vParams.addValue("height", way.getHeight(), Types.REAL);
         vParams.addValue("quotation_difficulty", way.getQuotation().getDifficulty(), Types.INTEGER);
         vParams.addValue("points_nb", way.getPointsNb(), Types.INTEGER);
         vParams.addValue("sector_id", way.getSectorId(), Types.INTEGER);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"way_id"});
+        way.setId((int) keyHolder.getKey());
     }
 
     @Override

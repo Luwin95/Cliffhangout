@@ -85,9 +85,10 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
     @Override
     public Site find(int id){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name from site " +
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, image.*, image.image_id AS imageId, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
                 "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
                 "LEFT JOIN region ON site.region_id=region.region_id " +
+                "LEFT JOIN image ON image.image_id= user_account.image_id " +
                 "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
                 "WHERE 1=1");
         if(id>0)
@@ -103,9 +104,10 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
 
     @Override
     public List<Site> findAllSites(){
-        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, image.*, image.image_id AS imageId, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
                 "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
                 "LEFT JOIN region ON site.region_id=region.region_id " +
+                "LEFT JOIN image ON image.image_id= user_account.image_id " +
                 "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
                 "WHERE 1=1 ");
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
@@ -117,10 +119,11 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
     @Override
     public List<Site> findAllByTopo(Topo topo){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site_topo " +
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, image.*, image.image_id AS imageId, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site_topo " +
                 "LEFT JOIN site ON site.site_id = site_topo.site_id " +
                 "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
                 "LEFT JOIN region ON site.region_id=region.region_id " +
+                "LEFT JOIN image ON image.image_id= user_account.image_id " +
                 "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
                 "WHERE 1=1 ");
         if(topo != null)
@@ -150,9 +153,10 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
 
     @Override
     public List<Site> findLastTen(){
-        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, image.*, image.image_id AS imageId, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
                 "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
                 "LEFT JOIN region ON site.region_id=region.region_id " +
+                "LEFT JOIN image ON image.image_id= user_account.image_id " +
                 "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
                 "ORDER BY site.site_id DESC LIMIT 10");
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
@@ -164,9 +168,10 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
     @Override
     public List<Site> findCreatorSites(User user) {
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
+        StringBuilder vSQL= new StringBuilder("SELECT site.*, user_account.*, image.*, image.image_id AS imageId, user_account.user_account_id AS user_id, region.region_name, departement.departement_name FROM site " +
                 "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
                 "LEFT JOIN region ON site.region_id=region.region_id " +
+                "LEFT JOIN image ON image.image_id= user_account.image_id " +
                 "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
                 "WHERE 1=1 ");
         if(user != null)

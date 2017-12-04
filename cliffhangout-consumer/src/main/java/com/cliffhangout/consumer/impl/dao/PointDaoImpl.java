@@ -7,6 +7,8 @@ import com.cliffhangout.consumer.impl.rowmapper.PointRM;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,8 +22,10 @@ public class PointDaoImpl extends AbstractDaoImpl implements PointDao {
         vParams.addValue("name", point.getName(), Types.VARCHAR);
         vParams.addValue("description", point.getDescription(), Types.VARCHAR);
         vParams.addValue("length_id", point.getLengthId(), Types.INTEGER);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"point_id"});
+        point.setId((int) keyHolder.getKey());
     }
 
     @Override

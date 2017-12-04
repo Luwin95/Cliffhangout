@@ -34,6 +34,8 @@ $(function(){
                     $(this).text('Voie n°'+(cptWay+1));
                     cptWay++;
                 });
+            }else{
+                $(this.unbind('click'));
             }
         });
     });

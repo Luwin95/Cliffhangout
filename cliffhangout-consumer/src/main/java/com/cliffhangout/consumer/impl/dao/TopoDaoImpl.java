@@ -80,8 +80,9 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
     @Override
     public Topo find(int id){
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id FROM topo " +
+        StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id, image.*, image.image_id AS imageId FROM topo " +
                 "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
+                "LEFT JOIN image ON user_account.image_id = image.image_id " +
                 "WHERE 1=1 ");
         if(id>0)
         {
@@ -97,9 +98,10 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
     @Override
     public List<Topo> findAll() {
         try{
-            StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id " +
+            StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id, image.*, image.image_id AS imageId " +
                     "FROM topo " +
-                    "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id ");
+                    "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
+                    "LEFT JOIN image ON user_account.image_id = image.image_id ");
             JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
             RowMapper<Topo> vRowMapper = new TopoRM();
             List<Topo> vList = vJdbcTemplate.query(vSQL.toString(),vRowMapper);
@@ -112,9 +114,10 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
     @Override
     public List<Topo> findAllByUser(User user) {
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id " +
+        StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, image.*, image.image_id AS imageId, user_account.user_account_id AS user_id " +
                 "FROM topo " +
                 "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
+                "LEFT JOIN image ON user_account.image_id = image.image_id " +
                 "WHERE 1=1 ");
         if(user != null)
         {
@@ -133,9 +136,10 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
     @Override
     public List<Topo> findAllBorrowed(User user) {
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id " +
+        StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id,image.*, image.image_id AS imageId " +
                 "FROM topo " +
                 "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
+                "LEFT JOIN image ON user_account.image_id = image.image_id " +
                 "WHERE 1=1 ");
         if(user != null)
         {

@@ -315,6 +315,21 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
                 {
                     sector.setSiteId(site.getId());
                     getDaoFactory().getSectorDao().create(sector);
+                    for(Way way: sector.getWays())
+                    {
+                        way.setSectorId(sector.getId());
+                        getDaoFactory().getWayDao().create(way);
+                        for(Length length : way.getLengths())
+                        {
+                            length.setWayId(way.getId());
+                            getDaoFactory().getLengthDao().create(length);
+                            for(Point point : length.getPoints())
+                            {
+                                point.setLengthId(length.getId());
+                                getDaoFactory().getPointDao().create(point);
+                            }
+                        }
+                    }
                 }
             }
         });

@@ -17,12 +17,19 @@ public abstract class AbstractManagerImpl {
         this.daoFactory = daoFactory;
     }
 
-
     private PlatformTransactionManager platformTransactionManager;
     protected PlatformTransactionManager getPlatformTransactionManager() {
         return platformTransactionManager;
     }
     public void setPlatformTransactionManager(PlatformTransactionManager platformTransactionManager) {
         this.platformTransactionManager = platformTransactionManager;
+    }
+
+    private String uploadDirectory;
+    protected String getUploadDirectory() {
+        return uploadDirectory;
+    }
+    public void setUploadDirectory(String uploadDirectory) {
+        this.uploadDirectory = uploadDirectory;
     }
 }

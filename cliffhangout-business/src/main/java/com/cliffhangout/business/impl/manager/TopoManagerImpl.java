@@ -16,23 +16,21 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager {
     @Override
     public void addTopo(Topo topo, File upload, String uploadFileName, String uploadContentType, Map<String, Object> session) {
-        String userDir = "E:\\P3\\cliffhangout-webapp\\src\\main\\webapp\\";
-        userDir = userDir.replaceAll("\\\\", "/");
+        String userDir = getUploadDirectory().replaceAll("\\\\", "/");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yy_H_mm_ss");
         Date date = new Date();
         User creator = (User) session.get("sessionUser");
         List<Site> sitesTopo = (List<Site>) session.get("sitesTopo");
-
-        topo.setFile(dateFormat.format(date)+uploadFileName);
+        String path=dateFormat.format(date)+ UUID.randomUUID().toString()+"."+uploadContentType.substring(12);
+        topo.setFile(path);
         topo.setOwner(creator);
+        String fullfilename = userDir+"/topos/"+path;
+
         try
         {
             TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
@@ -48,8 +46,6 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
                 }
             });
         }finally{
-            uploadFileName = "resources/topos/"+dateFormat.format(date)+uploadFileName;
-            String fullfilename = userDir+uploadFileName;
             File importedTopo = new File(fullfilename);
             try{
                 FileUtils.copyFile(upload, importedTopo);
@@ -200,14 +196,13 @@ public class TopoManagerImpl extends AbstractManagerImpl implements TopoManager 
 
     @Override
     public void editTopo(Topo topo, Topo topoToEdit, File upload, String uploadFileName, String uploadContentType, Map<String, Object> session) {
-        String userDir = "E:\\P3\\cliffhangout-webapp\\src\\main\\webapp\\";
-        userDir = userDir.replaceAll("\\\\", "/");
+        String userDir = getUploadDirectory().replaceAll("\\\\", "/");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yy_H_mm_ss");
         Date date = new Date();
-        String topoToDeleteFileName = userDir+"resources/topos/"+topoToEdit.getFile();
-        topoToEdit.setFile(dateFormat.format(date)+uploadFileName);
-        uploadFileName = "resources/topos/"+dateFormat.format(date)+uploadFileName;
-        String fullfilename = userDir+uploadFileName;
+        String topoToDeleteFileName = userDir+"/topos/"+topoToEdit.getFile();
+        String path=dateFormat.format(date)+ UUID.randomUUID().toString()+"."+uploadContentType.substring(12);
+        topoToEdit.setFile(userDir+path);
+        String fullfilename = userDir+"/topos/"+path;
 
         File topoToDelete = new File(topoToDeleteFileName);
 

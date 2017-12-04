@@ -3,6 +3,7 @@ package com.cliffhangout.webapp.actions;
 import com.cliffhangout.beans.Length;
 import com.cliffhangout.beans.Sector;
 import com.cliffhangout.beans.Site;
+import com.cliffhangout.beans.Way;
 import com.cliffhangout.webapp.AbstractAction;
 import org.apache.struts2.interceptor.SessionAware;
 
@@ -17,6 +18,8 @@ public class AddSiteWaysAction extends AbstractAction implements SessionAware {
     private Site siteBean;
     List<Sector> sectors;
     private int cptSector;
+    private int cptWay;
+    private int nbWay;
     Map<String, Object> session;
 
     public Site getSiteBean() {
@@ -41,6 +44,22 @@ public class AddSiteWaysAction extends AbstractAction implements SessionAware {
 
     public void setCptSector(int cptSector) {
         this.cptSector = cptSector;
+    }
+
+    public int getCptWay() {
+        return cptWay;
+    }
+
+    public void setCptWay(int cptWay) {
+        this.cptWay = cptWay;
+    }
+
+    public int getNbWay() {
+        return nbWay;
+    }
+
+    public void setNbWay(int nbWay) {
+        this.nbWay = nbWay;
     }
 
     public String getTitle() {
@@ -83,10 +102,20 @@ public class AddSiteWaysAction extends AbstractAction implements SessionAware {
                                 cptSector++;
                             }
                         }
+                        for(Way way: sector.getWays())
+                        {
+                            if(way.getName()!=null && way.getHeight()!=0 && way.getPointsNb()!=0)
+                            {
+                                cptWay++;
+                            }
+                            nbWay++;
+                        }
                     }
-                    if(cptSector == sectors.size())
+
+                    if(cptSector == sectors.size()&& nbWay == cptWay)
                     {
-                        return INPUT;
+                        getManagerFactory().getSiteManager().addSite(siteBean);
+                        return SUCCESS;
                     }else{
                         return INPUT;
                     }

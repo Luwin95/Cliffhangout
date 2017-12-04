@@ -17,10 +17,11 @@ public class BorrowDaoImpl extends AbstractDaoImpl implements BorrowDao {
     @Override
     public List<Borrow> getUserTopoBorrowed(User user) {
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT topo.*, topo.user_account_id AS user_id, user_account.user_account_id AS user_id, user_account.*, topo_borrowing.user_account_id AS borrower_id, start_date, end_date " +
+        StringBuilder vSQL= new StringBuilder("SELECT topo.*, topo.user_account_id AS user_id, user_account.user_account_id AS user_id, user_account.*,image.*,image.image_id AS imageId, topo_borrowing.user_account_id AS borrower_id, start_date, end_date " +
                 "FROM topo_borrowing " +
                 "LEFT JOIN topo ON topo_borrowing.topo_id = topo.topo_id " +
                 "LEFT JOIN user_account ON user_account.user_account_id= topo.user_account_id " +
+                "LEFT JOIN image ON user_account.image_id=image.image_id "+
                 "WHERE 1=1 ");
         if(user != null)
         {
@@ -69,10 +70,11 @@ public class BorrowDaoImpl extends AbstractDaoImpl implements BorrowDao {
     @Override
     public Borrow find(User user, Topo topo) {
         MapSqlParameterSource vParams = new MapSqlParameterSource();
-        StringBuilder vSQL= new StringBuilder("SELECT topo.*, topo.user_account_id AS user_id, user_account.user_account_id AS user_id, user_account.*, topo_borrowing.user_account_id AS borrower_id, start_date, end_date " +
+        StringBuilder vSQL= new StringBuilder("SELECT topo.*, topo.user_account_id AS user_id, user_account.user_account_id AS user_id, user_account.*,image.*,image.image_id AS imageId, topo_borrowing.user_account_id AS borrower_id, start_date, end_date " +
                 "FROM topo_borrowing " +
                 "LEFT JOIN topo ON topo_borrowing.topo_id = topo.topo_id " +
                 "LEFT JOIN user_account ON user_account.user_account_id= topo.user_account_id " +
+                "LEFT JOIN image ON user_account.image_id=image.image_id "+
                 "WHERE 1=1 ");
         if(user != null && topo!=null)
         {

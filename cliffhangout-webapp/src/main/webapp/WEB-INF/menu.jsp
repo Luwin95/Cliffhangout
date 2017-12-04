@@ -20,7 +20,7 @@
                 <li class="profile-img dropdown">
                     <button class="button-profile" id="menu1" data-toggle="dropdown">
                         <%--<img src="${pageContext.request.contextPath}/resources/images/user/<c:out value="${sessionScope.sessionUser.image.path}"/>"/>--%>
-                        <img src="/resources/images/user/<s:property value="%{#session.sessionUser.image.path}"/>"/>
+                        <img src="/uploadCliffhangout/images/user/<s:property value="%{#session.sessionUser.image.path}"/>"/>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a href="<s:url action='editProfile' namespace="/subscriber"/>">Mon profil</a></li>

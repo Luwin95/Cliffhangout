@@ -5,9 +5,14 @@
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:/com/cliffhangout/business/config/business.properties"/>
+        <property name="ignoreUnresolvablePlaceholders" value="false"/>
+    </bean>
     <bean id="abstractManager" abstract="true">
         <property name="daoFactory" ref="daoFactory"/>
         <property name="platformTransactionManager" ref="txManagerCliffhangout"/>
+        <property name="uploadDirectory" value="${com.cliffhangout.uploadDirectory}"/>
     </bean>
     <!-- ===== Déclaration des Managers ===== -->
     <bean id="siteManager" class="com.cliffhangout.business.impl.manager.SiteManagerImpl" parent="abstractManager">
@@ -18,6 +23,7 @@
     <bean id="departementRegionManager" class="com.cliffhangout.business.impl.manager.DepartementRegionManagerImpl" parent="abstractManager"/>
     <bean id="topoManager" class="com.cliffhangout.business.impl.manager.TopoManagerImpl" parent="abstractManager"/>
     <bean id="borrowManager" class="com.cliffhangout.business.impl.manager.BorrowManagerImpl" parent="abstractManager"/>
+    <bean id="wayManager" class="com.cliffhangout.business.impl.manager.WayManagerImpl" parent="abstractManager"/>
 
     <!-- ===== ManagerFactory ===== -->
     <bean id="managerFactory" class="com.cliffhangout.business.impl.ManagerFactoryImpl">
@@ -27,6 +33,7 @@
         <property name="departementRegionManager" ref="departementRegionManager"/>
         <property name="topoManager" ref="topoManager"/>
         <property name="borrowManager" ref="borrowManager"/>
+        <property name="wayManager" ref="wayManager"/>
     </bean>
     <bean id="txManagerCliffhangout" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSourceCliffhangout"/>

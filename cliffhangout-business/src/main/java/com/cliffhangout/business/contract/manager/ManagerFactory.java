@@ -16,4 +16,6 @@ public interface ManagerFactory {
     void setTopoManager(TopoManager topoManager);
     BorrowManager getBorrowManager();
     void setBorrowManager(BorrowManager borrowManager);
+    WayManager getWayManager();
+    void setWayManager(WayManager wayManager);
 }

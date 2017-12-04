@@ -1,0 +1,27 @@
+<!DOCTYPE validators PUBLIC "-//Apache Struts//XWork Validator 1.0.3//EN"
+        "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+<validators>
+    <field name="wayBean.name">
+        <field-validator type="required">
+            <message>Le nom de la voie ne peut être vide.</message>
+        </field-validator>
+        <field-validator type="stringlength">
+            <param name="minLength">2</param>
+            <message>Le nom de la voie ne peut faire moins de ${min} caractères.</message>
+        </field-validator>
+    </field>
+    <field name="wayBean.height">
+        <field-validator type="required">
+            <message>La hauteur est requise</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="expression">(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$</param>
+            <message>La hauteur doit être un nombre positif et différent de 0</message>
+        </field-validator>
+    </field>
+    <field name="wayBean.quotation.name">
+        <field-validator type="required">
+            <message>La cotation ne peut être vide</message>
+        </field-validator>
+    </field>
+</validators>
