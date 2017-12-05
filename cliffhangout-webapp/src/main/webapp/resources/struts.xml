@@ -94,6 +94,7 @@
                 <param name = "actionName">/subscriber/newWay.action</param>
                 <param name="idSector">${idSector}</param>
             </result>
+            <result name="editSite" type="redirect">/subscriber/editSiteSession.action</result>
             <result name="editSector" type="redirectAction">
                 <param name = "actionName">/subscriber/editSector.action</param>
                 <param name="idSector">${idSector}</param>
@@ -107,26 +108,44 @@
         </action>
         <action name="newSector" class="com.cliffhangout.webapp.actions.NewSectorAction" method="execute">
             <result name="success" type="redirect">/subscriber/newSite.action</result>
+            <result name="edit" type="redirect">
+                <param name = "actionName">/subscriber/editSite.action</param>
+                <param name="idSite">${idSite}</param>
+            </result>
             <result name="input">/layout.jsp</result>
             <result name="error" type="redirect">/subscriber/newSite.action</result>
             <result name="login" type="redirect">/login.action</result>
         </action>
         <action name="newWay" class="com.cliffhangout.webapp.actions.NewWayAction" method="execute">
             <result name="success" type="redirect">/subscriber/newSite.action</result>
+            <result name="edit" type="redirect">
+                <param name = "actionName">/subscriber/editSite.action</param>
+                <param name="idSite">${idSite}</param>
+            </result>
             <result name="input">/layout.jsp</result>
             <result name="error" type="redirect">/subscriber/newSite.action</result>
             <result name="login" type="redirect">/login.action</result>
+        </action>
+        <action name="editSiteSession" class="com.cliffhangout.webapp.actions.EditSessionSiteAction" method="execute">
+            <result name="success" type="redirect">/subscriber/newSite.action</result>
+            <result name="edit" type="redirect">
+                <param name = "actionName">/subscriber/editSite.action</param>
+                <param name="idSite">${idSite}</param>
+            </result>
+            <result name="input">/layout.jsp</result>
+            <result name="error" type="redirect">/subscriber/newSite.action</result>
         </action>
         <action name="editSite" class="com.cliffhangout.webapp.actions.NewSiteAction" method="execute">
             <result name="success" type="redirect">/subscriber/home.action</result>
             <result name="input">/layout.jsp</result>
             <result name="error">/layout.jsp</result>
-            <result name="display" type="redirect">/subscriber/newSite.action</result>
+            <result name="display" type="redirect">/subscriber/editSite.action</result>
             <result name="addSector" type="redirect">/subscriber/newSector.action</result>
             <result name="addWay" type="redirectAction">
                 <param name = "actionName">/subscriber/newWay.action</param>
                 <param name="idSector">${idSector}</param>
             </result>
+            <result name="editSite" type="redirect">/subscriber/editSiteSession.action</result>
             <result name="editSector" type="redirectAction">
                 <param name = "actionName">/subscriber/editSector.action</param>
                 <param name="idSector">${idSector}</param>
@@ -145,13 +164,13 @@
             <result name="error" type="redirect">/subscriber/newSite.action</result>
             <result name="login" type="redirect">/login.action</result>
         </action>
-        <action name="editWay" class="com.cliffhangout.webapp.actions.NewWayAction" method="execute">
+        <action name="editWay" class="com.cliffhangout.webapp.actions.EditWayAction" method="execute">
             <result name="success" type="redirect">/subscriber/newSite.action</result>
             <result name="edit" type="redirect">/subscriber/editSite.action</result>
             <result name="input" type="dispatcher">
                 <param name="location">/layout.jsp</param>
-                <param name="idWay">${idWay}</param>
                 <param name="idSector">${idSector}</param>
+                <param name="idWay">${idWay}</param>
             </result>
             <result name="error" type="redirect">/subscriber/newSite.action</result>
             <result name="login" type="redirect">/login.action</result>

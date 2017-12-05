@@ -2,7 +2,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <div class="container" >
     <h1>Ajouter une voie</h1>
-    <form class="form-horizontal">
+    <form class="form-horizontal" id="saveForm">
         <div class="form-group row">
             <label for="wayName" class="col-xs-offset-3 col-xs-2">Nom : </label>
             <div class="col-xs-4">
@@ -22,7 +22,7 @@
         <div class="form-group row">
             <label for="wayQuotation" class="col-xs-offset-3 col-xs-2">Cotation : </label>
             <div class="col-xs-4">
-                <select name="wayBean.quotation.name" id="wayQuotation" class="form-control" required>
+                <select name="wayBean.quotation.name" id="wayQuotation" class="form-control" form="saveForm" required>
                     <s:if test="wayToEdit!=null"><option value="<s:property value="wayToEdit.quotation.name"/>" selected><s:property value="wayToEdit.quotation.name"/></option></s:if>
                     <s:iterator status="cotation" begin="3" end="9" step="1">
                         <option value="<s:property value="%{#cotation.index+3}"/>a"><s:property value="%{#cotation.index +3}"/>a</option>
@@ -34,55 +34,19 @@
                 <s:fielderror fieldName="wayBean.quotation.name" cssClass="errorMessage"/>
             </div>
         </div>
-        <s:if test="wayToEdit == null">
-            <div class="form-group row">
-                <label for="wayLengthsNb" class="col-xs-offset-3 col-xs-2">Nombre de longueurs : </label>
-                <div class="col-xs-4">
-                    <input type="number" name="lengthNb" class="form-control" id="wayLengthsNb" value="<s:property value="lengthNb"/>" required/>
-                    <div class="help-block with-errors"></div>
-                    <s:fielderror fieldName="lengthNb" cssClass="errorMessage"/>
-                </div>
+        <div class="form-group row">
+            <label for="wayLengthsNb" class="col-xs-offset-3 col-xs-2">Nombre de longueurs : </label>
+            <div class="col-xs-4">
+                <input type="number" name="lengthNb" class="form-control" id="wayLengthsNb" value="<s:property value="lengthNb"/>" required/>
+                <div class="help-block with-errors"></div>
+                <s:fielderror fieldName="lengthNb" cssClass="errorMessage"/>
             </div>
-        </s:if>
-        <input type="hidden" name="idSector" value="<s:property value="idSector"/>"/>
+        </div>
         <div id="lengths">
-            <s:if test="wayToEdit!=null">
-                <s:iterator status="status" value="wayToEdit.lengths">
-                    <div id="length[<s:property value="%{#status.index}"/>]" class="lengthItem">
-                        <h2>Longueur  n°<s:property value="%{#status.index+1}"/></h2>
-                        <div class="form-group row">
-                            <label for="wayLengthsName[<s:property value="%{#status.index}"/>]" class="col-xs-offset-3 col-xs-2">Nom : </label>
-                            <div class="col-xs-4">
-                                <input type="text" id="wayLengthsName[<s:property value="%{#status.index}"/>]" name="wayBean.lengths[<s:property value="%{#status.index}"/>].name"  class="form-control" value="<s:property value="name"/>" required/>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="wayLengthsDescription[<s:property value="%{#status.index}"/>]" class="col-xs-offset-3 col-xs-2">Description : </label>
-                            <div class="col-xs-4">
-                                <textarea id="wayLengthsDescription[<s:property value="%{#status.index}"/>]" name="wayBean.lengths[<s:property value="%{#status.index}"/>].description"  class="form-control"  required><s:property value="description"/></textarea>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="length[<s:property value="%{#status.index}"/>]pointsNb" class="col-xs-offset-3 col-xs-2">Nombre de points : </label>
-                            <div class="col-xs-4">
-                                <input type="number" id="length[<s:property value="%{#status.index}"/>]pointsNb" name="pointsNb[<s:property value="%{#status.index}"/>]"  value="<s:property value="points.size"/>" class="form-control" required/>
-                                <div class="help-block with-errors"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <button id="deleteLength[<s:property value="%{#status.index}"/>]" class="btn btn-danger deleteLength">Supprimer longueur</button>
-                        </div>
-                    </div>
-                </s:iterator>
-                <div class="row">
-                    <button class="btn btn-info" id="addLength">Ajouter une longueur</button>
-                </div>
-            </s:if>
         </div>
         <div class="row">
-            <input type="submit" class="btn btn-warning col-xs-offset-4 col-xs-4" value="Ajouter Voie">
+            <input type="hidden" name="idSector" value="<s:property value="idSector"/>" form="saveForm"/>
+            <input type="submit" class="btn btn-warning col-xs-offset-4 col-xs-4" value="Ajouter Voie" form="saveForm">
         </div>
     </form>
 </div>

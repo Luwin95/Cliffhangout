@@ -7,4 +7,5 @@ import java.util.Map;
 
 public interface WayManager {
     void configWay(Way way, double heightWay, List<String> pointsNb, Map<String,Object> session, String idSector);
+    void deleteWay(Way way);
 }

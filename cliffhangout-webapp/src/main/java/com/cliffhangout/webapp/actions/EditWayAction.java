@@ -10,10 +10,10 @@ import org.apache.struts2.interceptor.SessionAware;
 import java.util.List;
 import java.util.Map;
 
-public class NewWayAction extends AbstractAction implements SessionAware{
+public class EditWayAction extends AbstractAction implements SessionAware {
     private Map<String, Object> session;
     private String title = "Ajouter une Voie";
-    private String page = "/WEB-INF/subscriber/newWay.jsp";
+    private String page = "/WEB-INF/subscriber/editWay.jsp";
     private String stylesheets = "/subscriber/addSite.css";
     private String jsPages = "/subscriber/newWay.js";
     private Way wayBean;
@@ -21,9 +21,9 @@ public class NewWayAction extends AbstractAction implements SessionAware{
     private int lengthsNb;
     private double heightString;
     private List<String> pointsNb;
-    private String idSite;
     private String idSector;
     private String idWay;
+    private String idSite;
     private String lengthToDelete;
     private boolean addLength;
 
@@ -91,14 +91,6 @@ public class NewWayAction extends AbstractAction implements SessionAware{
         this.idWay = idWay;
     }
 
-    public String getIdSite() {
-        return idSite;
-    }
-
-    public void setIdSite(String idSite) {
-        this.idSite = idSite;
-    }
-
     public Way getWayToEdit() {
         return wayToEdit;
     }
@@ -123,6 +115,14 @@ public class NewWayAction extends AbstractAction implements SessionAware{
         this.addLength = addLength;
     }
 
+    public String getIdSite() {
+        return idSite;
+    }
+
+    public void setIdSite(String idSite) {
+        this.idSite = idSite;
+    }
+
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
@@ -130,10 +130,25 @@ public class NewWayAction extends AbstractAction implements SessionAware{
 
     @Override
     public String execute() throws Exception {
-        if(idSector!=null)
-        {
-            if(wayBean!=null)
-            {
+        String actionName = ActionContext.getContext().getName();
+        if (actionName.equals("editWay")) {
+            if (idWay == null) {
+                return ERROR;
+            } else {
+                setWayToEdit(((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idWay)));
+            }
+        }
+        if (idSector != null) {
+            if (isAddLength()) {
+                ((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idWay)).getLengths().add(new Length());
+                return INPUT;
+            } else if (lengthToDelete != null) {
+                ((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idWay)).getLengths().remove(Integer.parseInt(lengthToDelete));
+                return INPUT;
+            } else if (wayBean != null) {
+                if (actionName.equals("editWay")) {
+                    ((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().remove(Integer.parseInt(idWay));
+                }
                 getManagerFactory().getWayManager().configWay(wayBean, heightString, pointsNb, session, idSector);
                 if(session.get("idSite") !=null)
                 {
@@ -142,10 +157,11 @@ public class NewWayAction extends AbstractAction implements SessionAware{
                 }else{
                     return SUCCESS;
                 }
-            }else{
-                return  INPUT;
+            } else {
+
+                return INPUT;
             }
-        }else{
+        } else {
             if(session.get("idSite") !=null)
             {
                 setIdSite((String)session.get("idSite"));

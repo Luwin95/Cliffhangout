@@ -10,6 +10,7 @@ public class ManagerFactoryImpl implements ManagerFactory {
     private TopoManager topoManager;
     private BorrowManager borrowManager;
     private WayManager wayManager;
+    private SectorManager sectorManager;
 
     @Override
     public SiteManager getSiteManager() {
@@ -79,6 +80,14 @@ public class ManagerFactoryImpl implements ManagerFactory {
     @Override
     public void setWayManager(WayManager wayManager) {
         this.wayManager = wayManager;
+    }
+
+    public SectorManager getSectorManager() {
+        return sectorManager;
+    }
+
+    public void setSectorManager(SectorManager sectorManager) {
+        this.sectorManager = sectorManager;
     }
 }
 

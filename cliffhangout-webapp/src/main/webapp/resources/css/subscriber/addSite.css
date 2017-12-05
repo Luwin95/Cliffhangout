@@ -1,8 +1,16 @@
 body
 {
     background: url('http://localhost:8080/resources/images/climber2.jpg') no-repeat center center fixed;
-    text-align: center;
+}
 
+h1, h2, h3, h4
+{
+    text-align: center;
+}
+
+form
+{
+    text-align: center;
 }
 
 label{
@@ -17,4 +25,24 @@ label{
 .addWay, .deleteSector
 {
     margin-bottom: 10px;
+}
+
+.btn
+{
+    margin-bottom: 10px;
+}
+
+.siteContent
+{
+    text-align:center;
+}
+
+.siteContent p
+{
+    color:black;
+}
+
+#addLength
+{
+    text-align: center;
 }

@@ -14,8 +14,11 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
     private boolean addSector;
     private boolean addWay;
     private boolean addSite;
+    private boolean editSite;
     private boolean editSector;
     private boolean editWay;
+    private boolean deleteSector;
+    private boolean deleteWay;
     private  String idSite;
     private String idSector;
     private String idWay;
@@ -112,16 +115,48 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
         this.idSite = idSite;
     }
 
+    public boolean isEditSite() {
+        return editSite;
+    }
+
+    public void setEditSite(boolean editSite) {
+        this.editSite = editSite;
+    }
+
+    public boolean isDeleteSector() {
+        return deleteSector;
+    }
+
+    public void setDeleteSector(boolean deleteSector) {
+        this.deleteSector = deleteSector;
+    }
+
+    public boolean isDeleteWay() {
+        return deleteWay;
+    }
+
+    public void setDeleteWay(boolean deleteWay) {
+        this.deleteWay = deleteWay;
+    }
+
     @Override
     public String execute(){
         String actionName= ActionContext.getContext().getName();
+        if(session.containsKey("idSite"))
+        {
+            setIdSite((String) session.get("idSite"));
+        }
         if(actionName.equals("editSite"))
         {
             if(idSite == null)
             {
                 return ERROR;
             }else{
-                setSiteBean(getManagerFactory().getSiteManager().displaySite(Integer.parseInt(idSite)));
+                if(!session.containsKey("site"))
+                {
+                    session.put("site",getManagerFactory().getSiteManager().displaySite(Integer.parseInt(idSite)));
+                }
+                session.put("idSite", idSite);
             }
         }
         if(session.containsKey("site"))
@@ -142,14 +177,36 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
             return"addSector";
         }else if(isAddWay() && idSector!=null) {
             return "addWay";
+        }else if(isEditSite()) {
+            return "editSite";
         }else if(isEditSector()) {
             return "editSector";
         }else if(isEditWay()){
             return "editWay";
+        }else if(isDeleteSector()) {
+            if(actionName.equals("editSite"))
+            {
+                getManagerFactory().getSectorManager().deleteSector(((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)));
+            }
+            ((Site) session.get("site")).getSectors().remove(Integer.parseInt(idSector));
+            return INPUT;
+        }else if(isDeleteWay()){
+            if(actionName.equals("editSite"))
+            {
+                getManagerFactory().getWayManager().deleteWay(((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idSector)));
+            }
+            ((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().remove(Integer.parseInt(idWay));
+            return INPUT;
         }else if(isAddSite()){
-            siteBean.setCreator((User) session.get("sessionUser"));
-            getManagerFactory().getSiteManager().addSite(siteBean);
-            session.remove("site");
+            if(actionName.equals("editSite"))
+            {
+                session.remove("site");
+                session.remove("idSite");
+            }else{
+                siteBean.setCreator((User) session.get("sessionUser"));
+                getManagerFactory().getSiteManager().addSite(siteBean);
+                session.remove("site");
+            }
             return SUCCESS;
         }else{
             return INPUT;

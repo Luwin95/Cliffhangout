@@ -18,4 +18,6 @@ public interface ManagerFactory {
     void setBorrowManager(BorrowManager borrowManager);
     WayManager getWayManager();
     void setWayManager(WayManager wayManager);
+    SectorManager getSectorManager();
+    void setSectorManager(SectorManager sectorManager);
 }

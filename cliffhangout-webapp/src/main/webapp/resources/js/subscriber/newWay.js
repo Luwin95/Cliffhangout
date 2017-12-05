@@ -12,7 +12,7 @@ $(function(){
         }
     });
 
-    $('.deleteLength').each( function(){
+    /*$('.deleteLength').each( function(){
         $(this).click(function(e)
         {
             if(cptLength>1)
@@ -53,5 +53,5 @@ $(function(){
                 alert('Une voie doit posséder au moins une longueur');
             }
         });
-    }
+    }*/
 });

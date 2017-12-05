@@ -15,6 +15,7 @@ public class NewSectorAction extends AbstractAction implements SessionAware{
     private String title = "Ajouter un secteur";
     private String page = "/WEB-INF/subscriber/newSector.jsp";
     private String stylesheets = "/subscriber/addSite.css";
+    private String idSite;
     private String idSector;
 
     public Sector getSectorBean() {
@@ -53,6 +54,14 @@ public class NewSectorAction extends AbstractAction implements SessionAware{
         this.sectorToEdit = sectorToEdit;
     }
 
+    public String getIdSite() {
+        return idSite;
+    }
+
+    public void setIdSite(String idSite) {
+        this.idSite = idSite;
+    }
+
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
@@ -65,7 +74,13 @@ public class NewSectorAction extends AbstractAction implements SessionAware{
         {
             if(idSector == null)
             {
-                return ERROR;
+                if(session.get("idSite") !=null)
+                {
+                    setIdSite((String)session.get("idSite"));
+                    return "edit";
+                }else{
+                    return ERROR;
+                }
             }else{
                 setSectorToEdit(((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)));
             }
@@ -79,12 +94,24 @@ public class NewSectorAction extends AbstractAction implements SessionAware{
                     ((Site) session.get("site")).getSectors().remove(Integer.parseInt(idSector));
                 }
                 ((Site) session.get("site")).addSector(sectorBean);
-                return SUCCESS;
+                if(session.get("idSite") !=null)
+                {
+                    setIdSite((String)session.get("idSite"));
+                    return "edit";
+                }else{
+                    return SUCCESS;
+                }
             }else{
                 return INPUT;
             }
         }else{
-            return ERROR;
+            if(session.get("idSite") !=null)
+            {
+                setIdSite((String)session.get("idSite"));
+                return "edit";
+            }else{
+                return ERROR;
+            }
         }
     }
 
