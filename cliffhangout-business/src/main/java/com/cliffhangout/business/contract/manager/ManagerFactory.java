@@ -20,4 +20,6 @@ public interface ManagerFactory {
     void setWayManager(WayManager wayManager);
     SectorManager getSectorManager();
     void setSectorManager(SectorManager sectorManager);
+    LengthManager getLengthManager();
+    void setLengthManager(LengthManager lengthManager);
 }

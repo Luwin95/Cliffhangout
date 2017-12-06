@@ -91,11 +91,22 @@ public class NewSectorAction extends AbstractAction implements SessionAware{
             {
                 if(actionName.equals("editSector"))
                 {
+                    sectorToEdit.setName(sectorBean.getName());
+                    sectorToEdit.setDescription(sectorBean.getDescription());
                     ((Site) session.get("site")).getSectors().remove(Integer.parseInt(idSector));
+                    ((Site) session.get("site")).addSector(sectorToEdit);
+                }else{
+                    ((Site) session.get("site")).addSector(sectorBean);
                 }
-                ((Site) session.get("site")).addSector(sectorBean);
                 if(session.get("idSite") !=null)
                 {
+                    if(actionName.equals("editSector"))
+                    {
+                        getManagerFactory().getSectorManager().updateSector(sectorToEdit);
+                    }else{
+                        sectorBean.setSiteId(Integer.parseInt((String) session.get("idSite")));
+                        getManagerFactory().getSectorManager().addSector(sectorBean);
+                    }
                     setIdSite((String)session.get("idSite"));
                     return "edit";
                 }else{

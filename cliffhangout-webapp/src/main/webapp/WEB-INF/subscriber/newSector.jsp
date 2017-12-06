@@ -29,6 +29,12 @@
             </div>
         </div>
         <div class="row">
+            <s:if test="idSite!=null">
+                <input type="hidden" name="idSite" value="<s:property value="idSite"/>"/>
+            </s:if>
+            <s:if test="idSector!=null">
+                <input type="hidden" name="idSector" value="<s:property value="idSector"/>"/>
+            </s:if>
             <input type="submit" class="btn btn-warning col-xs-offset-4 col-xs-4" value="Ajouter Secteur">
         </div>
     </form>

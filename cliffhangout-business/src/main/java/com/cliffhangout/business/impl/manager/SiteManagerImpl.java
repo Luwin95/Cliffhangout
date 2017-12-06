@@ -347,6 +347,51 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     }
 
     @Override
+    public void updateSite(Site site) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                identifyDepartement(site);
+                getDaoFactory().getSiteDao().update(site);
+                updateSiteDependencies(site);
+            }
+        });
+    }
+
+    @Override
+    public void updateSiteDependencies(Site site) {
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                for (Sector sector : site.getSectors())
+                {
+                    sector.setSiteId(site.getId());
+                    getDaoFactory().getSectorDao().update(sector);
+                    for(Way way: sector.getWays())
+                    {
+                        way.setSectorId(sector.getId());
+                        getDaoFactory().getWayDao().update(way);
+                        for(Length length : way.getLengths())
+                        {
+                            length.setWayId(way.getId());
+                            getDaoFactory().getLengthDao().update(length);
+                            for(Point point : length.getPoints())
+                            {
+                                point.setLengthId(length.getId());
+                                getDaoFactory().getPointDao().update(point);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void deleteSite(int id) {
         TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
         vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {

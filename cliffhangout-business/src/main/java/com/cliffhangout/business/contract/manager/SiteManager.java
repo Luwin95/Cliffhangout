@@ -18,6 +18,8 @@ public interface SiteManager {
     void buildSiteDependencies(Site site);
     void addSite(Site site);
     void addSiteDependencies(Site site);
+    void updateSite(Site site);
+    void updateSiteDependencies(Site site);
     void identifyDepartement(Site site);
     void deleteSite(int id);
     void deleteSiteDependencies(Site site);

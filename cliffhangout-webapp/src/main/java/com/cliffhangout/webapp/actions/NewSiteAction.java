@@ -142,21 +142,54 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
     @Override
     public String execute(){
         String actionName= ActionContext.getContext().getName();
+
         if(session.containsKey("idSite"))
         {
             setIdSite((String) session.get("idSite"));
         }
         if(actionName.equals("editSite"))
         {
-            if(idSite == null)
+            if(session.containsKey("pageStatus"))
             {
-                return ERROR;
-            }else{
-                if(!session.containsKey("site"))
+                if(session.get("pageStatus").equals("addSite"))
                 {
-                    session.put("site",getManagerFactory().getSiteManager().displaySite(Integer.parseInt(idSite)));
+                    session.remove("site");
+                    session.remove("pageStatus");
+                    session.put("pageStatus", "editSite");
+                }else{
+                    session.put("pageStatus", "editSite");
                 }
-                session.put("idSite", idSite);
+            }else{
+                session.put("pageStatus", "editSite");
+            }
+            if(idSite != null)
+            {
+                if(((User) session.get("sessionUser")).getRole().equals("ADMIN") || ((User) session.get("sessionUser")).getId() == getManagerFactory().getSiteManager().displaySite(Integer.parseInt(idSite)).getCreator().getId())
+                {
+                    if(!session.containsKey("site"))
+                    {
+                        session.put("site",getManagerFactory().getSiteManager().displaySite(Integer.parseInt(idSite)));
+                    }
+                    session.put("idSite", idSite);
+                }else{
+                    return ERROR;
+                }
+            }else{
+                return ERROR;
+            }
+        }else{
+            if(session.containsKey("pageStatus"))
+            {
+                if(session.get("pageStatus").equals("editSite"))
+                {
+                    session.remove("site");
+                    session.remove("pageStatus");
+                    session.put("pageStatus", "addSite");
+                }else{
+                    session.put("pageStatus", "addSite");
+                }
+            }else{
+                session.put("pageStatus", "addSite");
             }
         }
         if(session.containsKey("site"))
@@ -170,7 +203,7 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
                 session.put("site", siteBean);
                 return "display";
             }else{
-                return ERROR;
+                return INPUT;
             }
         }else if(isAddSector())
         {
@@ -193,7 +226,7 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
         }else if(isDeleteWay()){
             if(actionName.equals("editSite"))
             {
-                getManagerFactory().getWayManager().deleteWay(((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idSector)));
+                getManagerFactory().getWayManager().deleteWay(((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idWay)));
             }
             ((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().remove(Integer.parseInt(idWay));
             return INPUT;

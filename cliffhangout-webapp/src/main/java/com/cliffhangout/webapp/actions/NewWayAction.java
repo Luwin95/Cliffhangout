@@ -138,6 +138,8 @@ public class NewWayAction extends AbstractAction implements SessionAware{
                 if(session.get("idSite") !=null)
                 {
                     setIdSite((String)session.get("idSite"));
+                    wayBean.setSectorId(((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getId());
+                    getManagerFactory().getWayManager().addWay(wayBean);
                     return "edit";
                 }else{
                     return SUCCESS;

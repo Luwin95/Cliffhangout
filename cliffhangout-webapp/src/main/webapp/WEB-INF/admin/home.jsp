@@ -137,7 +137,6 @@
                                             </div><!-- /.modal-dialog -->
                                         </div><!-- /.modal -->
                                     </s:else>
-
                                 </td>
                             </tr>
                         </s:iterator>
@@ -172,8 +171,11 @@
                                 <td><s:property value="postcode"/> </td>
                                 <td><s:property value="%{sectors.size()}"/> </td>
                                 <td><s:property value="description"/></td>
-                                <td><a href="" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td>
-                                <s:url var="siteDeleteUrl" action="removeSite">
+                                <s:url var="siteEditUrl" action="editSite" namespace="/subscriber">
+                                    <s:param name="idSite"><s:property value="id"/></s:param>
+                                </s:url>
+                                <td><a href="${siteEditUrl}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a></td>
+                                <s:url var="siteDeleteUrl" action="removeSite" namespace="/subscriber">
                                     <s:param name="idSite"><s:property value="id"/></s:param>
                                 </s:url>
                                 <td>

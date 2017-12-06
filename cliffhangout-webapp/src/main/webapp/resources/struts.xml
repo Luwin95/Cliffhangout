@@ -108,7 +108,7 @@
         </action>
         <action name="newSector" class="com.cliffhangout.webapp.actions.NewSectorAction" method="execute">
             <result name="success" type="redirect">/subscriber/newSite.action</result>
-            <result name="edit" type="redirect">
+            <result name="edit" type="redirectAction">
                 <param name = "actionName">/subscriber/editSite.action</param>
                 <param name="idSite">${idSite}</param>
             </result>
@@ -118,7 +118,7 @@
         </action>
         <action name="newWay" class="com.cliffhangout.webapp.actions.NewWayAction" method="execute">
             <result name="success" type="redirect">/subscriber/newSite.action</result>
-            <result name="edit" type="redirect">
+            <result name="edit" type="redirectAction">
                 <param name = "actionName">/subscriber/editSite.action</param>
                 <param name="idSite">${idSite}</param>
             </result>
@@ -128,7 +128,7 @@
         </action>
         <action name="editSiteSession" class="com.cliffhangout.webapp.actions.EditSessionSiteAction" method="execute">
             <result name="success" type="redirect">/subscriber/newSite.action</result>
-            <result name="edit" type="redirect">
+            <result name="edit" type="redirectAction">
                 <param name = "actionName">/subscriber/editSite.action</param>
                 <param name="idSite">${idSite}</param>
             </result>
@@ -138,8 +138,11 @@
         <action name="editSite" class="com.cliffhangout.webapp.actions.NewSiteAction" method="execute">
             <result name="success" type="redirect">/subscriber/home.action</result>
             <result name="input">/layout.jsp</result>
-            <result name="error">/layout.jsp</result>
-            <result name="display" type="redirect">/subscriber/editSite.action</result>
+            <result name="error" type="redirect">/subscriber/home.action</result>
+            <result name="display" type="redirectAction">
+                <param name = "actionName">/subscriber/editSite.action</param>
+                <param name="idSite">${idSite}</param>
+            </result>
             <result name="addSector" type="redirect">/subscriber/newSector.action</result>
             <result name="addWay" type="redirectAction">
                 <param name = "actionName">/subscriber/newWay.action</param>
@@ -179,9 +182,7 @@
             <result name="success" type="redirectAction">
                 <param name="actionName">home</param>
             </result>
-            <result name="home" type="redirectAction">
-                <param name="actionName">/subscriber/home.action</param>
-            </result>
+            <result name="home" type="redirect">/subscriber/home.action</result>
             <result name="login" type="redirect">/login.action</result>
         </action>
         <action name="addTopoSearch" class="com.cliffhangout.webapp.actions.AddTopoSearchAction" method="execute">

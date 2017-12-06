@@ -110,6 +110,14 @@ public class SubscriberAction extends AbstractAction implements SessionAware {
     }
 
     public String execute(){
+        if(session.containsKey("site"))
+        {
+            session.remove("site");
+        }
+        if(session.containsKey("idSite"))
+        {
+            session.remove("idSite");
+        }
         if(session.containsKey("sessionUser")) {
             if(fileName!=null)
             {

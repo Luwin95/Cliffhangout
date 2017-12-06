@@ -1,6 +1,7 @@
 package com.cliffhangout.webapp.actions;
 
 import com.cliffhangout.beans.Length;
+import com.cliffhangout.beans.Point;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Way;
 import com.cliffhangout.webapp.AbstractAction;
@@ -140,16 +141,37 @@ public class EditWayAction extends AbstractAction implements SessionAware {
         }
         if (idSector != null) {
             if (isAddLength()) {
-                ((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idWay)).getLengths().add(new Length());
+                Length length = new Length();
+                length.setName("");
+                length.setDescription("");
+                length.setWayId(wayToEdit.getId());
+                if(session.containsKey("idSite"))
+                {
+                    setIdSite((String) session.get("idSite"));
+                }
+                if(idSite!=null)
+                {
+                    getManagerFactory().getLengthManager().createLength(length);
+                }
+                ((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idWay)).getLengths().add(length);
                 return INPUT;
             } else if (lengthToDelete != null) {
+                if(session.containsKey("idSite"))
+                {
+                    setIdSite((String) session.get("idSite"));
+                }
+                if(idSite!=null)
+                {
+                    getManagerFactory().getLengthManager().deleteLength(((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idWay)).getLengths().get(Integer.parseInt(lengthToDelete)));
+                }
                 ((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().get(Integer.parseInt(idWay)).getLengths().remove(Integer.parseInt(lengthToDelete));
                 return INPUT;
             } else if (wayBean != null) {
                 if (actionName.equals("editWay")) {
-                    ((Site) session.get("site")).getSectors().get(Integer.parseInt(idSector)).getWays().remove(Integer.parseInt(idWay));
+                    getManagerFactory().getWayManager().configEditWay(wayBean, heightString,pointsNb, session, idSector, idWay);
+                }else{
+                    getManagerFactory().getWayManager().configWay(wayBean, heightString, pointsNb, session, idSector);
                 }
-                getManagerFactory().getWayManager().configWay(wayBean, heightString, pointsNb, session, idSector);
                 if(session.get("idSite") !=null)
                 {
                     setIdSite((String)session.get("idSite"));

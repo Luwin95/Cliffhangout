@@ -71,6 +71,7 @@ public class EditSessionSiteAction extends AbstractAction implements SessionAwar
                 session.put("site", siteToEdit);
                 if(session.get("idSite") !=null)
                 {
+                    getManagerFactory().getSiteManager().updateSite(siteToEdit);
                     setIdSite((String)session.get("idSite"));
                     return "edit";
                 }else{

@@ -84,7 +84,7 @@ public class SectorDaoImpl extends AbstractDaoImpl implements SectorDao {
         {
             if(site.getId()!=0)
             {
-                vSQL.append("AND site_id=:site_id");
+                vSQL.append("AND site_id=:site_id ORDER BY sector_id");
                 vParams.addValue("site_id", site.getId());
             }
         }

@@ -25,6 +25,7 @@
     <bean id="borrowManager" class="com.cliffhangout.business.impl.manager.BorrowManagerImpl" parent="abstractManager"/>
     <bean id="wayManager" class="com.cliffhangout.business.impl.manager.WayManagerImpl" parent="abstractManager"/>
     <bean id="sectorManager" class="com.cliffhangout.business.impl.manager.SectorManagerImpl" parent="abstractManager"/>
+    <bean id="lengthManager" class="com.cliffhangout.business.impl.manager.LengthManagerImpl" parent="abstractManager"/>
 
     <!-- ===== ManagerFactory ===== -->
     <bean id="managerFactory" class="com.cliffhangout.business.impl.ManagerFactoryImpl">
@@ -36,6 +37,7 @@
         <property name="borrowManager" ref="borrowManager"/>
         <property name="wayManager" ref="wayManager"/>
         <property name="sectorManager" ref="sectorManager"/>
+        <property name="lengthManager" ref="lengthManager"/>
     </bean>
     <bean id="txManagerCliffhangout" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSourceCliffhangout"/>

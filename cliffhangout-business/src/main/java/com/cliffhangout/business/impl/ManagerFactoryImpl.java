@@ -9,6 +9,7 @@ public class ManagerFactoryImpl implements ManagerFactory {
     private DepartementRegionManager departementRegionManager;
     private TopoManager topoManager;
     private BorrowManager borrowManager;
+    private LengthManager lengthManager;
     private WayManager wayManager;
     private SectorManager sectorManager;
 
@@ -82,12 +83,24 @@ public class ManagerFactoryImpl implements ManagerFactory {
         this.wayManager = wayManager;
     }
 
+    @Override
     public SectorManager getSectorManager() {
         return sectorManager;
     }
 
+    @Override
     public void setSectorManager(SectorManager sectorManager) {
         this.sectorManager = sectorManager;
+    }
+
+    @Override
+    public LengthManager getLengthManager() {
+        return lengthManager;
+    }
+
+    @Override
+    public void setLengthManager(LengthManager lengthManager) {
+        this.lengthManager = lengthManager;
     }
 }
 
