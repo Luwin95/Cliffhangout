@@ -1,5 +1,6 @@
 package com.cliffhangout.business.contract.manager;
 
+import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
 
@@ -14,6 +15,7 @@ public interface TopoManager {
     List<Topo> displayUserTopo(User user);
     List<Topo> displayTopoToBorrow(User user);
     List<Topo> displayAllTopo();
+    List<Topo> displayAllTopoBySite(Site site);
     void buildTopoDependencies(Topo topo);
     void deleteTopo(int id);
     void deleteTopoDependencies(Topo topo);

@@ -12,21 +12,21 @@
                 <p>Faites découvrir à la communauté vos emplacements d'escalade préférés !
                     Partagés votre expérience des lieux en notant la difficulté des différentes voies ainsi qu'en décrivant chaque secteur et longueurs.
                 </p>
-                <a href="<s:url action="newSite"/>" class="btn-cliffhangout col-xs-offset-4 col-xs-4">Créer un site</a>
+                <a href="<s:url action="newSite"/>" class="btn-cliffhangout col-sm-offset-4 col-sm-4 col-xs-offset-2 col-xs-8">Créer un site</a>
             </div>
             <div class="col-xs-5 col-xs-offset-2">
                 <h2>Espace Topos</h2>
                 <p>Bénéficiez des expériences de la communauté Cliffhangout via un système prêt de Topo.
                     Consulter les topos existants et disponible partagé par vos camarades grimpeurs et réservez votre Topo!
                 </p>
-                <a href="<s:url action="topoSearch" namespace="/subscriber"/> " class="btn-cliffhangout col-xs-offset-4 col-xs-4">Espace prêt de topos</a>
+                <a href="<s:url action="topoSearch" namespace="/subscriber"/> " class="btn-cliffhangout col-sm-offset-4 col-sm-4 col-xs-offset-2 col-xs-8">Espace prêt de topos</a>
             </div>
         </div>
         <div class="row">
             <h2>Mes sites</h2>
             <a href="<s:url action="newSite"/>" class="btn-cliffhangout col-xs-offset-4 col-xs-4">Créer un site</a>
             <s:if test="%{creatorSites!=null && creatorSites.size()!=0}">
-                <div class="table-responsive col-xs-offset-1 col-xs-10">
+                <div class="table-responsive col-sm-offset-1 col-xs-10">
                     <table class="table table-hover table-bordered">
                         <thead>
                             <tr>
@@ -90,7 +90,7 @@
             <h2>Mes topos</h2>
             <a href="<s:url action="addTopoSearch" namespace="/subscriber"/> " class="btn-cliffhangout col-xs-offset-4 col-xs-4">Créer un topo</a>
             <s:if test="%{creatorTopos!=null && creatorTopos.size()!=0}">
-                <div class="table-responsive col-xs-offset-1 col-xs-10">
+                <div class="table-responsive col-sm-offset-1 col-xs-10">
                     <table class="table table-hover table-bordered">
                         <thead>
                         <tr>
@@ -105,7 +105,6 @@
                         <tbody>
                         <s:iterator value="creatorTopos">
                             <tr>
-
                                 <td><a href="#"><s:property value="name"/></a></td>
                                 <td><s:property value="file"/></td>
                                 <td><s:property value="description"/> </td>
@@ -148,7 +147,7 @@
         </div>
         <s:if test="%{borrows !=null && borrows.size()>0}">
             <h2>Mes emprunts</h2>
-            <div class="table-responsive col-xs-offset-1 col-xs-10">
+            <div class="table-responsive col-sm-offset-1 col-xs-10">
                 <table class="table table-hover table-bordered">
                     <thead>
                     <tr>
@@ -187,6 +186,9 @@
                                     <s:if test="%{!startDate.before(now) || !endDate.after(now)}">
                                         <span style="color:red;">Topo non disponible (prêt non commencé ou terminé)</span>
                                     </s:if>
+                                    <s:else>
+                                        <a href="${topoDownload}" class="btn btn-info">Télécharger topo</a>
+                                    </s:else>
                                 </s:if>
                                 <s:else>
                                     <a href="${topoDownload}" class="btn btn-info">Télécharger topo</a>

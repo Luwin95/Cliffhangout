@@ -122,3 +122,45 @@
     background : rgba(255,255,255,0.5);
     text-decoration : none;
 }
+
+@media only screen and (max-width: 768px)
+{
+    body
+    {
+        overflow: auto;
+    }
+    .welcome h1
+    {
+        font-size :40px;
+    }
+
+    .welcome p
+    {
+        font-size :20px;
+    }
+
+    .welcome
+    {
+        position: static;
+        margin: 50% 0 0 5%;  /*poussé de la moitié de hauteur de viewport */
+        transform: translateY(50%); /* tiré de la moitié de sa propre hauteur */
+    }
+
+    .discover
+    {
+
+        position: static;
+        margin: 20% 0 0 40%;
+    }
+
+    .discover p
+    {
+        margin-top : 0;
+        transform: translateY(50%); /* tiré de la moitié de sa propre hauteur */
+    }
+
+    .site-elements
+    {
+        margin-top:160%;
+    }
+}

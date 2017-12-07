@@ -85,6 +85,9 @@
                                 <s:if test="%{!startDate.before(now) || !endDate.after(now)}">
                                     <span style="color:red;">Topo non disponible (prêt non commencé ou terminé)</span>
                                 </s:if>
+                                <s:else>
+                                    <a href="${topoDownload}" class="btn btn-info">Télécharger topo</a>
+                                </s:else>
                             </s:if>
                             <s:else>
                                 <a href="${topoDownload}" class="btn btn-info">Télécharger topo</a>

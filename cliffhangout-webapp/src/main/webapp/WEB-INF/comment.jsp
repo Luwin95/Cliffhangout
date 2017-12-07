@@ -10,10 +10,10 @@
          pageEncoding="UTF-8"%>
 <s:iterator value="children">
     <div class="row comment">
-        <div class="col-xs-1">
+        <div class="col-sm-1 col-xs-2">
             <s:if test="%{author.image !=null}">
                 <div class="author-profile-img">
-                    <img src="/resources/images/user/<s:property value="author.image.path"/>"/>
+                    <img src="/uploadCliffhangout/images/user/<s:property value="author.image.path"/>"/>
                 </div>
             </s:if>
             <s:else>
@@ -22,10 +22,10 @@
                 </div>
             </s:else>
         </div>
-        <div class="col-xs-8 comment-content">
+        <div class="col-sm-8 col-xs-10 comment-content">
             <s:property value="author.login"/> a dit : <s:property value="content"/>
         </div>
-        <div class="col-xs-3 comment-content">
+        <div class="col-sm-3 col-sm-offset-0 col-xs-offset-2 col-xs-10 comment-content">
             <div class="row">
                 <s:if test="#session.sessionUser!= null">
                     <s:if test="%{#cpt<2}">
@@ -39,7 +39,6 @@
                     <s:else>
                         <button class="col-xs-offset-7 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
                     </s:else>
-
                 </s:if>
                 <s:else>
                     <a href="<s:url action="login"/>">Se connecter</a> ou <a href="#">S'inscrire</a>

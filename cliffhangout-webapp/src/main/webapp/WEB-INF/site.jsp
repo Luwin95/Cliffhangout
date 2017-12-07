@@ -17,7 +17,7 @@
         <div class="col-md-8 site-content">
             <s:if test="%{site.images !=null && site.images.size()!=0}">
                 <div class="row">
-                    <div id="my_carousel" class="carousel slide col-md-offset-1 col-md-10" data-ride="carousel">
+                    <div id="my_carousel" class="carousel slide col-xs-offset-1 col-xs-10" data-ride="carousel">
                         <!-- Bulles -->
                         <ol class="carousel-indicators">
                             <s:iterator value="site.images" status="status">
@@ -93,6 +93,14 @@
                 <h2>Topos</h2>
                 <s:if test="%{topos !=null && topos.size()!=0}">
                     <%-- Liste des topos disponibles pour le site --%>
+                    <ul>
+                        <s:iterator value="topos">
+                            <s:url var="topoBorrow" action="topoBorrowing" namespace="/subscriber">
+                                <s:param name="idTopo"><s:property value="id"/></s:param>
+                            </s:url>
+                            <li><a href="${topoBorrow}"><s:property value="name"/></a></li>
+                        </s:iterator>
+                    </ul>
                 </s:if>
                 <s:else>
                     <p>Ce site d'escalade n'est lié à aucun topos</p>
@@ -103,7 +111,7 @@
 
     </div>
     <div class="row comments-section">
-        <div class="col-md-offset-1 col-md-10 ">
+        <div class="col-xs-offset-1 col-xs-10 ">
             <h2>Commentaires</h2>
             <s:if test="#session.sessionUser!= null">
                 <div class="row comments-form" id="commentForm">
@@ -118,10 +126,10 @@
                 <div class="row comments-display">
                     <s:iterator value="site.comments">
                         <div class="row comment">
-                            <div class="col-xs-1">
+                            <div class="col-sm-1 col-xs-2">
                                 <s:if test="%{author.image !=null}">
                                     <div class="author-profile-img">
-                                        <img src="/resources/images/user/<s:property value="author.image.path"/>"/>
+                                        <img src="/uploadCliffhangout/images/user/<s:property value="author.image.path"/>"/>
                                     </div>
                                 </s:if>
                                 <s:else>
@@ -130,10 +138,10 @@
                                     </div>
                                 </s:else>
                             </div>
-                            <div class="col-xs-8 comment-content">
+                            <div class="col-xs-8 col-xs-10 comment-content">
                                 <s:property value="author.login"/> a dit : <s:property value="content"/>
                             </div>
-                            <div class="col-xs-3 comment-content">
+                            <div class="col-sm-3 col-sm-offset-0 col-xs-offset-2 col-xs-10 comment-content">
                                 <div class="row">
                                     <s:if test="#session.sessionUser!= null">
                                         <button class="col-xs-5 btn-cliffhangout answer" id="<s:property value="id"/>">Répondre</button>

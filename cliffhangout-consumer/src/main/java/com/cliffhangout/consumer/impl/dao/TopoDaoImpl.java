@@ -1,5 +1,6 @@
 package com.cliffhangout.consumer.impl.dao;
 
+import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.contract.dao.TopoDao;
@@ -125,6 +126,29 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
             {
                 vSQL.append("AND topo.user_account_id=:user_id ORDER BY topo.topo_id");
                 vParams.addValue("user_id", user.getId());
+            }
+        }
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+        RowMapper<Topo> vRowMapper = new TopoRM();
+        List<Topo> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        return vList;
+    }
+
+    @Override
+    public List<Topo> findAllBySite(Site site) {
+        MapSqlParameterSource vParams = new MapSqlParameterSource();
+        StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, image.*, image.image_id AS imageId, user_account.user_account_id AS user_id " +
+                "FROM site_topo " +
+                "LEFT JOIN topo ON site_topo.topo_id = topo.topo_id " +
+                "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
+                "LEFT JOIN image ON user_account.image_id = image.image_id " +
+                "WHERE 1=1 ");
+        if(site != null)
+        {
+            if(site.getId()!=0)
+            {
+                vSQL.append("AND site_topo.site_id=:site_id AND topo.borrowed=true ORDER BY topo.topo_id");
+                vParams.addValue("site_id", site.getId());
             }
         }
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());

@@ -2,10 +2,12 @@ package com.cliffhangout.webapp.actions;
 
 import com.cliffhangout.beans.Comment;
 import com.cliffhangout.beans.Site;
+import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.webapp.AbstractAction;
 import org.apache.struts2.interceptor.SessionAware;
 
+import java.util.List;
 import java.util.Map;
 
 public class SiteInfoAction extends AbstractAction implements SessionAware {
@@ -28,6 +30,8 @@ public class SiteInfoAction extends AbstractAction implements SessionAware {
     private String parent;
 
     private String commentToReport;
+
+    private List<Topo> topos;
 
     public String getIdSite() {
         return idSite;
@@ -90,10 +94,19 @@ public class SiteInfoAction extends AbstractAction implements SessionAware {
         this.commentToReport = commentToReport;
     }
 
+    public List<Topo> getTopos() {
+        return topos;
+    }
+
+    public void setTopos(List<Topo> topos) {
+        this.topos = topos;
+    }
+
     public String execute()
     {
         int id = Integer.parseInt(this.idSite);
         this.site = getManagerFactory().getSiteManager().displaySite(id);
+        setTopos(getManagerFactory().getTopoManager().displayAllTopoBySite(site));
         if(site!= null) {
             if (commentBean.getContent() != null && session.containsKey("sessionUser")) {
                 User author = (User) session.get("sessionUser");

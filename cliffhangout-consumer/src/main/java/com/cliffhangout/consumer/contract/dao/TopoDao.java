@@ -1,5 +1,6 @@
 package com.cliffhangout.consumer.contract.dao;
 
+import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.impl.dao.DaoException;
@@ -17,5 +18,6 @@ public interface TopoDao {
     Topo find(int id);
     List<Topo> findAll();
     List<Topo> findAllByUser(User user);
+    List<Topo> findAllBySite(Site site);
     List<Topo> findAllBorrowed(User user);
 }

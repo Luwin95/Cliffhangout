@@ -2,88 +2,116 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <div class="container">
     <h1>Ajouter un site</h1>
-    <h2>Site</h2>
     <s:set var="cptWay" value="0"/>
     <s:if test="#session.site!= null">
-        <div class="siteContent col-sm-offset-2 col-xs-8">
-            <p>Nom: <s:property value="siteBean.name"/></p>
-            <p>Description: <s:property value="siteBean.description"/></p>
-            <p>Commune: <s:property value="siteBean.location"/></p>
-            <p>Code Postale: <s:property value="siteBean.postcode"/></p>
-            <form>
-                <input type="hidden" name="editSite" value="true"/>
-                <input type="submit" class="btn btn-info" value="Modifier Site"/>
-            </form>
-            <s:if test="siteBean.sectors!=null && siteBean.sectors.size>0">
-                <s:iterator value="siteBean.sectors" begin="0" status="status">
-                    <h3>Secteur n°<s:property value="%{#status.index+1}"/></h3>
-                    <p>Nom: <s:property value="name"/> </p>
-                    <p>Description : <s:property value="description"/></p>
-                    <div class="row">
-                        <div class="col-xs-offset-3 col-xs-3">
-                            <form>
-                                <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
-                                <input type="hidden" name="editSector" value="true"/>
-                                <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
-                                <input type="submit" class="btn btn-info" value="Modifier secteur"/>
-                            </form>
-                        </div>
-                        <div class="col-xs-3">
-                            <form>
-                                <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
-                                <input type="hidden" name="deleteSector" value="true"/>
-                                <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
-                                <input type="submit" class="btn btn-danger" value="Supprimer secteur"/>
-                            </form>
-                        </div>
-                    </div>
-                    <s:if test="ways!=null && ways.size >0">
-                        <s:set var="cptWay" value="%{#cptWay+1}"/>
-                        <s:iterator value="ways"  begin="0" status="statusVoie">
-                            <h4>Voie n°<s:property value="%{#statusVoie.index+1}"/></h4>
-                            <p>Nom : <s:property value="name"/> </p>
-                            <p>Hauteur : <s:property value="height"/> </p>
-                            <p>Cotation : <s:property value="quotation.name"/></p>
-                            <div class="row">
-                                <div class="col-xs-offset-3 col-xs-3">
-                                    <form>
-                                        <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
-                                        <input type="hidden" name="editWay" value="true"/>
-                                        <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
-                                        <input type="hidden" name="idWay" value="<s:property value="%{#statusVoie.index}"/>"/>
-                                        <input type="submit" class="btn btn-info" value="Modifier voie"/>
-                                    </form>
+        <div class="siteContent col-md-offset-2 col-md-8 col-sm-offset-0 col-sm-12">
+            <div class="panel panel-cliffhangout">
+                <div class="panel-heading">
+                    <h2><s:property value="siteBean.name"/></h2>
+                </div>
+                <div class="panel-body">
+                    <p>Description: <s:property value="siteBean.description"/></p>
+                    <p>Commune: <s:property value="siteBean.location"/></p>
+                    <p>Code Postale: <s:property value="siteBean.postcode"/></p>
+                    <form>
+                        <input type="hidden" name="editSite" value="true"/>
+                        <input type="submit" class="btn btn-info" value="Modifier Site"/>
+                    </form>
+                    <s:if test="siteBean.sectors!=null && siteBean.sectors.size>0">
+                        <s:iterator value="siteBean.sectors" begin="0" status="status">
+                            <div class="panel panel-cliffhangout">
+                                <div class="panel-heading">
+                                    <h3>Secteur n°<s:property value="%{#status.index+1}"/></h3>
                                 </div>
-                                <div class="col-xs-3">
-                                    <form>
-                                        <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
-                                        <input type="hidden" name="deleteWay" value="true"/>
-                                        <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
-                                        <input type="hidden" name="idWay" value="<s:property value="%{#statusVoie.index}"/>"/>
-                                        <input type="submit" class="btn btn-danger" value="Supprimer voie"/>
-                                    </form>
+                                <div class="panel-body">
+                                    <p>Nom: <s:property value="name"/> </p>
+                                    <p>Description : <s:property value="description"/></p>
+                                    <s:if test="ways!=null && ways.size >0">
+                                        <s:set var="cptWay" value="%{#cptWay+1}"/>
+                                        <s:iterator value="ways"  begin="0" status="statusVoie">
+                                            <div class="panel panel-cliffhangout">
+                                                <div class="panel-heading">
+                                                    <h4>Voie n°<s:property value="%{#statusVoie.index+1}"/></h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <p>Nom : <s:property value="name"/> </p>
+                                                    <p>Hauteur : <s:property value="height"/> </p>
+                                                    <p>Cotation : <s:property value="quotation.name"/></p>
+                                                </div>
+                                                <div class="panel-footer">
+                                                    <div class="row">
+                                                        <div class="col-xs-offset-3 col-xs-3">
+                                                            <form>
+                                                                <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
+                                                                <input type="hidden" name="editWay" value="true"/>
+                                                                <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
+                                                                <input type="hidden" name="idWay" value="<s:property value="%{#statusVoie.index}"/>"/>
+                                                                <input type="submit" class="btn btn-info" value="Modifier voie"/>
+                                                            </form>
+                                                        </div>
+                                                        <div class="col-xs-3">
+                                                            <form>
+                                                                <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
+                                                                <input type="hidden" name="deleteWay" value="true"/>
+                                                                <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
+                                                                <input type="hidden" name="idWay" value="<s:property value="%{#statusVoie.index}"/>"/>
+                                                                <input type="submit" class="btn btn-danger" value="Supprimer voie"/>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </s:iterator>
+                                    </s:if>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <form>
+                                                <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
+                                                <input type="hidden" name="editSector" value="true"/>
+                                                <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
+                                                <input type="submit" class="btn btn-info" value="Modifier secteur"/>
+                                            </form>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <form>
+                                                <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
+                                                <input type="hidden" name="addWay" value="true"/>
+                                                <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
+                                                <input type="submit" class="btn btn-warning" value="Ajouter une voie"/>
+                                            </form>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <form>
+                                                <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
+                                                <input type="hidden" name="deleteSector" value="true"/>
+                                                <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
+                                                <input type="submit" class="btn btn-danger" value="Supprimer secteur"/>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </s:iterator>
                     </s:if>
                     <form>
-                        <s:if test="idSite!=null"><input type="hidden" name="idSite" value="<s:property value="idSite"/>"/></s:if>
-                        <input type="hidden" name="addWay" value="true"/>
-                        <input type="hidden" name="idSector" value="<s:property value="%{#status.index}"/>"/>
-                        <input type="submit" class="btn btn-warning" value="Ajouter une voie"/>
+                        <input type="hidden" name="addSector" value="true"/>
+                        <input type="submit" class="btn btn-warning" value="Ajouter un secteur"/>
                     </form>
-                </s:iterator>
-            </s:if>
-            <form>
-                <input type="hidden" name="addSector" value="true"/>
-                <input type="submit" class="btn btn-warning" value="Ajouter un secteur"/>
-            </form>
-            <s:if test="%{#cptWay == siteBean.sectors.size && #cptWay!=0}">
-                <form>
-                    <input type="hidden" name="addSite" value="true"/>
-                    <input type="submit" class="btn btn-success" value="Ajouter un site"/>
-                </form>
-            </s:if>
+                </div>
+                <div class="panel-footer">
+                    <s:if test="%{#cptWay == siteBean.sectors.size && #cptWay!=0}">
+                        <form>
+                            <input type="hidden" name="addSite" value="true"/>
+                            <input type="submit" class="btn btn-success" value="Enregistrer un site"/>
+                        </form>
+                    </s:if>
+                    <s:else>
+                        <p style="color:red;">Attention chaque secteur doit posséder au moins une voie ! Impossible d'enregistrer.</p>
+                    </s:else>
+                </div>
+            </div>
         </div>
     </s:if>
     <s:else>
