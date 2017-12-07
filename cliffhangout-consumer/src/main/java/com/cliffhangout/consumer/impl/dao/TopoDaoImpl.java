@@ -22,65 +22,53 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
     @Override
     public void create(Topo topo){
         String vSQL = "INSERT INTO topo(name, description, file, borrowed, user_account_id) VALUES(:name, :description, :file, :borrowed, :user_account_id)";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("name", topo.getName(), Types.VARCHAR);
-        vParams.addValue("description", topo.getDescription(), Types.VARCHAR);
-        vParams.addValue("file", topo.getFile(), Types.VARCHAR);
-        vParams.addValue("borrowed", topo.isBorrowed(), Types.BOOLEAN);
-        vParams.addValue("user_account_id", topo.getOwner().getId(), Types.INTEGER);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"topo_id"});
-        topo.setId((int) keyHolder.getKey());
+        getvParams().addValue("name", topo.getName(), Types.VARCHAR);
+        getvParams().addValue("description", topo.getDescription(), Types.VARCHAR);
+        getvParams().addValue("file", topo.getFile(), Types.VARCHAR);
+        getvParams().addValue("borrowed", topo.isBorrowed(), Types.BOOLEAN);
+        getvParams().addValue("user_account_id", topo.getOwner().getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams(), getvKeyHolder(), new String[] {"topo_id"});
+        topo.setId((int)getvKeyHolder().getKey());
     }
 
     @Override
     public void createBorrowing(Topo topo, Date startDate, Date endDate, User user) {
         String vSQL = "INSERT INTO topo_borrowing(topo_id, user_account_id, start_date, end_date) VALUES(:topo_id, :user_account_id, :start_date, :end_date)";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("topo_id", topo.getId(), Types.INTEGER);
-        vParams.addValue("user_account_id", user.getId(), Types.INTEGER);
-        vParams.addValue("start_date", startDate, Types.DATE);
-        vParams.addValue("end_date", endDate, Types.DATE);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("topo_id", topo.getId(), Types.INTEGER);
+        getvParams().addValue("user_account_id", user.getId(), Types.INTEGER);
+        getvParams().addValue("start_date", startDate, Types.DATE);
+        getvParams().addValue("end_date", endDate, Types.DATE);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void update(Topo topo){
         String vSQL = "UPDATE topo SET name=:name, description=:description, file=:file, borrowed=:borrowed, user_account_id=:user_account_id WHERE topo_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("name", topo.getName(), Types.VARCHAR);
-        vParams.addValue("description", topo.getDescription(), Types.VARCHAR);
-        vParams.addValue("file", topo.getFile(), Types.VARCHAR);
-        vParams.addValue("borrowed", topo.isBorrowed(), Types.BOOLEAN);
-        vParams.addValue("user_account_id", topo.getOwner().getId(), Types.INTEGER);
-        vParams.addValue("id", topo.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("name", topo.getName(), Types.VARCHAR);
+        getvParams().addValue("description", topo.getDescription(), Types.VARCHAR);
+        getvParams().addValue("file", topo.getFile(), Types.VARCHAR);
+        getvParams().addValue("borrowed", topo.isBorrowed(), Types.BOOLEAN);
+        getvParams().addValue("user_account_id", topo.getOwner().getId(), Types.INTEGER);
+        getvParams().addValue("id", topo.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void delete(Topo topo){
         String vSQL = "DELETE FROM topo WHERE topo_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", topo.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", topo.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void deleteSiteTopo(Topo topo) {
         String vSQL = "DELETE FROM site_topo WHERE topo_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", topo.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", topo.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public Topo find(int id){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id, image.*, image.image_id AS imageId FROM topo " +
                 "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
                 "LEFT JOIN image ON user_account.image_id = image.image_id " +
@@ -88,11 +76,10 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
         if(id>0)
         {
             vSQL.append("AND topo_id = :id");
-            vParams.addValue("id", id);
+            getvParams().addValue("id", id);
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Topo> vRowMapper = new TopoRM();
-        Topo topo = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+        Topo topo = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
         return topo;
     }
 
@@ -103,9 +90,8 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
                     "FROM topo " +
                     "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
                     "LEFT JOIN image ON user_account.image_id = image.image_id ");
-            JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
             RowMapper<Topo> vRowMapper = new TopoRM();
-            List<Topo> vList = vJdbcTemplate.query(vSQL.toString(),vRowMapper);
+            List<Topo> vList = getvJdbcTemplate().query(vSQL.toString(),vRowMapper);
             return vList;
         }catch (EmptyResultDataAccessException e){
             return null;
@@ -114,7 +100,6 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
 
     @Override
     public List<Topo> findAllByUser(User user) {
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, image.*, image.image_id AS imageId, user_account.user_account_id AS user_id " +
                 "FROM topo " +
                 "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
@@ -125,18 +110,16 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
             if(user.getId()!=0)
             {
                 vSQL.append("AND topo.user_account_id=:user_id ORDER BY topo.topo_id");
-                vParams.addValue("user_id", user.getId());
+                getvParams().addValue("user_id", user.getId());
             }
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Topo> vRowMapper = new TopoRM();
-        List<Topo> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        List<Topo> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
         return vList;
     }
 
     @Override
     public List<Topo> findAllBySite(Site site) {
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, image.*, image.image_id AS imageId, user_account.user_account_id AS user_id " +
                 "FROM site_topo " +
                 "LEFT JOIN topo ON site_topo.topo_id = topo.topo_id " +
@@ -148,18 +131,16 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
             if(site.getId()!=0)
             {
                 vSQL.append("AND site_topo.site_id=:site_id AND topo.borrowed=true ORDER BY topo.topo_id");
-                vParams.addValue("site_id", site.getId());
+                getvParams().addValue("site_id", site.getId());
             }
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Topo> vRowMapper = new TopoRM();
-        List<Topo> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        List<Topo> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
         return vList;
     }
 
     @Override
     public List<Topo> findAllBorrowed(User user) {
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT topo.*, user_account.*, user_account.user_account_id AS user_id,image.*, image.image_id AS imageId " +
                 "FROM topo " +
                 "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
@@ -170,14 +151,13 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
             if(user.getId()!=0)
             {
                 vSQL.append("AND topo.user_account_id!=:user_id ");
-                vParams.addValue("user_id", user.getId());
+                getvParams().addValue("user_id", user.getId());
             }
         }
         vSQL.append("AND topo.borrowed=:borrowed ORDER BY topo.topo_id");
-        vParams.addValue("borrowed", true);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+        getvParams().addValue("borrowed", true);
         RowMapper<Topo> vRowMapper = new TopoRM();
-        List<Topo> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        List<Topo> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
         return vList;
     }
 }

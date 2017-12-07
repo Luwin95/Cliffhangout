@@ -17,80 +17,67 @@ public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
     @Override
     public void create(Way way){
         String vSQL = "INSERT INTO way(name, height, quotation_difficulty, points_nb, sector_id) VALUES(:name, :height, :quotation_difficulty, :points_nb, :sector_id)";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("name", way.getName(), Types.VARCHAR);
-        vParams.addValue("height", way.getHeight(), Types.REAL);
-        vParams.addValue("quotation_difficulty", way.getQuotation().getDifficulty(), Types.INTEGER);
-        vParams.addValue("points_nb", way.getPointsNb(), Types.INTEGER);
-        vParams.addValue("sector_id", way.getSectorId(), Types.INTEGER);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"way_id"});
-        way.setId((int) keyHolder.getKey());
+        getvParams().addValue("name", way.getName(), Types.VARCHAR);
+        getvParams().addValue("height", way.getHeight(), Types.REAL);
+        getvParams().addValue("quotation_difficulty", way.getQuotation().getDifficulty(), Types.INTEGER);
+        getvParams().addValue("points_nb", way.getPointsNb(), Types.INTEGER);
+        getvParams().addValue("sector_id", way.getSectorId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams(), getvKeyHolder(), new String[] {"way_id"});
+        way.setId((int) getvKeyHolder().getKey());
     }
 
     @Override
     public void update(Way way){
         String vSQL = "UPDATE way SET name=:name, height=:height, quotation_difficulty=:quotation_difficulty, points_nb=:points_nb, sector_id=:sector_id WHERE way_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("name", way.getName(), Types.VARCHAR);
-        vParams.addValue("height", way.getHeight(), Types.REAL);
-        vParams.addValue("quotation_difficulty", way.getQuotation().getDifficulty(), Types.INTEGER);
-        vParams.addValue("points_nb", way.getPointsNb(), Types.INTEGER);
-        vParams.addValue("sector_id", way.getSectorId(), Types.INTEGER);
-        vParams.addValue("id", way.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("name", way.getName(), Types.VARCHAR);
+        getvParams().addValue("height", way.getHeight(), Types.REAL);
+        getvParams().addValue("quotation_difficulty", way.getQuotation().getDifficulty(), Types.INTEGER);
+        getvParams().addValue("points_nb", way.getPointsNb(), Types.INTEGER);
+        getvParams().addValue("sector_id", way.getSectorId(), Types.INTEGER);
+        getvParams().addValue("id", way.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void delete(Way way){
         String vSQL = "DELETE FROM way WHERE way_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", way.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", way.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void deleteAllBySector(Sector sector){
         String vSQL = "DELETE FROM way WHERE sector_id=:sector_id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("sector_id", sector.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("sector_id", sector.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public Way find(int id, Sector sector){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM way WHERE 1=1 ");
         if(id>0)
         {
             vSQL.append("AND way_id = :id");
-            vParams.addValue("id", id);
+            getvParams().addValue("id", id);
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Way> vRowMapper = new WayRM();
-        Way way = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+        Way way = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
         return way;
     }
 
     @Override
     public List<Way> findAllBySector(Sector sector){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM way LEFT JOIN quotation ON quotation.quotation_difficulty = way.quotation_difficulty WHERE 1=1 ");
         if(sector != null)
         {
             if(sector.getId()!=0)
             {
                 vSQL.append("AND sector_id=:sector_id ORDER BY way_id");
-                vParams.addValue("sector_id", sector.getId());
+                getvParams().addValue("sector_id", sector.getId());
             }
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Way> vRowMapper = new WayRM();
-        List<Way> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        List<Way> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
         return vList;
     }
 }

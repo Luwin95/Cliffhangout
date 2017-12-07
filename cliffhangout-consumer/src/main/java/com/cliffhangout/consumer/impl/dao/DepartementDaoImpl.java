@@ -16,26 +16,22 @@ public class DepartementDaoImpl extends AbstractDaoImpl implements DepartementDa
 
     @Override
     public Departement find(String code){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM departement LEFT JOIN region ON region.region_id = departement.region_id WHERE 1=1 ");
         if(code != null && !code.equals(""))
         {
             vSQL.append("AND departement_code=:code");
-            vParams.addValue("code", code);
+            getvParams().addValue("code", code);
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Departement> vRowMapper = new DepartementRM();
-        Departement departement= vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+        Departement departement= getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
         return departement;
     }
 
     @Override
     public List<Departement> findAll(){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         String vSQL= "SELECT * FROM departement LEFT JOIN region ON region.region_id = departement.region_id  ORDER BY departement_code";
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Departement> vRowMapper = new DepartementRM();
-        List<Departement> vList = vJdbcTemplate.query(vSQL,vParams,vRowMapper);
+        List<Departement> vList = getvNamedParameterJdbcTemplate().query(vSQL,getvParams(),vRowMapper);
         return vList;
     }
 }

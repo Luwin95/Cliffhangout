@@ -16,7 +16,6 @@ import java.util.List;
 public class BorrowDaoImpl extends AbstractDaoImpl implements BorrowDao {
     @Override
     public List<Borrow> getUserTopoBorrowed(User user) {
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT topo.*, topo.user_account_id AS user_id, user_account.user_account_id AS user_id, user_account.*,image.*,image.image_id AS imageId, topo_borrowing.user_account_id AS borrower_id, start_date, end_date " +
                 "FROM topo_borrowing " +
                 "LEFT JOIN topo ON topo_borrowing.topo_id = topo.topo_id " +
@@ -28,12 +27,11 @@ public class BorrowDaoImpl extends AbstractDaoImpl implements BorrowDao {
             if(user.getId()!=0)
             {
                 vSQL.append("AND topo_borrowing.user_account_id =:user_id ORDER BY topo.topo_id");
-                vParams.addValue("user_id", user.getId());
+                getvParams().addValue("user_id", user.getId());
             }
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Borrow> vRowMapper = new BorrowRM();
-        List<Borrow> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        List<Borrow> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
         return vList;
     }
 
@@ -42,34 +40,27 @@ public class BorrowDaoImpl extends AbstractDaoImpl implements BorrowDao {
     @Override
     public void deleteBorrowByTopo(Topo topo) {
         String vSQL = "DELETE FROM topo_borrowing WHERE topo_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", topo.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", topo.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL,getvParams());
     }
 
     @Override
     public void deleteBorrowByUser(User user) {
         String vSQL = "DELETE FROM topo_borrowing WHERE user_account_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", user.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", user.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void deleteBorrow(Topo topo, User user) {
         String vSQL = "DELETE FROM topo_borrowing WHERE user_account_id=:user_id AND topo_id=:topo_id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("user_id", user.getId(), Types.INTEGER);
-        vParams.addValue("topo_id", topo.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("user_id", user.getId(), Types.INTEGER);
+        getvParams().addValue("topo_id", topo.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public Borrow find(User user, Topo topo) {
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT topo.*, topo.user_account_id AS user_id, user_account.user_account_id AS user_id, user_account.*,image.*,image.image_id AS imageId, topo_borrowing.user_account_id AS borrower_id, start_date, end_date " +
                 "FROM topo_borrowing " +
                 "LEFT JOIN topo ON topo_borrowing.topo_id = topo.topo_id " +
@@ -81,13 +72,12 @@ public class BorrowDaoImpl extends AbstractDaoImpl implements BorrowDao {
             if(user.getId()!=0 && topo.getId()!=0)
             {
                 vSQL.append("AND topo_borrowing.user_account_id =:user_id AND topo_borrowing.topo_id=:topo_id ORDER BY topo.topo_id");
-                vParams.addValue("user_id", user.getId());
-                vParams.addValue("topo_id", topo.getId());
+                getvParams().addValue("user_id", user.getId());
+                getvParams().addValue("topo_id", topo.getId());
             }
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Borrow> vRowMapper = new BorrowRM();
-        Borrow borrow = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+        Borrow borrow = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
         return borrow;
     }
 }

@@ -21,31 +21,26 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
     @Override
     public void create(Comment comment){
         String vSQL = "INSERT INTO comment(content, author_id, parent_id, reported) VALUES(:content, :author_id, :parent_id, :reported)";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("content", comment.getContent(), Types.VARCHAR);
-        vParams.addValue("author_id", comment.getAuthor().getId(), Types.INTEGER);
+        getvParams().addValue("content", comment.getContent(), Types.VARCHAR);
+        getvParams().addValue("author_id", comment.getAuthor().getId(), Types.INTEGER);
         if(comment.getParent()!=null)
         {
-            vParams.addValue("parent_id", comment.getParent().getId(), Types.INTEGER);
+            getvParams().addValue("parent_id", comment.getParent().getId(), Types.INTEGER);
         }else{
-            vParams.addValue("parent_id", null, Types.NULL);
+            getvParams().addValue("parent_id", null, Types.NULL);
         }
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        vParams.addValue("reported", comment.isReported(), Types.BOOLEAN);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams,keyHolder, new String[] {"comment_id"});
-        comment.setId((int) keyHolder.getKey());
+        getvParams().addValue("reported", comment.isReported(), Types.BOOLEAN);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams(),getvKeyHolder(), new String[] {"comment_id"});
+        comment.setId((int) getvKeyHolder().getKey());
     }
 
     @Override
     public void createCommentSite(int site_id, Comment comment){
         create(comment);
         String vSQL = "INSERT INTO comment_site(comment_id, site_id) VALUES(:comment_id, :site_id)";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("comment_id", comment.getId(), Types.INTEGER);
-        vParams.addValue("site_id", site_id, Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("comment_id", comment.getId(), Types.INTEGER);
+        getvParams().addValue("site_id", site_id, Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
 
     }
 
@@ -53,55 +48,46 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
     public void createCommentTopo(int topo_id, Comment comment){
         create(comment);
         String vSQL = "INSERT INTO comment_topo(comment_id, topo_id) VALUES(:comment_id, :topo_id)";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("comment_id", comment.getId(), Types.INTEGER);
-        vParams.addValue("topo_id", topo_id, Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("comment_id", comment.getId(), Types.INTEGER);
+        getvParams().addValue("topo_id", topo_id, Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void update(Comment comment){
         String vSQL = "UPDATE comment SET content=:content, author_id=:author_id, parent_id=:parent_id, reported=:reported WHERE comment_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("content", comment.getContent(), Types.VARCHAR);
-        vParams.addValue("comment_id", comment.getId(), Types.INTEGER);
-        vParams.addValue("author_id", comment.getAuthor().getId(), Types.INTEGER);
+        getvParams().addValue("content", comment.getContent(), Types.VARCHAR);
+        getvParams().addValue("comment_id", comment.getId(), Types.INTEGER);
+        getvParams().addValue("author_id", comment.getAuthor().getId(), Types.INTEGER);
         if(comment.getParent()!=null)
         {
-            vParams.addValue("parent_id", comment.getParent().getId(), Types.INTEGER);
+            getvParams().addValue("parent_id", comment.getParent().getId(), Types.INTEGER);
         }else{
-            vParams.addValue("parent_id", null, Types.NULL);
+            getvParams().addValue("parent_id", null, Types.NULL);
         }
-        vParams.addValue("reported", comment.isReported(), Types.BOOLEAN);
-        vParams.addValue("id", comment.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("reported", comment.isReported(), Types.BOOLEAN);
+        getvParams().addValue("id", comment.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void delete(Comment comment){
         deleteCommentSite(comment);
         String vSQL = "DELETE FROM comment WHERE comment_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", comment.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", comment.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void deleteCommentSite(Comment comment) {
         String vSQL = "DELETE FROM comment_site WHERE comment_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", comment.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", comment.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public Comment find(int id){
         try{
-            MapSqlParameterSource vParams = new MapSqlParameterSource();
             StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.*, image.image_id AS imageId, image.* " +
                     "FROM comment AS child  " +
                     "LEFT JOIN comment AS parent ON child.parent_id = parent.comment_id " +
@@ -111,11 +97,10 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
             if(id>0)
             {
                 vSQL.append("AND child.comment_id = :id");
-                vParams.addValue("id", id);
+                getvParams().addValue("id", id);
             }
-            NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
             RowMapper<Comment> vRowMapper = new CommentRM();
-            Comment comment = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+            Comment comment = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
             return comment;
         }catch(EmptyResultDataAccessException e){
             return null;
@@ -124,7 +109,6 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
 
     @Override
     public List<Comment> findAllByParent(Comment parent){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.*, image.image_id AS imageId, image.* " +
                 "FROM comment AS child  " +
                 "LEFT JOIN comment AS parent ON child.parent_id = parent.comment_id " +
@@ -136,12 +120,11 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
             if(parent.getId()!=0)
             {
                 vSQL.append("AND child.parent_id=:parent_id");
-                vParams.addValue("parent_id", parent.getId());
+                getvParams().addValue("parent_id", parent.getId());
             }
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Comment> vRowMapper = new CommentRM();
-        List<Comment> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        List<Comment> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
         return vList;
     }
 
@@ -149,7 +132,6 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
     public List<Comment> findAllBySite(Site site){
         try
         {
-            MapSqlParameterSource vParams = new MapSqlParameterSource();
             StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.*, image.image_id AS imageId, image.* " +
                     "FROM comment_site  " +
                     "INNER JOIN comment AS child on comment_site.comment_id= child.comment_id " +
@@ -162,12 +144,11 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
                 if(site.getId()!=0)
                 {
                     vSQL.append("AND site_id=:site_id");
-                    vParams.addValue("site_id", site.getId());
+                    getvParams().addValue("site_id", site.getId());
                 }
             }
-            NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
             RowMapper<Comment> vRowMapper = new CommentRM();
-            List<Comment> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+            List<Comment> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
             return vList;
         }catch(EmptyResultDataAccessException e){
             return null;
@@ -177,18 +158,15 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
     @Override
     public List<Comment> findAllSignaled() {
         try{
-            MapSqlParameterSource vParams = new MapSqlParameterSource();
             StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.* " +
                     "FROM comment AS child " +
                     "LEFT JOIN comment AS parent ON child.parent_id = parent.comment_id " +
                     "LEFT JOIN user_account ON child.author_id= user_account.user_account_id " +
                     "WHERE 1=1 ");
             vSQL.append("AND child.reported=:reported");
-            vParams.addValue("reported", true);
-
-            NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
+            getvParams().addValue("reported", true);
             RowMapper<Comment> vRowMapper = new CommentRM();
-            List<Comment> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+            List<Comment> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
             return vList;
         }catch(EmptyResultDataAccessException e){
             return null;

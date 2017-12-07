@@ -18,76 +18,65 @@ public class PointDaoImpl extends AbstractDaoImpl implements PointDao {
     @Override
     public void create(Point point){
         String vSQL = "INSERT INTO point(name, description, length_id) VALUES(:name, :description, :length_id)";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("name", point.getName(), Types.VARCHAR);
-        vParams.addValue("description", point.getDescription(), Types.VARCHAR);
-        vParams.addValue("length_id", point.getLengthId(), Types.INTEGER);
+        getvParams().addValue("name", point.getName(), Types.VARCHAR);
+        getvParams().addValue("description", point.getDescription(), Types.VARCHAR);
+        getvParams().addValue("length_id", point.getLengthId(), Types.INTEGER);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"point_id"});
-        point.setId((int) keyHolder.getKey());
+        vJdbcTemplate.update(vSQL, getvParams(), getvKeyHolder(), new String[] {"point_id"});
+        point.setId((int) getvKeyHolder().getKey());
     }
 
     @Override
     public void update(Point point){
         String vSQL = "UPDATE point SET name=:name, description=:description, length_id=:length_id WHERE point_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("name", point.getName(), Types.VARCHAR);
-        vParams.addValue("description", point.getDescription(), Types.VARCHAR);
-        vParams.addValue("length_id", point.getLengthId(), Types.INTEGER);
-        vParams.addValue("id", point.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("name", point.getName(), Types.VARCHAR);
+        getvParams().addValue("description", point.getDescription(), Types.VARCHAR);
+        getvParams().addValue("length_id", point.getLengthId(), Types.INTEGER);
+        getvParams().addValue("id", point.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void delete(Point point){
         String vSQL = "DELETE FROM point WHERE point_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", point.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", point.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void deleteAllByLength(Length length){
         String vSQL = "DELETE FROM point WHERE length_id=:length_id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("length_id", length.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("length_id", length.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public Point find(int id){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM point WHERE 1=1 ");
         if(id>0)
         {
             vSQL.append("AND point_id = :id");
-            vParams.addValue("id", id);
+            getvParams().addValue("id", id);
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Point> vRowMapper = new PointRM();
-        Point point = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+        Point point = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
         return point;
     }
 
     @Override
     public List<Point> findAllByLength(Length length){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM point WHERE 1=1 ");
         if(length != null)
         {
             if(length.getId()!=0)
             {
                 vSQL.append("AND length_id=:length_id ORDER BY point_id");
-                vParams.addValue("length_id", length.getId());
+                getvParams().addValue("length_id", length.getId());
             }
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Point> vRowMapper = new PointRM();
-        List<Point> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        List<Point> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
         return vList;
     }
 }

@@ -14,26 +14,22 @@ import java.util.List;
 public class RegionDaoImpl extends AbstractDaoImpl implements RegionDao {
     @Override
     public Region find(int id){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM region WHERE 1=1 ");
         if(id>0)
         {
             vSQL.append("AND region_id = :id");
-            vParams.addValue("id", id);
+            getvParams().addValue("id", id);
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Region> vRowMapper = new RegionRM();
-        Region region = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+        Region region = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
         return region;
     }
 
     @Override
     public List<Region> findAll(){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         String vSQL= "SELECT * FROM region ORDER BY region_id";
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Region> vRowMapper = new RegionRM();
-        List<Region> vList = vJdbcTemplate.query(vSQL,vParams,vRowMapper);
+        List<Region> vList = getvNamedParameterJdbcTemplate().query(vSQL,getvParams(),vRowMapper);
         return vList;
     }
 

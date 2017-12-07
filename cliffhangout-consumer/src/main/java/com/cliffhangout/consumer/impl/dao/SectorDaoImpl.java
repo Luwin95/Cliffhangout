@@ -21,76 +21,63 @@ public class SectorDaoImpl extends AbstractDaoImpl implements SectorDao {
     @Override
     public void create(Sector sector){
         String vSQL = "INSERT INTO sector(name, description, site_id) VALUES(:name, :description, :site_id)";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("name", sector.getName(), Types.VARCHAR);
-        vParams.addValue("description", sector.getDescription(), Types.VARCHAR);
-        vParams.addValue("site_id", sector.getSiteId());
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams, keyHolder, new String[] {"sector_id"});
-        sector.setId((int) keyHolder.getKey());
+        getvParams().addValue("name", sector.getName(), Types.VARCHAR);
+        getvParams().addValue("description", sector.getDescription(), Types.VARCHAR);
+        getvParams().addValue("site_id", sector.getSiteId());
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams(), getvKeyHolder(), new String[] {"sector_id"});
+        sector.setId((int) getvKeyHolder().getKey());
     }
 
     @Override
     public void update(Sector sector){
         String vSQL = "UPDATE sector SET name=:name, description=:description, site_id=:site_id WHERE sector_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("name", sector.getName(), Types.VARCHAR);
-        vParams.addValue("description", sector.getDescription(), Types.VARCHAR);
-        vParams.addValue("site_id", sector.getSiteId());
-        vParams.addValue("id", sector.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("name", sector.getName(), Types.VARCHAR);
+        getvParams().addValue("description", sector.getDescription(), Types.VARCHAR);
+        getvParams().addValue("site_id", sector.getSiteId());
+        getvParams().addValue("id", sector.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void delete(Sector sector){
         String vSQL = "DELETE FROM sector WHERE sector_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", sector.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", sector.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void deleteAllBySite(Site site){
         String vSQL = "DELETE FROM sector WHERE site_id=:site_id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("site_id", site.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("site_id", site.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public Sector find(int id){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM sector WHERE 1=1 ");
         if(id>0)
         {
             vSQL.append("AND sector_id = :id");
-            vParams.addValue("id", id);
+            getvParams().addValue("id", id);
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Sector> vRowMapper = new SectorRM();
-        Sector sector = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+        Sector sector = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
         return sector;
     }
 
     @Override
     public List<Sector> findAllBySite(Site site){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM sector WHERE 1=1 ");
         if(site != null)
         {
             if(site.getId()!=0)
             {
                 vSQL.append("AND site_id=:site_id ORDER BY sector_id");
-                vParams.addValue("site_id", site.getId());
+                getvParams().addValue("site_id", site.getId());
             }
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Sector> vRowMapper = new SectorRM();
-        List<Sector> vList = vJdbcTemplate.query(vSQL.toString(),vParams,vRowMapper);
+        List<Sector> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
         return vList;
     }
 }

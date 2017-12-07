@@ -16,68 +16,59 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     @Override
     public void create(User user){
         String vSQL = "INSERT INTO user_account(login, password, email, role, image_id, active) VALUES(:login, :password,:email, :role, :image_id, :active)";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("login", user.getLogin(), Types.VARCHAR);
-        vParams.addValue("password", user.getPassword(), Types.VARCHAR);
-        vParams.addValue("email", user.getEmail(), Types.VARCHAR);
-        vParams.addValue("role", user.getRole(), Types.VARCHAR);
-        vParams.addValue("active", user.isActive(), Types.BOOLEAN);
+        getvParams().addValue("login", user.getLogin(), Types.VARCHAR);
+        getvParams().addValue("password", user.getPassword(), Types.VARCHAR);
+        getvParams().addValue("email", user.getEmail(), Types.VARCHAR);
+        getvParams().addValue("role", user.getRole(), Types.VARCHAR);
+        getvParams().addValue("active", user.isActive(), Types.BOOLEAN);
         if(user.getImage()!=null)
         {
-            vParams.addValue("image_id", user.getImage().getId(), Types.INTEGER);
+            getvParams().addValue("image_id", user.getImage().getId(), Types.INTEGER);
         }else{
-            vParams.addValue("image_id", null, Types.NULL);
+            getvParams().addValue("image_id", null, Types.NULL);
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        int vNbrLigneMaJ = vJdbcTemplate.update(vSQL, vParams);
+        int vNbrLigneMaJ = getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void update(User user){
         String vSQL = "UPDATE  user_account SET login=:login, password=:password, email=:email, role=:role, image_id=:image_id, active=:active WHERE user_account_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("login", user.getLogin(), Types.VARCHAR);
-        vParams.addValue("password", user.getPassword(), Types.VARCHAR);
-        vParams.addValue("email", user.getEmail(), Types.VARCHAR);
-        vParams.addValue("role", user.getRole(), Types.VARCHAR);
-        vParams.addValue("active", user.isActive(), Types.BOOLEAN);
+        getvParams().addValue("login", user.getLogin(), Types.VARCHAR);
+        getvParams().addValue("password", user.getPassword(), Types.VARCHAR);
+        getvParams().addValue("email", user.getEmail(), Types.VARCHAR);
+        getvParams().addValue("role", user.getRole(), Types.VARCHAR);
+        getvParams().addValue("active", user.isActive(), Types.BOOLEAN);
         if(user.getImage() !=null)
         {
             if(user.getImage().getId() !=0)
             {
-                vParams.addValue("image_id", user.getImage().getId(), Types.INTEGER);
+                getvParams().addValue("image_id", user.getImage().getId(), Types.INTEGER);
             }
         }else{
-            vParams.addValue("image_id", null, Types.NULL);
+            getvParams().addValue("image_id", null, Types.NULL);
         }
-        vParams.addValue("id", user.getId(), Types.INTEGER);
-
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", user.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public void delete(User user){
         String vSQL = "DELETE FROM user_account WHERE user_account_id=:id";
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        vParams.addValue("id", user.getId(), Types.INTEGER);
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
-        vJdbcTemplate.update(vSQL, vParams);
+        getvParams().addValue("id", user.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
     }
 
     @Override
     public User find(int id){
         try{
-            MapSqlParameterSource vParams = new MapSqlParameterSource();
             StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.user_account_id AS user_id, image.image_id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.image_id WHERE 1=1 ");
             if(id>0)
             {
                 vSQL.append("AND user_account_id = :id");
-                vParams.addValue("id", id);
+                getvParams().addValue("id", id);
             }
-            NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
             RowMapper<User> vRowMapper = new UserRM();
-            User user = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+            User user = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(),getvParams(), vRowMapper);
             return user;
         }catch (EmptyResultDataAccessException e){
             return null;
@@ -89,16 +80,14 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     @Override
     public User findByLoginActive(String login){
         try{
-            MapSqlParameterSource vParams = new MapSqlParameterSource();
             StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.user_account_id AS user_id, image.image_id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.image_id WHERE 1=1 ");
             if(!login.equals(""))
             {
                 vSQL.append("AND login = :login AND active=true");
-                vParams.addValue("login", login);
+                getvParams().addValue("login", login);
             }
-            NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
             RowMapper<User> vRowMapper = new UserRM();
-            User user = vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+            User user = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
             return user;
         }catch(EmptyResultDataAccessException e){
             return null;
@@ -109,9 +98,8 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     public List<User> findAll() {
         try{
             StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.user_account_id AS user_id, image.image_id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.image_id ORDER BY user_account_id");
-            JdbcTemplate vJdbcTemplate = new JdbcTemplate(getDataSource());
             RowMapper<User> vRowMapper = new UserRM();
-            List<User> vList = vJdbcTemplate.query(vSQL.toString(),vRowMapper);
+            List<User> vList = getvJdbcTemplate().query(vSQL.toString(),vRowMapper);
             return vList;
         }catch (EmptyResultDataAccessException e){
             return null;
@@ -120,16 +108,14 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
 
     @Override
     public boolean emailIsInDb(String email) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource());
-        Integer count = jdbcTemplate.queryForObject(
+        Integer count = getvJdbcTemplate().queryForObject(
                 "SELECT COUNT(*) FROM user_account  WHERE email=?", Integer.class, email);
         return count != null && count > 0;
     }
 
     @Override
     public boolean loginIsInDb(String login) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource());
-        Integer count = jdbcTemplate.queryForObject(
+        Integer count = getvJdbcTemplate().queryForObject(
                 "SELECT COUNT(*) FROM user_account  WHERE login=?", Integer.class, login);
         return count != null && count > 0;
     }

@@ -16,36 +16,31 @@ import java.util.List;
 public class QuotationDaoImpl extends AbstractDaoImpl implements QuotationDao {
     @Override
     public Quotation find(int difficulty){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM quotation WHERE 1=1 ");
         if(difficulty>0)
         {
             vSQL.append("AND  quotation_difficulty=:quotation_difficulty");
-            vParams.addValue("quotation_difficulty", difficulty);
+            getvParams().addValue("quotation_difficulty", difficulty);
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Quotation> vRowMapper = new QuotationRM();
-        Quotation quotation= vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+        Quotation quotation= getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
         return quotation;
 
     }
 
     @Override
     public Quotation findByName(String name){
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
         StringBuilder vSQL= new StringBuilder("SELECT * FROM quotation WHERE 1=1 ");
         if(name != null)
         {
             if(!name.equals(""))
             {
                 vSQL.append("AND quotation_name=:quotation_name");
-                vParams.addValue("quotation_name", name);
+                getvParams().addValue("quotation_name", name);
             }
-
         }
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource());
         RowMapper<Quotation> vRowMapper = new QuotationRM();
-        Quotation quotation= vJdbcTemplate.queryForObject(vSQL.toString(), vParams, vRowMapper);
+        Quotation quotation= getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
         return quotation;
     }
 
