@@ -5,17 +5,19 @@ import com.cliffhangout.beans.Sector;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.consumer.contract.dao.ImageDao;
 import com.cliffhangout.consumer.impl.rowmapper.ImageRM;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
+    private ImageRM imageRM;
+
+    protected ImageRM getImageRM() {
+        return imageRM;
+    }
+
+    public void setImageRM(ImageRM imageRM) {
+        this.imageRM = imageRM;
+    }
 
     @Override
     public void create(Image image){
@@ -71,8 +73,7 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
             vSQL.append("AND image_id = :image_id");
             getvParams().addValue("image_id", id);
         }
-        RowMapper<Image> vRowMapper = new ImageRM();
-        Image image = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+        Image image = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), getImageRM());
         return image;
     }
 
@@ -87,8 +88,7 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
                 getvParams().addValue("site_id", site.getId());
             }
         }
-        RowMapper<Image> vRowMapper = new ImageRM();
-        List<Image> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Image> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getImageRM());
         return vList;
     }
 
@@ -103,8 +103,7 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
                 getvParams().addValue("sector_id", sector.getId());
             }
         }
-        RowMapper<Image> vRowMapper = new ImageRM();
-        List<Image> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Image> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getImageRM());
         return vList;
     }
 

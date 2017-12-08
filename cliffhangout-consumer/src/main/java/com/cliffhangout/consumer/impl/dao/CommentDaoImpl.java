@@ -3,21 +3,23 @@ package com.cliffhangout.consumer.impl.dao;
 import com.cliffhangout.beans.Comment;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.consumer.contract.dao.CommentDao;
-import com.cliffhangout.consumer.contract.dao.UserDao;
 import com.cliffhangout.consumer.impl.rowmapper.CommentRM;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
+    private CommentRM commentRM;
+
+    protected CommentRM getCommentRM() {
+        return commentRM;
+    }
+
+    public void setCommentRM(CommentRM commentRM) {
+        this.commentRM = commentRM;
+    }
+
     @Override
     public void create(Comment comment){
         String vSQL = "INSERT INTO comment(content, author_id, parent_id, reported) VALUES(:content, :author_id, :parent_id, :reported)";
@@ -99,8 +101,7 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
                 vSQL.append("AND child.comment_id = :id");
                 getvParams().addValue("id", id);
             }
-            RowMapper<Comment> vRowMapper = new CommentRM();
-            Comment comment = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+            Comment comment = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), getCommentRM());
             return comment;
         }catch(EmptyResultDataAccessException e){
             return null;
@@ -123,8 +124,7 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
                 getvParams().addValue("parent_id", parent.getId());
             }
         }
-        RowMapper<Comment> vRowMapper = new CommentRM();
-        List<Comment> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Comment> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getCommentRM());
         return vList;
     }
 
@@ -147,8 +147,7 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
                     getvParams().addValue("site_id", site.getId());
                 }
             }
-            RowMapper<Comment> vRowMapper = new CommentRM();
-            List<Comment> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+            List<Comment> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getCommentRM());
             return vList;
         }catch(EmptyResultDataAccessException e){
             return null;
@@ -165,8 +164,7 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
                     "WHERE 1=1 ");
             vSQL.append("AND child.reported=:reported");
             getvParams().addValue("reported", true);
-            RowMapper<Comment> vRowMapper = new CommentRM();
-            List<Comment> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+            List<Comment> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getCommentRM());
             return vList;
         }catch(EmptyResultDataAccessException e){
             return null;

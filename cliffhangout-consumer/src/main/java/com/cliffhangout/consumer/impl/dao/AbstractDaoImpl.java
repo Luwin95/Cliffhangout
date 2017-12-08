@@ -4,9 +4,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.KeyHolder;
-
-import javax.inject.Inject;
-import javax.inject.Named;
 import javax.sql.DataSource;
 
 public abstract class AbstractDaoImpl {

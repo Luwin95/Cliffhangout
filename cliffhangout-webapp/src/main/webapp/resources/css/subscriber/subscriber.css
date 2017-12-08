@@ -4,6 +4,10 @@ body
     text-align: center;
 }
 
+.page{
+    bottom:0;
+}
+
 .welcome-message h1
 {
     margin-bottom: 20px;

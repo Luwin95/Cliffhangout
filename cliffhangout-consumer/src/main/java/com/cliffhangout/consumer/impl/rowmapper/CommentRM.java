@@ -8,6 +8,24 @@ import java.sql.SQLException;
 
 
 public class CommentRM extends AbstractRM implements RowMapper<Comment> {
+    private ParentCommentRM parentCommentRM;
+    private UserRM userRM;
+
+    private ParentCommentRM getParentCommentRM() {
+        return parentCommentRM;
+    }
+
+    public void setParentCommentRM(ParentCommentRM parentCommentRM) {
+        this.parentCommentRM = parentCommentRM;
+    }
+
+    private UserRM getUserRM() {
+        return userRM;
+    }
+
+    public void setUserRM(UserRM userRM) {
+        this.userRM = userRM;
+    }
 
     @Override
     public Comment mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -17,11 +35,9 @@ public class CommentRM extends AbstractRM implements RowMapper<Comment> {
         vComment.setReported(rs.getBoolean("child_reported"));
         if(rs.getInt("parent_id") !=0)
         {
-            ParentCommentRM parentCommentRM = new ParentCommentRM();
-            vComment.setParent(parentCommentRM.mapRow(rs, rowNum));
+            vComment.setParent(getParentCommentRM().mapRow(rs, rowNum));
         }
-        UserRM userRM = new UserRM();
-        vComment.setAuthor(userRM.mapRow(rs,rowNum));
+        vComment.setAuthor(getUserRM().mapRow(rs,rowNum));
         return vComment;
     }
 }

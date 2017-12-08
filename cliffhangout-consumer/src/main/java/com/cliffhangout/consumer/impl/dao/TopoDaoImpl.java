@@ -6,18 +6,21 @@ import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.contract.dao.TopoDao;
 import com.cliffhangout.consumer.impl.rowmapper.TopoRM;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
 import java.util.Date;
 import java.util.List;
 
 public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
+    private TopoRM topoRM;
+
+    protected TopoRM getTopoRM() {
+        return topoRM;
+    }
+
+    public void setTopoRM(TopoRM topoRM) {
+        this.topoRM = topoRM;
+    }
 
     @Override
     public void create(Topo topo){
@@ -78,8 +81,7 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
             vSQL.append("AND topo_id = :id");
             getvParams().addValue("id", id);
         }
-        RowMapper<Topo> vRowMapper = new TopoRM();
-        Topo topo = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+        Topo topo = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), getTopoRM());
         return topo;
     }
 
@@ -90,8 +92,7 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
                     "FROM topo " +
                     "LEFT JOIN user_account ON topo.user_account_id = user_account.user_account_id " +
                     "LEFT JOIN image ON user_account.image_id = image.image_id ");
-            RowMapper<Topo> vRowMapper = new TopoRM();
-            List<Topo> vList = getvJdbcTemplate().query(vSQL.toString(),vRowMapper);
+            List<Topo> vList = getvJdbcTemplate().query(vSQL.toString(),getTopoRM());
             return vList;
         }catch (EmptyResultDataAccessException e){
             return null;
@@ -113,8 +114,7 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
                 getvParams().addValue("user_id", user.getId());
             }
         }
-        RowMapper<Topo> vRowMapper = new TopoRM();
-        List<Topo> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Topo> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getTopoRM());
         return vList;
     }
 
@@ -134,8 +134,7 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
                 getvParams().addValue("site_id", site.getId());
             }
         }
-        RowMapper<Topo> vRowMapper = new TopoRM();
-        List<Topo> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Topo> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getTopoRM());
         return vList;
     }
 
@@ -156,8 +155,7 @@ public class TopoDaoImpl extends AbstractDaoImpl implements TopoDao {
         }
         vSQL.append("AND topo.borrowed=:borrowed ORDER BY topo.topo_id");
         getvParams().addValue("borrowed", true);
-        RowMapper<Topo> vRowMapper = new TopoRM();
-        List<Topo> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Topo> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getTopoRM());
         return vList;
     }
 }

@@ -4,15 +4,23 @@ import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.contract.dao.UserDao;
 import com.cliffhangout.consumer.impl.rowmapper.UserRM;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
 
 import java.sql.*;
 import java.util.List;
 
 public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
+
+    private UserRM userRM;
+
+    protected UserRM getUserRM() {
+        return userRM;
+    }
+
+    public void setUserRM(UserRM userRM) {
+        this.userRM = userRM;
+    }
+
     @Override
     public void create(User user){
         String vSQL = "INSERT INTO user_account(login, password, email, role, image_id, active) VALUES(:login, :password,:email, :role, :image_id, :active)";
@@ -67,8 +75,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
                 vSQL.append("AND user_account_id = :id");
                 getvParams().addValue("id", id);
             }
-            RowMapper<User> vRowMapper = new UserRM();
-            User user = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(),getvParams(), vRowMapper);
+            User user = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(),getvParams(), getUserRM());
             return user;
         }catch (EmptyResultDataAccessException e){
             return null;
@@ -86,8 +93,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
                 vSQL.append("AND login = :login AND active=true");
                 getvParams().addValue("login", login);
             }
-            RowMapper<User> vRowMapper = new UserRM();
-            User user = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+            User user = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), getUserRM());
             return user;
         }catch(EmptyResultDataAccessException e){
             return null;
@@ -98,8 +104,7 @@ public class UserDaoImpl extends AbstractDaoImpl implements UserDao {
     public List<User> findAll() {
         try{
             StringBuilder vSQL= new StringBuilder("SELECT user_account.*, image.*, user_account.user_account_id AS user_id, image.image_id AS imageId FROM user_account LEFT JOIN image ON user_account.image_id=image.image_id ORDER BY user_account_id");
-            RowMapper<User> vRowMapper = new UserRM();
-            List<User> vList = getvJdbcTemplate().query(vSQL.toString(),vRowMapper);
+            List<User> vList = getvJdbcTemplate().query(vSQL.toString(),getUserRM());
             return vList;
         }catch (EmptyResultDataAccessException e){
             return null;

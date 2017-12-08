@@ -2,21 +2,21 @@ package com.cliffhangout.consumer.impl.dao;
 
 import com.cliffhangout.beans.Sector;
 import com.cliffhangout.beans.Site;
-import com.cliffhangout.beans.Way;
 import com.cliffhangout.consumer.contract.dao.SectorDao;
-import com.cliffhangout.consumer.contract.dao.WayDao;
 import com.cliffhangout.consumer.impl.rowmapper.SectorRM;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SectorDaoImpl extends AbstractDaoImpl implements SectorDao {
+    private SectorRM sectorRM;
+
+    protected SectorRM getSectorRM() {
+        return sectorRM;
+    }
+
+    public void setSectorRM(SectorRM sectorRM) {
+        this.sectorRM = sectorRM;
+    }
 
     @Override
     public void create(Sector sector){
@@ -60,8 +60,7 @@ public class SectorDaoImpl extends AbstractDaoImpl implements SectorDao {
             vSQL.append("AND sector_id = :id");
             getvParams().addValue("id", id);
         }
-        RowMapper<Sector> vRowMapper = new SectorRM();
-        Sector sector = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+        Sector sector = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), getSectorRM());
         return sector;
     }
 
@@ -76,8 +75,7 @@ public class SectorDaoImpl extends AbstractDaoImpl implements SectorDao {
                 getvParams().addValue("site_id", site.getId());
             }
         }
-        RowMapper<Sector> vRowMapper = new SectorRM();
-        List<Sector> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Sector> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getSectorRM());
         return vList;
     }
 }

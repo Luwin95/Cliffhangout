@@ -4,16 +4,20 @@ import com.cliffhangout.beans.Sector;
 import com.cliffhangout.beans.Way;
 import com.cliffhangout.consumer.contract.dao.WayDao;
 import com.cliffhangout.consumer.impl.rowmapper.WayRM;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
 import java.sql.*;
 import java.util.List;
 
 public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
+    private WayRM wayRM;
+
+    protected WayRM getWayRM() {
+        return wayRM;
+    }
+
+    public void setWayRM(WayRM wayRM) {
+        this.wayRM = wayRM;
+    }
+
     @Override
     public void create(Way way){
         String vSQL = "INSERT INTO way(name, height, quotation_difficulty, points_nb, sector_id) VALUES(:name, :height, :quotation_difficulty, :points_nb, :sector_id)";
@@ -60,8 +64,7 @@ public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
             vSQL.append("AND way_id = :id");
             getvParams().addValue("id", id);
         }
-        RowMapper<Way> vRowMapper = new WayRM();
-        Way way = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+        Way way = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), getWayRM());
         return way;
     }
 
@@ -76,8 +79,7 @@ public class WayDaoImpl extends AbstractDaoImpl implements WayDao {
                 getvParams().addValue("sector_id", sector.getId());
             }
         }
-        RowMapper<Way> vRowMapper = new WayRM();
-        List<Way> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Way> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getWayRM());
         return vList;
     }
 }

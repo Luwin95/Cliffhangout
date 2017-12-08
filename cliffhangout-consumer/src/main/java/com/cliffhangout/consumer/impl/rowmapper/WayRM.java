@@ -1,14 +1,22 @@
 package com.cliffhangout.consumer.impl.rowmapper;
 
 import com.cliffhangout.beans.Way;
-import com.cliffhangout.consumer.contract.dao.LengthDao;
-import com.cliffhangout.consumer.contract.dao.QuotationDao;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class WayRM extends AbstractRM implements RowMapper<Way> {
+
+    private QuotationRM quotationRM;
+
+    private QuotationRM getQuotationRM() {
+        return quotationRM;
+    }
+
+    public void setQuotationRM(QuotationRM quotationRM) {
+        this.quotationRM = quotationRM;
+    }
 
     @Override
     public Way mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -18,8 +26,7 @@ public class WayRM extends AbstractRM implements RowMapper<Way> {
         way.setHeight(rs.getDouble("height"));
         way.setPointsNb(rs.getInt("points_nb"));
         way.setSectorId(rs.getInt("sector_id"));
-        QuotationRM quotationRM = new QuotationRM();
-        way.setQuotation(quotationRM.mapRow(rs, rowNum));
+        way.setQuotation(getQuotationRM().mapRow(rs, rowNum));
         return way;
     }
 }

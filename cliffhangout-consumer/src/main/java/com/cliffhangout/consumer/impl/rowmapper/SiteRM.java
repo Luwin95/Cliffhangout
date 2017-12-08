@@ -1,13 +1,30 @@
 package com.cliffhangout.consumer.impl.rowmapper;
 
 import com.cliffhangout.beans.Site;
-import com.cliffhangout.consumer.contract.dao.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SiteRM extends AbstractRM implements RowMapper<Site> {
+    private UserRM userRM;
+    private DepartementRM departementRM;
+
+    private UserRM getUserRM() {
+        return userRM;
+    }
+
+    public void setUserRM(UserRM userRM) {
+        this.userRM = userRM;
+    }
+
+    private DepartementRM getDepartementRM() {
+        return departementRM;
+    }
+
+    public void setDepartementRM(DepartementRM departementRM) {
+        this.departementRM = departementRM;
+    }
 
     @Override
     public Site mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -19,11 +36,8 @@ public class SiteRM extends AbstractRM implements RowMapper<Site> {
         site.setPostcode(rs.getString("postcode"));
         site.setLatitude(rs.getFloat("latitude"));
         site.setLongitude(rs.getFloat("longitude"));
-        RegionRM  regionRM = new RegionRM();
-        UserRM userRM = new UserRM();
-        DepartementRM departementRM = new DepartementRM();
-        site.setCreator(userRM.mapRow(rs,rowNum));
-        site.setDepartement(departementRM.mapRow(rs,rowNum));
+        site.setCreator(getUserRM().mapRow(rs,rowNum));
+        site.setDepartement(getDepartementRM().mapRow(rs,rowNum));
         site.setRegion(site.getDepartement().getRegion());
         return site;
     }

@@ -1,22 +1,22 @@
 package com.cliffhangout.consumer.impl.dao;
 
 import com.cliffhangout.beans.Length;
-import com.cliffhangout.beans.Point;
 import com.cliffhangout.beans.Way;
 import com.cliffhangout.consumer.contract.dao.LengthDao;
-import com.cliffhangout.consumer.contract.dao.PointDao;
 import com.cliffhangout.consumer.impl.rowmapper.LengthRM;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LengthDaoImpl extends AbstractDaoImpl implements LengthDao {
+    private LengthRM lengthRM;
+
+    protected LengthRM getLengthRM() {
+        return lengthRM;
+    }
+
+    public void setLengthRM(LengthRM lengthRM) {
+        this.lengthRM = lengthRM;
+    }
 
     @Override
     public void create(Length length){
@@ -60,8 +60,7 @@ public class LengthDaoImpl extends AbstractDaoImpl implements LengthDao {
             vSQL.append("AND length_id = :id");
             getvParams().addValue("id", id);
         }
-        RowMapper<Length> vRowMapper = new LengthRM();
-        Length length = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+        Length length = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), getLengthRM());
         return length;
     }
 
@@ -76,8 +75,7 @@ public class LengthDaoImpl extends AbstractDaoImpl implements LengthDao {
                 getvParams().addValue("way_id", way.getId());
             }
         }
-        RowMapper<Length> vRowMapper = new LengthRM();
-        List<Length> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Length> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getLengthRM());
         return vList;
     }
 

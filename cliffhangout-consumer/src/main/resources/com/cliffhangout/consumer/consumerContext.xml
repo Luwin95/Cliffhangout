@@ -23,19 +23,45 @@
     </bean>
 
     <!-- ===== Déclaration des DAO ===== -->
-    <bean id="commentDao" class="com.cliffhangout.consumer.impl.dao.CommentDaoImpl" parent="abstractDao"/>
-    <bean id="departementDao" class="com.cliffhangout.consumer.impl.dao.DepartementDaoImpl" parent="abstractDao"/>
-    <bean id="imageDao" class="com.cliffhangout.consumer.impl.dao.ImageDaoImpl" parent="abstractDao"/>
-    <bean id="lengthDao" class="com.cliffhangout.consumer.impl.dao.LengthDaoImpl" parent="abstractDao"/>
-    <bean id="pointDao" class="com.cliffhangout.consumer.impl.dao.PointDaoImpl" parent="abstractDao"/>
-    <bean id="quotationDao" class="com.cliffhangout.consumer.impl.dao.QuotationDaoImpl" parent="abstractDao"/>
-    <bean id="regionDao" class="com.cliffhangout.consumer.impl.dao.RegionDaoImpl" parent="abstractDao"/>
-    <bean id="sectorDao" class="com.cliffhangout.consumer.impl.dao.SectorDaoImpl" parent="abstractDao"/>
-    <bean id="siteDao" class="com.cliffhangout.consumer.impl.dao.SiteDaoImpl" parent="abstractDao"/>
-    <bean id="topoDao" class="com.cliffhangout.consumer.impl.dao.TopoDaoImpl" parent="abstractDao"/>
-    <bean id="userDao" class="com.cliffhangout.consumer.impl.dao.UserDaoImpl" parent="abstractDao"/>
-    <bean id="wayDao" class="com.cliffhangout.consumer.impl.dao.WayDaoImpl" parent="abstractDao"/>
-    <bean id="borrowDao" class="com.cliffhangout.consumer.impl.dao.BorrowDaoImpl" parent="abstractDao"/>
+    <bean id="commentDao" class="com.cliffhangout.consumer.impl.dao.CommentDaoImpl" parent="abstractDao">
+        <property name="commentRM" ref="commentRM"/>
+    </bean>
+    <bean id="departementDao" class="com.cliffhangout.consumer.impl.dao.DepartementDaoImpl" parent="abstractDao">
+        <property name="departementRM" ref="departementRM"/>
+    </bean>
+    <bean id="imageDao" class="com.cliffhangout.consumer.impl.dao.ImageDaoImpl" parent="abstractDao">
+        <property name="imageRM" ref="imageRM"/>
+    </bean>
+    <bean id="lengthDao" class="com.cliffhangout.consumer.impl.dao.LengthDaoImpl" parent="abstractDao">
+        <property name="lengthRM" ref="lengthRM"/>
+    </bean>
+    <bean id="pointDao" class="com.cliffhangout.consumer.impl.dao.PointDaoImpl" parent="abstractDao">
+        <property name="pointRM" ref="pointRM"/>
+    </bean>
+    <bean id="quotationDao" class="com.cliffhangout.consumer.impl.dao.QuotationDaoImpl" parent="abstractDao">
+        <property name="quotationRM" ref="quotationRM"/>
+    </bean>
+    <bean id="regionDao" class="com.cliffhangout.consumer.impl.dao.RegionDaoImpl" parent="abstractDao">
+        <property name="regionRM" ref="regionRM"/>
+    </bean>
+    <bean id="sectorDao" class="com.cliffhangout.consumer.impl.dao.SectorDaoImpl" parent="abstractDao">
+        <property name="sectorRM" ref="sectorRM"/>
+    </bean>
+    <bean id="siteDao" class="com.cliffhangout.consumer.impl.dao.SiteDaoImpl" parent="abstractDao">
+        <property name="siteRM" ref="siteRM"/>
+    </bean>
+    <bean id="topoDao" class="com.cliffhangout.consumer.impl.dao.TopoDaoImpl" parent="abstractDao">
+        <property name="topoRM" ref="topoRM"/>
+    </bean>
+    <bean id="userDao" class="com.cliffhangout.consumer.impl.dao.UserDaoImpl" parent="abstractDao">
+        <property name="userRM" ref="userRM"/>
+    </bean>
+    <bean id="wayDao" class="com.cliffhangout.consumer.impl.dao.WayDaoImpl" parent="abstractDao">
+        <property name="wayRM" ref="wayRM"/>
+    </bean>
+    <bean id="borrowDao" class="com.cliffhangout.consumer.impl.dao.BorrowDaoImpl" parent="abstractDao">
+        <property name="borrowRM" ref="borrowRM"/>
+    </bean>
 
     <!-- ===== DaoFactoryImpl ===== -->
     <bean id="daoFactory" class="com.cliffhangout.consumer.impl.DaoFactoryImpl">
@@ -58,19 +84,34 @@
         <property name="daoFactory" ref="daoFactory"/>
     </bean>
     <!-- ===== Déclaration RowMappers ===== -->
-    <bean id="commentRM" class="com.cliffhangout.consumer.impl.rowmapper.CommentRM" parent="abstractRM"/>
-    <bean id="departementRM" class="com.cliffhangout.consumer.impl.rowmapper.DepartementRM" parent="abstractRM"/>
     <bean id="imageRM" class="com.cliffhangout.consumer.impl.rowmapper.ImageRM" parent="abstractRM"/>
     <bean id="lengthRM" class="com.cliffhangout.consumer.impl.rowmapper.LengthRM" parent="abstractRM"/>
     <bean id="pointRM" class="com.cliffhangout.consumer.impl.rowmapper.PointRM" parent="abstractRM"/>
     <bean id="quotationRM" class="com.cliffhangout.consumer.impl.rowmapper.QuotationRM" parent="abstractRM"/>
     <bean id="regionRM" class="com.cliffhangout.consumer.impl.rowmapper.RegionRM" parent="abstractRM"/>
     <bean id="sectorRM" class="com.cliffhangout.consumer.impl.rowmapper.SectorRM" parent="abstractRM"/>
-    <bean id="siteRM" class="com.cliffhangout.consumer.impl.rowmapper.SiteRM" parent="abstractRM"/>
-    <bean id="topoRM" class="com.cliffhangout.consumer.impl.rowmapper.TopoRM" parent="abstractRM"/>
-    <bean id="wayRM" class="com.cliffhangout.consumer.impl.rowmapper.WayRM" parent="abstractRM"/>
-    <bean id="userRM" class="com.cliffhangout.consumer.impl.rowmapper.UserRM" parent="abstractRM"/>
-    <bean id="borrowRM" class="com.cliffhangout.consumer.impl.rowmapper.BorrowRM" parent="abstractRM"/>
+    <bean id="siteRM" class="com.cliffhangout.consumer.impl.rowmapper.SiteRM" parent="abstractRM">
+        <property name="userRM" ref="userRM"/>
+        <property name="departementRM" ref="departementRM"/>
+    </bean>
+    <bean id="commentRM" class="com.cliffhangout.consumer.impl.rowmapper.CommentRM" parent="abstractRM">
+        <property name="userRM" ref="userRM"/>
+    </bean>
+    <bean id="departementRM" class="com.cliffhangout.consumer.impl.rowmapper.DepartementRM" parent="abstractRM">
+        <property name="regionRM" ref="regionRM"/>
+    </bean>
+    <bean id="topoRM" class="com.cliffhangout.consumer.impl.rowmapper.TopoRM" parent="abstractRM">
+        <property name="userRM" ref="userRM"/>
+    </bean>
+    <bean id="wayRM" class="com.cliffhangout.consumer.impl.rowmapper.WayRM" parent="abstractRM">
+        <property name="quotationRM" ref="quotationRM"/>
+    </bean>
+    <bean id="userRM" class="com.cliffhangout.consumer.impl.rowmapper.UserRM" parent="abstractRM">
+        <property name="imageRM" ref="imageRM"/>
+    </bean>
+    <bean id="borrowRM" class="com.cliffhangout.consumer.impl.rowmapper.BorrowRM" parent="abstractRM">
+        <property name="topoRM" ref="topoRM"/>
+    </bean>
 
     <!--<bean id="dataSourceCliffhangout" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 

@@ -1,7 +1,6 @@
 package com.cliffhangout.consumer.impl.rowmapper;
 
 import com.cliffhangout.beans.Sector;
-import com.cliffhangout.consumer.contract.dao.WayDao;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

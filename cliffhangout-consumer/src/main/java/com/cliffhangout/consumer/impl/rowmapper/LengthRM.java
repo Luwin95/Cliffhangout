@@ -1,8 +1,6 @@
 package com.cliffhangout.consumer.impl.rowmapper;
 
 import com.cliffhangout.beans.Length;
-import com.cliffhangout.beans.Way;
-import com.cliffhangout.consumer.contract.dao.PointDao;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

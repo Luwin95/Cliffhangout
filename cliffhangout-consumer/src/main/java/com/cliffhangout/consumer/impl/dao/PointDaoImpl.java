@@ -4,17 +4,24 @@ import com.cliffhangout.beans.Length;
 import com.cliffhangout.beans.Point;
 import com.cliffhangout.consumer.contract.dao.PointDao;
 import com.cliffhangout.consumer.impl.rowmapper.PointRM;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PointDaoImpl extends AbstractDaoImpl implements PointDao {
+    private PointRM pointRM;
+
+    protected PointRM getPointRM() {
+        return pointRM;
+    }
+
+    public void setPointRM(PointRM pointRM) {
+        this.pointRM = pointRM;
+    }
+
     @Override
     public void create(Point point){
         String vSQL = "INSERT INTO point(name, description, length_id) VALUES(:name, :description, :length_id)";
@@ -59,8 +66,7 @@ public class PointDaoImpl extends AbstractDaoImpl implements PointDao {
             vSQL.append("AND point_id = :id");
             getvParams().addValue("id", id);
         }
-        RowMapper<Point> vRowMapper = new PointRM();
-        Point point = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+        Point point = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), getPointRM());
         return point;
     }
 
@@ -75,8 +81,7 @@ public class PointDaoImpl extends AbstractDaoImpl implements PointDao {
                 getvParams().addValue("length_id", length.getId());
             }
         }
-        RowMapper<Point> vRowMapper = new PointRM();
-        List<Point> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Point> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getPointRM());
         return vList;
     }
 }

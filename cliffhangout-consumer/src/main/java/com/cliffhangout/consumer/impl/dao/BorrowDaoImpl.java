@@ -1,19 +1,24 @@
 package com.cliffhangout.consumer.impl.dao;
 
 import com.cliffhangout.beans.Borrow;
-import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.Topo;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.consumer.contract.dao.BorrowDao;
 import com.cliffhangout.consumer.impl.rowmapper.BorrowRM;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import java.sql.Types;
 import java.util.List;
 
 public class BorrowDaoImpl extends AbstractDaoImpl implements BorrowDao {
+    private BorrowRM borrowRM;
+
+    protected BorrowRM getBorrowRM() {
+        return borrowRM;
+    }
+
+    public void setBorrowRM(BorrowRM borrowRM) {
+        this.borrowRM = borrowRM;
+    }
+
     @Override
     public List<Borrow> getUserTopoBorrowed(User user) {
         StringBuilder vSQL= new StringBuilder("SELECT topo.*, topo.user_account_id AS user_id, user_account.user_account_id AS user_id, user_account.*,image.*,image.image_id AS imageId, topo_borrowing.user_account_id AS borrower_id, start_date, end_date " +
@@ -30,8 +35,7 @@ public class BorrowDaoImpl extends AbstractDaoImpl implements BorrowDao {
                 getvParams().addValue("user_id", user.getId());
             }
         }
-        RowMapper<Borrow> vRowMapper = new BorrowRM();
-        List<Borrow> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Borrow> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getBorrowRM());
         return vList;
     }
 
@@ -76,8 +80,7 @@ public class BorrowDaoImpl extends AbstractDaoImpl implements BorrowDao {
                 getvParams().addValue("topo_id", topo.getId());
             }
         }
-        RowMapper<Borrow> vRowMapper = new BorrowRM();
-        Borrow borrow = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+        Borrow borrow = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(),getBorrowRM());
         return borrow;
     }
 }

@@ -11,6 +11,15 @@ import java.sql.*;
 import java.util.List;
 
 public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
+    private SiteRM siteRM;
+
+    protected SiteRM getSiteRM() {
+        return siteRM;
+    }
+
+    public void setSiteRM(SiteRM siteRM) {
+        this.siteRM = siteRM;
+    }
 
     @Override
     public void create(Site site){
@@ -79,8 +88,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
             vSQL.append("AND site.site_id = :id ORDER BY site.site_id");
             getvParams().addValue("id", id);
         }
-        RowMapper<Site> vRowMapper = new SiteRM();
-        Site site = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), vRowMapper);
+        Site site = getvNamedParameterJdbcTemplate().queryForObject(vSQL.toString(), getvParams(), getSiteRM());
         return site;
     }
 
@@ -92,8 +100,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
                 "LEFT JOIN image ON image.image_id= user_account.image_id " +
                 "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
                 "WHERE 1=1 ");
-        RowMapper<Site> vRowMapper = new SiteRM();
-        List<Site> vList = getvJdbcTemplate().query(vSQL.toString(),vRowMapper);
+        List<Site> vList = getvJdbcTemplate().query(vSQL.toString(),getSiteRM());
         return vList;
     }
 
@@ -114,8 +121,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
                 getvParams().addValue("topo_id", topo.getId());
             }
         }
-        RowMapper<Site> vRowMapper = new SiteRM();
-        List<Site> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Site> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getSiteRM());
         return vList;
 
     }
@@ -136,8 +142,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
                 "LEFT JOIN image ON image.image_id= user_account.image_id " +
                 "LEFT JOIN departement ON site.departement_code = departement.departement_code " +
                 "ORDER BY site.site_id DESC LIMIT 10");
-        RowMapper<Site> vRowMapper = new SiteRM();
-        List<Site> vList = getvJdbcTemplate().query(vSQL.toString(),vRowMapper);
+        List<Site> vList = getvJdbcTemplate().query(vSQL.toString(),getSiteRM());
         return vList;
     }
 
@@ -157,8 +162,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
                 getvParams().addValue("user_id", user.getId());
             }
         }
-        RowMapper<Site> vRowMapper = new SiteRM();
-        List<Site> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),vRowMapper);
+        List<Site> vList = getvNamedParameterJdbcTemplate().query(vSQL.toString(),getvParams(),getSiteRM());
         return vList;
     }
 }
