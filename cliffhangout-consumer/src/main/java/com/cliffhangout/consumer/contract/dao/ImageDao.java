@@ -10,8 +10,10 @@ import java.util.List;
 
 public interface ImageDao {
     void create(Image image);
+    void createSiteImage(Image image, Site site);
     void update(Image image);
     void delete(Image image);
+    void deleteSiteImage(Image image, Site site);
     Image find(int id);
     List<Image> findAllBySite(Site site);
     List<Image> findAllBySector(Sector sector);

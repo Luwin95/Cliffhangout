@@ -28,6 +28,16 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
     }
 
     @Override
+    public void createSiteImage(Image image, Site site) {
+        create(image);
+        String vSQL = "INSERT INTO site_image(site_id, image_id) VALUES(:site_id, :image_id)";
+        getvParams().addValue("site_id", site.getId(), Types.INTEGER);
+        getvParams().addValue("image_id", image.getId(),  Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams(),getvKeyHolder(), new String[] {"image_id"});
+        image.setId((int) getvKeyHolder().getKey());
+    }
+
+    @Override
     public void update(Image image){
         String vSQL = "UPDATE image SET alt=:alt, path=:path, title=:title WHERE image_id=:image_id";
         getvParams().addValue("alt", image.getAlt(), Types.VARCHAR);
@@ -42,6 +52,15 @@ public class ImageDaoImpl extends AbstractDaoImpl implements ImageDao {
         String vSQL = "DELETE FROM image WHERE image_id=:image_id";
         getvParams().addValue("image_id", image.getId(), Types.INTEGER);
         getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
+    }
+
+    @Override
+    public void deleteSiteImage(Image image, Site site) {
+        String vSQL = "DELETE FROM site_image WHERE image_id=:image_id AND site_id=:site_id";
+        getvParams().addValue("image_id", image.getId(), Types.INTEGER);
+        getvParams().addValue("site_id", site.getId(), Types.INTEGER);
+        getvNamedParameterJdbcTemplate().update(vSQL, getvParams());
+        delete(image);
     }
 
     @Override

@@ -107,7 +107,7 @@
                                         <td><s:property value="location"/></td>
                                         <td><s:property value="postcode"/> </td>
                                         <td><s:property value="%{sectors.size()}"/> </td>
-                                        <td><s:property value="description"/></td>
+                                        <td><s:if test="description.length()>50"><s:property value="description.substring(0,50)"/>...</s:if><s:else><s:property value="description"/></s:else></td>
                                     </tr>
                                 </s:iterator>
                             </tbody>
@@ -144,7 +144,7 @@
                                 <td><s:property value="location"/></td>
                                 <td><s:property value="postcode"/> </td>
                                 <td><s:property value="%{sectors.size()}"/> </td>
-                                <td><s:property value="description"/></td>
+                                <td><s:if test="description.length()>50"><s:property value="description.substring(0,50)"/>...</s:if><s:else><s:property value="description"/></s:else></td>
                             </tr>
                         </s:iterator>
                         </tbody>

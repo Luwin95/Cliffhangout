@@ -170,7 +170,7 @@
                                 <td><s:property value="location"/></td>
                                 <td><s:property value="postcode"/> </td>
                                 <td><s:property value="%{sectors.size()}"/> </td>
-                                <td><s:property value="description"/></td>
+                                <td><s:if test="description.length()>50"><s:property value="description.substring(0,50)"/>...</s:if><s:else><s:property value="description"/></s:else></td>
                                 <s:url var="siteEditUrl" action="editSite" namespace="/subscriber">
                                     <s:param name="idSite"><s:property value="id"/></s:param>
                                 </s:url>
@@ -227,7 +227,7 @@
 
                                 <td><a href="#"><s:property value="name"/></a></td>
                                 <td><s:property value="file"/></td>
-                                <td><s:property value="description"/> </td>
+                                <td><s:if test="description.length()>50"><s:property value="description.substring(0,50)"/>...</s:if><s:else><s:property value="description"/></s:else></td>
                                 <td><s:if test="%{borrowed==true}">Oui</s:if><s:else>Non</s:else></td>
                                 <s:url var="topoEditUrl" action="editTopo" namespace="/subscriber">
                                     <s:param name="idTopo"><s:property value="id"/></s:param>
@@ -280,7 +280,7 @@
                         <tbody>
                         <s:iterator value="comments">
                             <tr>
-                                <td><a href="#"><s:property value="content"/></a></td>
+                                <td><s:if test="content.length()>50"><s:property value="content.substring(0,50)"/>...</s:if><s:else><s:property value="content"/></s:else></td>
                                 <td><s:property value="author.login"/></td>
                                 <td>
                                     <s:url var="commentReportingUrl" action="deleteReportingOnComment" namespace="/admin">

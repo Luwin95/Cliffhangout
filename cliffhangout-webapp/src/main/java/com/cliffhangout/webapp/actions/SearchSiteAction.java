@@ -180,7 +180,9 @@ public class SearchSiteAction extends AbstractAction {
     }
 
     public String execute(){
-
+        List<Object> entities = getManagerFactory().getDepartementRegionManager().displayAllDepartmentsAndRegions();
+        departements = entities.get(0);
+        regions = entities.get(1);
         if(this.siteName != null || (this.addCriteria && (this.criteriaWays || this.criteriaQuotation || this.criteriaLocation)))
         {
             Hashtable criterias = new Hashtable();
@@ -222,9 +224,6 @@ public class SearchSiteAction extends AbstractAction {
                 return SUCCESS;
             }
         }else{
-            List<Object> entities = getManagerFactory().getDepartementRegionManager().displayAllDepartmentsAndRegions();
-            departements = entities.get(0);
-            regions = entities.get(1);
             lastSites = getManagerFactory().getSiteManager().displayLastTenSite();
             return INPUT;
         }

@@ -35,14 +35,14 @@
                                 <s:if test="%{#status.index ==0}">
                                     <div class="item active">
                                         <div class="carousel-page">
-                                            <img src="/resources/images/site/<s:property value="path"/>" alt="<s:property value="alt"/>" title="<s:property value="title"/>" class="img-responsive" style="margin:0px auto;" />
+                                            <img src="/uploadCliffhangout/images/site/<s:property value="path"/>" alt="<s:property value="alt"/>" title="<s:property value="title"/>" class="img-responsive" style="margin:0px auto;" />
                                         </div>
                                     </div>
                                 </s:if>
                                 <s:else>
                                     <div class="item">
                                         <div class="carousel-page">
-                                            <img src="/resources/images/site/<s:property value="path"/>" alt="<s:property value="alt"/>" title="<s:property value="title"/>" class="img-responsive" style="margin:0px auto;" />
+                                            <img src="/uploadCliffhangout/images/site/<s:property value="path"/>" alt="<s:property value="alt"/>" title="<s:property value="title"/>" class="img-responsive" style="margin:0px auto;" />
                                         </div>
                                     </div>
                                 </s:else>

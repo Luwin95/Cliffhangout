@@ -5,11 +5,15 @@ import com.cliffhangout.business.contract.manager.CommentManager;
 import com.cliffhangout.business.contract.manager.SiteManager;
 import com.cliffhangout.consumer.contract.dao.QuotationDao;
 import com.cliffhangout.consumer.contract.dao.SiteDao;
+import org.apache.commons.io.FileUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager {
@@ -306,6 +310,12 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     }
 
     @Override
+    public void addSite(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName) {
+        addSite(site);
+        addSiteImage(site, uploads, uploadsContentType, uploadsFileName);
+    }
+
+    @Override
     public void addSiteDependencies(Site site) {
         TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
         vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -319,6 +329,12 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
                     for(Way way: sector.getWays())
                     {
                         way.setSectorId(sector.getId());
+                        int wayPointNb=0;
+                        for(Length length : way.getLengths())
+                        {
+                            wayPointNb += length.getPoints().size();
+                        }
+                        way.setPointsNb(wayPointNb);
                         getDaoFactory().getWayDao().create(way);
                         for(Length length : way.getLengths())
                         {
@@ -334,6 +350,43 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
                 }
             }
         });
+    }
+
+    @Override
+    public void addSiteImage(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName) {
+        int i=0;
+        for(File upload : uploads)
+        {
+            String userDir = getUploadDirectory().replaceAll("\\\\", "/");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yy_H_mm_ss");
+            Date date = new Date();
+            String path=dateFormat.format(date)+ UUID.randomUUID().toString()+"."+uploadsContentType.get(i).substring(6);
+            Image image = new Image();
+            image.setPath(path);
+            image.setTitle("Image du site d'escalade "+site.getName() );
+            image.setAlt("Image du site d'escalade "+site.getName()+ " situé dans la ville de "+site.getLocation()+" dans le département "+site.getDepartement().getName());
+            String fileName = "/images/site/"+path;
+            String fullfilename = userDir+fileName;
+            try
+            {
+                TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+                vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                    @Override
+                    protected void doInTransactionWithoutResult(TransactionStatus
+                                                                        pTransactionStatus) {
+                        getDaoFactory().getImageDao().createSiteImage(image, site);
+                    }
+                });
+            }finally{
+                File importedImage = new File(fullfilename);
+                try{
+                    FileUtils.copyFile(uploads.get(i), importedImage);
+                }catch(IOException e){
+                }
+            }
+            site.getImages().add(image);
+            i++;
+        }
     }
 
     @Override
@@ -359,6 +412,12 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
                 updateSiteDependencies(site);
             }
         });
+    }
+
+    @Override
+    public void updateSite(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName) {
+        addSiteImage(site, uploads, uploadsContentType, uploadsFileName);
+        updateSite(site);
     }
 
     @Override
@@ -440,7 +499,7 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
         {
             for(Image image : site.getImages())
             {
-                getDaoFactory().getImageDao().delete(image);
+                getDaoFactory().getImageDao().deleteSiteImage(image, site);
             }
         }
         if(site.getComments()!=null)
@@ -451,6 +510,35 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
             }
         }
         getDaoFactory().getSiteDao().deleteSiteTopo(site);
+    }
+
+    @Override
+    public void deleteSiteImage(int idImage, Map<String, Object> session) {
+        Site siteToEdit = (Site) session.get("site");
+        TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+        vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus
+                                                                pTransactionStatus) {
+                Image imageToDelete = new Image();
+                for(Image image : siteToEdit.getImages())
+                {
+                    if(image.getId() == idImage)
+                    {
+                        imageToDelete = image;
+                    }
+                }
+                getDaoFactory().getImageDao().deleteSiteImage(imageToDelete, siteToEdit);
+                String userDir = getUploadDirectory().replaceAll("\\\\", "/");
+                String imageToDeleteName = getUploadDirectory()+"/images/site/"+imageToDelete.getPath();
+                File fileToDelete = new File(imageToDeleteName);
+                FileUtils.deleteQuietly(fileToDelete);
+                siteToEdit.getImages().remove(imageToDelete);
+                session.remove("site");
+                session.put("site", siteToEdit);
+            }
+        });
+
     }
 
     @Override

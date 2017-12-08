@@ -6,6 +6,8 @@ import com.cliffhangout.webapp.AbstractAction;
 import com.opensymphony.xwork2.ActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 
+import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 public class NewSiteAction extends AbstractAction implements SessionAware{
@@ -22,6 +24,9 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
     private  String idSite;
     private String idSector;
     private String idWay;
+    private List<File> uploads;
+    private List<String> uploadsContentType;
+    private List<String> uploadsFileName;
     private String title = "Ajouter un site";
     private String page = "/WEB-INF/subscriber/newSite.jsp";
     private String stylesheets = "/subscriber/addSite.css";
@@ -139,6 +144,30 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
         this.deleteWay = deleteWay;
     }
 
+    public List<File> getUploads() {
+        return uploads;
+    }
+
+    public void setUploads(List<File> uploads) {
+        this.uploads = uploads;
+    }
+
+    public List<String> getUploadsContentType() {
+        return uploadsContentType;
+    }
+
+    public void setUploadsContentType(List<String> uploadsContentType) {
+        this.uploadsContentType = uploadsContentType;
+    }
+
+    public List<String> getUploadsFileName() {
+        return uploadsFileName;
+    }
+
+    public void setUploadsFileName(List<String> uploadsFileName) {
+        this.uploadsFileName = uploadsFileName;
+    }
+
     @Override
     public String execute(){
         String actionName= ActionContext.getContext().getName();
@@ -155,6 +184,9 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
                 {
                     session.remove("site");
                     session.remove("pageStatus");
+                    session.remove("uploads");
+                    session.remove("uploadsContentType");
+                    session.remove("uploadsFileName");
                     session.put("pageStatus", "editSite");
                 }else{
                     session.put("pageStatus", "editSite");
@@ -184,6 +216,9 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
                 {
                     session.remove("site");
                     session.remove("pageStatus");
+                    session.remove("uploads");
+                    session.remove("uploadsContentType");
+                    session.remove("uploadsFileName");
                     session.put("pageStatus", "addSite");
                 }else{
                     session.put("pageStatus", "addSite");
@@ -200,6 +235,9 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
         {
             if(siteBean!=null)
             {
+                session.put("uploads", uploads);
+                session.put("uploadsContentType", uploadsContentType);
+                session.put("uploadsFileName", uploadsFileName);
                 session.put("site", siteBean);
                 return "display";
             }else{
@@ -237,8 +275,23 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
                 session.remove("idSite");
             }else{
                 siteBean.setCreator((User) session.get("sessionUser"));
-                getManagerFactory().getSiteManager().addSite(siteBean);
+                if(session.containsKey("uploads"))
+                {
+                    setUploads((List<File>) session.get("uploads"));
+                    setUploadsContentType((List<String>) session.get("uploadsContentType"));
+                    setUploadsFileName((List<String>) session.get("uploadsFileName"));
+                }
+                if(uploads != null)
+                {
+                    getManagerFactory().getSiteManager().addSite(siteBean, uploads, uploadsContentType, uploadsFileName);
+                }else{
+                    getManagerFactory().getSiteManager().addSite(siteBean);
+                }
+
                 session.remove("site");
+                session.remove("uploads");
+                session.remove("uploadsContentType");
+                session.remove("uploadsFileName");
             }
             return SUCCESS;
         }else{
@@ -257,6 +310,9 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
             }
             if (siteBean.getDescription().equals("")) {
                 addFieldError("siteBean.description", "La description du site ne peut être vide");
+            }
+            if (!siteBean.getDescription().equals("") && siteBean.getDescription().length() > 1000) {
+                addFieldError("siteBean.description", "La description du site ne peut dépasser 1000 caractères");
             }
             if (siteBean.getLocation().equals("")) {
                 addFieldError("siteBean.location", "Le nom de la commune entrée n'est pas valide");

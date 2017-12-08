@@ -114,6 +114,12 @@ public class SubscriberAction extends AbstractAction implements SessionAware {
         {
             session.remove("site");
         }
+        if(session.containsKey("uploads"))
+        {
+            session.remove("uploads");
+            session.remove("uploadsContentType");
+            session.remove("uploadsFileName");
+        }
         if(session.containsKey("idSite"))
         {
             session.remove("idSite");

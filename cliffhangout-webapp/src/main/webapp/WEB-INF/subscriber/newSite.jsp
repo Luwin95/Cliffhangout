@@ -115,7 +115,7 @@
         </div>
     </s:if>
     <s:else>
-        <form method="post" class="form-horizontal" data-toggle="validator">
+        <form method="post" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
             <div class="form-group row">
                 <label for="siteName" class="col-xs-offset-3 col-xs-2">Nom : </label>
                 <div class="col-xs-4">
@@ -131,7 +131,8 @@
                 <label for="siteDescription" class="col-xs-offset-3 col-xs-2">Description : </label>
                 <div class="col-xs-4">
                     <textarea id="siteDescription" name="siteBean.description" class="form-control"
-                              data-error="La description du site ne peut être vide"><s:property value="siteBean.description"/></textarea>
+                              maxlength="1000"
+                              data-error="La description du site ne peut être vide ni contenit plus de 1000 caractères"><s:property value="siteBean.description"/></textarea>
                     <div class="help-block with-errors"></div>
                     <s:fielderror fieldName="siteBean.description" cssClass="errorMessage"/>
                 </div>
@@ -156,6 +157,14 @@
                            data-error="Un code postale est composé de 5 caractères"/>
                     <div class="help-block with-errors"></div>
                     <s:fielderror fieldName="siteBean.postcode" cssClass="errorMessage"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="siteImages" class="col-xs-offset-3 col-xs-2">Ajouter des images du site</label>
+                <div class="col-xs-4">
+                    <input type="file" name="uploads" id="siteImages" class="col-sm-4 form-control"
+                           accept="image/jpeg,image/gif,image/png,image/bmp" multiple/>
+                    <div class="help-block with-errors"></div>
                 </div>
             </div>
             <div class="row">
