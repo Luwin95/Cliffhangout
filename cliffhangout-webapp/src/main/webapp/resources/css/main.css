@@ -33,3 +33,46 @@ h2, h3, h4
     margin-left:15px;
     color:red;
 }
+
+.table-bordered > thead > tr > th
+{
+    background : rgba(0,0,0,0.8)!important;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th, .table-hover tbody tr:hover td a {
+    background : rgba(255,255,255,0.1)!important;
+    color:black !important;
+}
+
+.table a
+{
+    color: lightgrey!important;
+}
+
+.table a:hover, .table a:focus
+{
+    color: black !important;
+}
+
+.btn-cliffhangout
+{
+    border:1px solid lightgrey;
+    border-radius:4px;
+    height:25px;
+    background : rgba(0,0,0,0.8);
+}
+
+a.btn-cliffhangout
+{
+    color: lightgrey!important;
+}
+
+a.btn-cliffhangout:hover, a.btn-cliffhangout:focus
+{
+    color: black !important;
+}
+
+.btn-cliffhangout:hover, .btn-cliffhangout:focus
+{
+    background : rgba(255,255,255,0.5);
+}

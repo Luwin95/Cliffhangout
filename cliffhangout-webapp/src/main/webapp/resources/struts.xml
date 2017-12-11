@@ -67,23 +67,6 @@
                 <param name="allowCaching">true</param>
             </result>
         </action>
-        <action name="addSite" class="com.cliffhangout.webapp.actions.AddSiteAction" method="execute">
-            <result name="success" type="redirect">/subscriber/addSiteWays.action</result>
-            <result name="input">/layout.jsp</result>
-            <result name="login" type="redirect">/login.action</result>
-        </action>
-        <action name="addSiteWays" class="com.cliffhangout.webapp.actions.AddSiteWaysAction" method="execute">
-            <result name="success">/layout.jsp</result>
-            <result name="input">/layout.jsp</result>
-            <result name="error" type="redirect">/home.action</result>
-            <result name="login" type="redirect">/login.action</result>
-        </action>
-        <action name="addSiteTest" class="com.cliffhangout.webapp.actions.AddSiteTestAction" method="execute">
-            <result name="success">/layout.jsp</result>
-            <result name="input">/layout.jsp</result>
-            <result name="error" type="redirect">/home.action</result>
-            <result name="login" type="redirect">/login.action</result>
-        </action>
         <action name="newSite" class="com.cliffhangout.webapp.actions.NewSiteAction" method="execute">
             <result name="success" type="redirect">/subscriber/home.action</result>
             <result name="input">/layout.jsp</result>
@@ -294,6 +277,5 @@
             <result name="home" type="redirect">/home.action</result>
             <result name="login" type="redirect">/login.action</result>
         </action>
-
     </package>
 </struts>

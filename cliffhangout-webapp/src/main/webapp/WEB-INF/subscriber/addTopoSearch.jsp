@@ -128,22 +128,32 @@
         </s:if>
         <s:if test='%{sitesChosen != null}'>
             <h3>Sites sélectionnés</h3>
-            <ul>
-                <form method="post">
+            <form method="post">
+                <ul>
                     <s:iterator value="sitesChosen">
                         <li><input type="checkbox" name="sitesToRemove[<s:property value="id"/>]" value="<s:property value="id"/>"/> <s:property value="name"/> (département : <s:property value="departement.name"/>)</li>
                     </s:iterator>
-                    <input type="submit" class="btn btn-danger" value="Supprimer les sites sélectionnés"/>
-                </form>
-            </ul>
+                </ul>
+                <div class="row">
+                    <input type="submit" class="btn btn-danger col-sm-3 col-xs-5" value="Supprimer les sites sélectionnés" style="margin-left:20px; margin-bottom:20px;"/>
+                </div>
+            </form>
             <s:if test="%{idTopo != null}">
                 <s:url var="topoEditUrl" action="editTopo">
                     <s:param name="idTopo"><s:property value="idTopo"/></s:param>
                 </s:url>
-                <a href="${topoEditUrl}" class="btn btn-warning">Passer à la modification du topo</a>
+                <div class="row">
+                    <div class="col-sm-offset-4 col-sm-4 col-xs-offset-3 col-xs-6">
+                        <a href="${topoEditUrl}" class="col-sm-10 col-xs-12 btn btn-warning" style="margin-left:20px; margin-bottom:20px;">Passer à la modification du topo</a>
+                    </div>
+                </div>
             </s:if>
             <s:else>
-                <a href="<s:url action="addTopo"/>" class="btn btn-warning">Passer à la création du topo</a>
+                <div class="row">
+                    <div class="col-sm-offset-4 col-sm-4 col-xs-offset-3 col-xs-6">
+                        <a href="<s:url action="addTopo"/>" class="col-sm-10 col-xs-12 btn btn-warning" style="margin-left:20px; margin-bottom:20px;">Passer à la création du topo</a>
+                    </div>
+                </div>
             </s:else>
         </s:if>
     </div>

@@ -107,7 +107,12 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
 
             //Si aucun critère n'a été remplie, on récupère tous les sites
             if(sqlCriterias.isEmpty()){
-                sqlStatement = "SELECT * FROM site";
+                sqlStatement = "SELECT site.*, user_account.*, user_account.user_account_id AS user_id, image.*, image.image_id AS imageId, region.region_name, departement.departement_name " +
+                        "FROM site " +
+                        "LEFT JOIN user_account ON site.user_account_id = user_account.user_account_id " +
+                        "LEFT JOIN image ON image.image_id = user_account.image_id " +
+                        "LEFT JOIN region ON site.region_id=region.region_id " +
+                        "LEFT JOIN departement ON site.departement_code = departement.departement_code ";
             }else{
                 //Sinon on ajoute tous les critères de sélection à la requête en les séparant par un AND
                 for(String sqlCriteria : sqlCriterias)

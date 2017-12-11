@@ -5,7 +5,39 @@ body
 }
 
 .page{
-    bottom:0;
+    min-height : 100vh;
+}
+.burger, .burger::before, .burger::after
+{
+    background: black !important;
+}
+
+.burger.cross {
+    background: rgba(0,0,0,0) !important;
+}
+
+.burger.cross::before, .burger.cross::after {
+    background: lightgrey !important;
+}
+
+body.isAside .menu-user ul > li
+{
+    color:lightgrey !important;
+}
+
+.menu-user ul > li
+{
+    color:black !important;
+}
+
+.footer p
+{
+    color: black;
+}
+
+.btn
+{
+    margin-bottom:20px;
 }
 
 .container

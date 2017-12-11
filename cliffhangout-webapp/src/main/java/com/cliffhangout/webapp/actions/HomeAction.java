@@ -3,7 +3,7 @@ package com.cliffhangout.webapp.actions;
 import com.cliffhangout.webapp.AbstractAction;
 
 public class HomeAction extends AbstractAction {
-    private String page = "home.jsp";
+    private String page = "/WEB-INF/home.jsp";
     private String stylesheets = "home.css";
     private String jsPages = "home.js";
     private String title = "Accueil";

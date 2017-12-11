@@ -3,9 +3,36 @@ body
     background: url('http://localhost:8080/resources/images/climber2.jpg') no-repeat center center fixed;
 }
 
-.page
+.page{
+    min-height : 100vh;
+}
+
+.burger, .burger::before, .burger::after
 {
-    bottom:0;
+    background: black !important;
+}
+
+.burger.cross {
+    background: rgba(0,0,0,0) !important;
+}
+
+.burger.cross::before, .burger.cross::after {
+    background: lightgrey !important;
+}
+
+body.isAside .menu-user ul > li
+{
+    color:lightgrey !important;
+}
+
+.menu-user ul > li
+{
+    color:black !important;
+}
+
+.footer p
+{
+    color: black;
 }
 
 h1, h2, h3, h4

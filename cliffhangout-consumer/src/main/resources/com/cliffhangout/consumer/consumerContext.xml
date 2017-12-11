@@ -90,13 +90,16 @@
     <bean id="quotationRM" class="com.cliffhangout.consumer.impl.rowmapper.QuotationRM" parent="abstractRM"/>
     <bean id="regionRM" class="com.cliffhangout.consumer.impl.rowmapper.RegionRM" parent="abstractRM"/>
     <bean id="sectorRM" class="com.cliffhangout.consumer.impl.rowmapper.SectorRM" parent="abstractRM"/>
+
     <bean id="siteRM" class="com.cliffhangout.consumer.impl.rowmapper.SiteRM" parent="abstractRM">
         <property name="userRM" ref="userRM"/>
         <property name="departementRM" ref="departementRM"/>
     </bean>
     <bean id="commentRM" class="com.cliffhangout.consumer.impl.rowmapper.CommentRM" parent="abstractRM">
+        <property name="parentCommentRM" ref="parentCommentRM"/>
         <property name="userRM" ref="userRM"/>
     </bean>
+    <bean id="parentCommentRM" class="com.cliffhangout.consumer.impl.rowmapper.ParentCommentRM"/>
     <bean id="departementRM" class="com.cliffhangout.consumer.impl.rowmapper.DepartementRM" parent="abstractRM">
         <property name="regionRM" ref="regionRM"/>
     </bean>

@@ -105,7 +105,7 @@
                         <tbody>
                         <s:iterator value="creatorTopos">
                             <tr>
-                                <td><a href="#"><s:property value="name"/></a></td>
+                                <td><s:property value="name"/></td>
                                 <td><s:property value="file"/></td>
                                 <td><s:if test="description.length()>50"><s:property value="description.substring(0,50)"/>...</s:if><s:else><s:property value="description"/></s:else></td>
                                 <td><s:if test="%{borrowed==true}">Oui</s:if><s:else>Non</s:else></td>

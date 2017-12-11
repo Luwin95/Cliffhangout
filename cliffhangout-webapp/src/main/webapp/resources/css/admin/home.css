@@ -3,9 +3,8 @@ body
     background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
 }
 
-.page
-{
-    bottom:0;
+.page{
+    min-height : 100vh;
 }
 
 h1

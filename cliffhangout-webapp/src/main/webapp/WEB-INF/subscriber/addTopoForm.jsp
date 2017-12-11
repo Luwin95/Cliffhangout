@@ -47,7 +47,9 @@
             </div>
         </div>
         <div class="row">
-            <s:submit cssClass="btn btn-info col-xs-offset-5 col-xs-2 submitForm"  value="Valider"/>
+            <div class="col-md-2 col-md-offset-5 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
+                <s:submit cssClass="btn btn-info submitForm" align="center" value="Valider"/>
+            </div>
         </div>
     </form>
     <s:if test='%{sitesChosen != null}'>
@@ -71,6 +73,10 @@
                 <li><s:property value="name"/> (département : <s:property value="departement.name"/>)</li>
             </s:iterator>
         </ul>
-        <a href="${searchUrl}" class="btn btn-info">Modifier les sites de votre topo</a>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5 col-sm-4 col-sm-offset-4 col-xs-6 col-xs-offset-3">
+                <a href="${searchUrl}" class="btn btn-info" style="margin-bottom: 20px;">Modifier les sites de votre topo</a>
+            </div>
+        </div>
     </s:else>
 </div>

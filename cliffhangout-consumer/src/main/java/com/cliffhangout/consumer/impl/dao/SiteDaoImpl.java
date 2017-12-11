@@ -129,8 +129,7 @@ public class SiteDaoImpl extends AbstractDaoImpl implements SiteDao {
     @Override
     public List<Site> findAllBySearchCriteria(String sqlStatement){
         StringBuilder vSQL= new StringBuilder(sqlStatement);
-        RowMapper<Site> vRowMapper = new SiteRM();
-        List<Site> vList = getvJdbcTemplate().query(vSQL.toString(),vRowMapper);
+        List<Site> vList = getvJdbcTemplate().query(vSQL.toString(),getSiteRM());
         return vList;
     }
 
