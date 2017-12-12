@@ -19,7 +19,7 @@ PostgreSQL Server
 
 ### Installing
 
-####Database
+#### Database
 
 Build Database : Use SQL scripts to create db ( you can find them in db folder of the project ). 
 
@@ -43,7 +43,17 @@ password="YOUR PASSWORD"
 ```
 Your DB is now ready to work.
 
-####Upload folder
+#### Struts Configuration
+In order to make struts working properly you need to add under cliffhangout-webapp/src/main/webapp/resources a struts.properties.
+The minimal struts configuration to add is the following :
+
+```
+struts.multipart.saveDir = your upload temporary directory
+struts.multipart.maxSize = 10485760
+struts.devMode = true
+```
+The saveDir property must be personalize with your personal temp dir.
+#### Upload folder
 Create an upload directory :  In order to allow users to upload photos and pdf on the website the project uses an external folder. 
 
 To configure it you must create the properties file business.properties in resources of cliffhangout-business module under com.cliffhangout.business.config package.

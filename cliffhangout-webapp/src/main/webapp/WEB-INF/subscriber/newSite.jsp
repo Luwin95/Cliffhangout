@@ -162,8 +162,9 @@
             <div class="form-group row">
                 <label for="siteImages" class="col-xs-offset-3 col-xs-2">Ajouter des images du site</label>
                 <div class="col-xs-4">
-                    <input type="file" name="uploads" id="siteImages" class="col-sm-4 form-control"
-                           accept="image/jpeg,image/gif,image/png,image/bmp" multiple/>
+                    <!--input type="file" name="uploads" id="siteImages" class="col-sm-4 form-control"
+                           accept="image/jpeg,image/gif,image/png,image/bmp" multiple/-->
+                    <s:file name="uploads" id="siteImages" cssClass="col-sm-4 form-control" accept="image/jpeg,image/gif,image/png,image/bmp" multiple="multiple"/>
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
