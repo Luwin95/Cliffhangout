@@ -31,7 +31,7 @@ fixtures.sql (contains datas examples)
 (*) Required to make the application work
 
 Configure connection : copy the context.xml file in the db folder to cliffhangout-webapp/src/main/webapp/META-INF.
-Edit the created file with your db informations like following
+Edit created file with your db informations like following
 ```
 name="jdbc/DB_CLIFFHANGOUT"
 auth="Container"
