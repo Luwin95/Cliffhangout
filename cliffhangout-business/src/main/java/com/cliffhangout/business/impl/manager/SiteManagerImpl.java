@@ -3,8 +3,6 @@ package com.cliffhangout.business.impl.manager;
 import com.cliffhangout.beans.*;
 import com.cliffhangout.business.contract.manager.CommentManager;
 import com.cliffhangout.business.contract.manager.SiteManager;
-import com.cliffhangout.consumer.contract.dao.QuotationDao;
-import com.cliffhangout.consumer.contract.dao.SiteDao;
 import org.apache.commons.io.FileUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.TransactionStatus;
@@ -12,6 +10,8 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -317,7 +317,8 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     @Override
     public void addSite(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName) {
         addSite(site);
-        addSiteImage(site, uploads, uploadsContentType, uploadsFileName);
+        //addSiteImage(site, uploads, uploadsContentType, uploadsFileName);
+        testAddSiteImage(site, uploads, uploadsContentType, uploadsFileName);
     }
 
     @Override
@@ -390,6 +391,48 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
                 }
             }
             site.getImages().add(image);
+            i++;
+        }
+    }
+
+    @Override
+    public void testAddSiteImage(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName) {
+        int i=0;
+        String desc="";
+        for(File file : uploads){
+            try {
+                String userDir = getUploadDirectory().replaceAll("\\\\", "/");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yy_H_mm_ss");
+                Date date = new Date();
+                String path=dateFormat.format(date)+ UUID.randomUUID().toString()+"."+uploadsContentType.get(i).substring(6);
+                Image image = new Image();
+                image.setPath(path);
+                image.setTitle("Image du site d'escalade "+site.getName() );
+                image.setAlt("Image du site d'escalade "+site.getName()+ " situé dans la ville de "+site.getLocation()+" dans le département "+site.getDepartement().getName());
+                String fileName = "/images/site/"+path;
+                String fullfilename = userDir+fileName;
+                FileInputStream fis = new FileInputStream(file);
+                String contentType = uploadsContentType.get(i);
+                System.out.println(contentType);
+                TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
+                vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
+                    @Override
+                    protected void doInTransactionWithoutResult(TransactionStatus
+                                                                        pTransactionStatus) {
+                        getDaoFactory().getImageDao().createSiteImage(image, site);
+                    }
+                });
+                FileOutputStream fos = new FileOutputStream(fullfilename);
+                byte[] b = new byte[1024];
+                while(fis.read(b) != -1){
+                    fos.write(b);
+                }
+                desc += fileName +", ";
+                fos.close();
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             i++;
         }
     }

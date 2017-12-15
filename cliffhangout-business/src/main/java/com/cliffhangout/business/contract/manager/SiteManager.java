@@ -21,6 +21,7 @@ public interface SiteManager {
     void addSite(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName);
     void addSiteDependencies(Site site);
     void addSiteImage(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName);
+    void testAddSiteImage(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName);
     void updateSite(Site site);
     void updateSite(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName);
     void updateSiteDependencies(Site site);

@@ -65,6 +65,11 @@
             </result>
         </action>
         <action name="newSite" class="com.cliffhangout.webapp.actions.NewSiteAction" method="execute">
+            <interceptor-ref name="authentication"/>
+            <interceptor-ref name="fileUpload">
+                <param name = "allowedTypes">image/jpeg,image/gif,image/png,image/bmp,image/jpg</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"/>
             <result name="success" type="redirect">/subscriber/home.action</result>
             <result name="input">/layout.jsp</result>
             <result name="error">/layout.jsp</result>

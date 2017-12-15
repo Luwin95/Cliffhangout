@@ -30,7 +30,7 @@ fixtures.sql (contains datas examples)
 ```
 (*) Required to make the application work
 
-Configure connection : copy the context.xml file in the db folder to cliffhangout-webapp/src/main/webapp/META-INF.
+Configure connection : copy the context.xml file in the db folder to cliffhangout-webapp/src/main/webapp/META-INF (if META-INF directory doesn't).
 Edit created file with your db informations like following
 ```
 name="jdbc/DB_CLIFFHANGOUT"
@@ -44,7 +44,7 @@ password="YOUR PASSWORD"
 Your DB is now ready to work.
 
 #### Struts Configuration
-In order to make struts working properly you need to add under cliffhangout-webapp/src/main/webapp/resources a struts.properties.
+In order to make struts working properly you need to add under cliffhangout-webapp/src/main/resources a struts.properties file.
 The minimal struts configuration to add is the following :
 
 ```

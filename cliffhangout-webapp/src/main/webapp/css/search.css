@@ -1,6 +1,6 @@
 body
 {
-    background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
+    background: url('http://localhost:8080/images/mountain-climber.jpg') no-repeat center center fixed;
 }
 
 h1
@@ -116,4 +116,13 @@ select
 
 .btn{
     text-align: center;
+    margin-bottom:10px;
+}
+
+@media only screen and (max-width: 768px)
+{
+    h1
+    {
+        margin-top:70px;
+    }
 }

@@ -16,11 +16,11 @@
               rel="stylesheet"
               integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
               crossorigin="anonymous">
-        <link href="/resources/css/menu.css" rel="stylesheet">
-        <link href="/resources/css/footer.css" rel="stylesheet">
-        <link href="/resources/css/main.css" rel="stylesheet">
+        <link href="/css/menu.css" rel="stylesheet">
+        <link href="/css/footer.css" rel="stylesheet">
+        <link href="/css/main.css" rel="stylesheet">
         <s:iterator value="stylesheets">
-            <link href="/resources/css/<s:property />" rel="stylesheet">
+            <link href="/css/<s:property />" rel="stylesheet">
         </s:iterator>
         <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
@@ -41,9 +41,9 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
                 crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js" integrity="sha256-dHf/YjH1A4tewEsKUSmNnV05DDbfGN3g7NMq86xgGh8=" crossorigin="anonymous"></script>
-        <script src="/resources/js/menu.js"></script>
+        <script src="/js/menu.js"></script>
         <s:iterator value="jsPages">
-            <script src="/resources/js/<s:property/>"></script>
+            <script src="/js/<s:property/>"></script>
         </s:iterator>
     </body>
 </html>

@@ -3,7 +3,7 @@ body
 
     margin:0;
     padding:0;
-    background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
+    background: url('http://localhost:8080/images/mountain-climber.jpg') no-repeat center center fixed;
     -webkit-background-size: cover; /* pour anciens Chrome et Safari */
     background-size: cover;
     color : lightgrey !important;

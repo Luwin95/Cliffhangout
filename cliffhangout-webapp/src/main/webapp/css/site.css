@@ -1,6 +1,6 @@
 body
 {
-    background: url('http://localhost:8080/resources/images/mountain-climber.jpg') no-repeat center center fixed;
+    background: url('http://localhost:8080/images/mountain-climber.jpg') no-repeat center center fixed;
 
 }
 
@@ -89,12 +89,6 @@ textarea
     height:50px;
     border-radius:4px;
     background: lightgrey;
-}
-
-.comment-content
-{
-    margin-top : 25px;
-    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
 }
 
 table{

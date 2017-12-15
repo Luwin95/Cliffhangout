@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <div class="search">
-    <h1>Choisir les sites que votre topos concernera</h1>
+    <h1>Choisir les sites que votre topo concernera</h1>
     <div class="container page-section">
         <div class="row">
             <s:if test='%{result == "" || result==null}'>
@@ -124,7 +124,9 @@
                     </s:if>
                 </form>
             </div>
-            <a href="<s:url action="addTopoSearch"/>" class="btn btn-info">Effectuer une nouvelle recherche</a>
+            <div class="row">
+                <a href="<s:url action="addTopoSearch"/>" class="btn btn-info col-sm-offset-4 col-sm-4 col-xs-offset-1 col-xs-10">Effectuer une nouvelle recherche</a>
+            </div>
         </s:if>
         <s:if test='%{sitesChosen != null}'>
             <h3>Sites sélectionnés</h3>
