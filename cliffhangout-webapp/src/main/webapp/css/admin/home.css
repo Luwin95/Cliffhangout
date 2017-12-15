@@ -26,3 +26,11 @@ h1
 .nav-tabs, .nav-pills {
     text-align:center;
 }
+
+@media only screen and (max-width: 768px)
+{
+    h1
+    {
+        margin-top:70px;
+    }
+}

@@ -104,7 +104,9 @@
                 </s:if>
                 <s:else>
                     <p>Ce site d'escalade n'est lié à aucun topos</p>
-                    <p class="aside-footer"><button class="btn-cliffhangout">Ajouter un topos</button></p>
+                    <s:if test="#session.sessionUser!= null">
+                        <p class="aside-footer"><a href="<s:url action="addTopoSearch" namespace="subscriber"/>"><button class="btn-cliffhangout">Ajouter un topos</button></a></p>
+                    </s:if>
                 </s:else>
             </aside>
         </div>

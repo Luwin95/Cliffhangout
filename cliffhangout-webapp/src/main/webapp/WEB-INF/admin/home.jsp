@@ -14,7 +14,7 @@
     <div class="tab-content row">
         <div class="tab-pane fade in active" id="users">
             <s:if test="%{users!=null && users.size()!=0}">
-                <div class="table-responsive col-xs-offset-1 col-xs-10">
+                <div class="table-responsive col-sm-offset-1 col-sm-10 col-xs-offset-0 col-xs-12">
                     <table class="table table-hover table-bordered">
                         <thead>
                             <tr>
@@ -147,7 +147,7 @@
         </div>
         <div class="tab-pane fade in" id="sites">
             <s:if test="%{sites!=null && sites.size()!=0}">
-                <div class="table-responsive col-xs-offset-1 col-xs-10">
+                <div class="table-responsive col-sm-offset-1 col-sm-10 col-xs-offset-0 col-xs-12">
                     <table class="table table-hover table-bordered">
                         <thead>
                         <tr>
@@ -209,7 +209,7 @@
         </div>
         <div class="tab-pane fade in" id="topos">
             <s:if test="%{topos!=null && topos.size()!=0}">
-                <div class="table-responsive col-xs-offset-1 col-xs-10">
+                <div class="table-responsive col-sm-offset-1 col-sm-10 col-xs-offset-0 col-xs-12">
                     <table class="table table-hover table-bordered">
                         <thead>
                         <tr>
@@ -267,7 +267,7 @@
         </div>
         <div class="tab-pane fade in" id="comments">
             <s:if test="%{comments!=null && comments.size()!=0}">
-                <div class="table-responsive col-xs-offset-1 col-xs-10">
+                <div class="table-responsive col-sm-offset-1 col-sm-10 col-xs-offset-0 col-xs-12">
                     <table class="table table-hover table-bordered">
                         <thead>
                             <tr>

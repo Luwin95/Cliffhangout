@@ -12,14 +12,14 @@
                 <p>Faites découvrir à la communauté vos emplacements d'escalade préférés !
                     Partagés votre expérience des lieux en notant la difficulté des différentes voies ainsi qu'en décrivant chaque secteur et longueurs.
                 </p>
-                <a href="<s:url action="newSite"/>" class="btn-cliffhangout col-sm-offset-4 col-sm-4 col-xs-offset-2 col-xs-8">Créer un site</a>
+                <a href="<s:url action="newSite"/>" class="btn-cliffhangout col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10">Créer un site</a>
             </div>
             <div class="col-xs-5 col-xs-offset-2">
                 <h2>Espace Topos</h2>
                 <p>Bénéficiez des expériences de la communauté Cliffhangout via un système prêt de Topo.
                     Consulter les topos existants et disponible partagé par vos camarades grimpeurs et réservez votre Topo!
                 </p>
-                <a href="<s:url action="topoSearch" namespace="/subscriber"/> " class="btn-cliffhangout col-sm-offset-4 col-sm-4 col-xs-offset-2 col-xs-8">Espace prêt de topos</a>
+                <a href="<s:url action="topoSearch" namespace="/subscriber"/> " class="btn-cliffhangout col-sm-offset-2 col-sm-8 col-xs-offset-0 col-xs-12">Espace prêt de topos</a>
             </div>
         </div>
         <div class="row">
