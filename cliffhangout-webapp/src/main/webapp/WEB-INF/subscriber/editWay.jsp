@@ -81,7 +81,7 @@
                     <input type="hidden" name="addLength" value="true" form="addForm"/>
                     <input type="hidden" name="idWay" value="<s:property value="idWay"/>" form="addForm"/>
                     <input type="hidden" name="idSector" value="<s:property value="idSector"/>" form="addForm"/>
-                    <input type="submit" class="btn btn-info" id="addLength" value="Ajouter une longueur" form="addForm"/>
+                    <input type="submit" class="btn btn-info col-sm-offset-4 col-sm-4 col-xs-offset-4 col-xs-4" id="addLength" value="Ajouter une longueur" form="addForm"/>
                 </div>
             </s:if>
         </div>

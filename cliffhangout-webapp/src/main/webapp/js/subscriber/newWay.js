@@ -25,12 +25,10 @@ $(function(){
             }
         });
     });
-
     $('#addLength').click(function(e)
     {
         addLength(lengthTemplate);
     });
-
     function addLength(lengthTemplate)
     {
         var lengthHTML = lengthTemplate.replace(/__IDX__/g, cptSector+1).replace(/__REALIDX__/g, (cptSector+1));
@@ -39,7 +37,6 @@ $(function(){
         //addWayAdding(cptSector);
         cptLength++;
     }
-
     function addDeleteLength(cpt)
     {
         $('#deleteLength['+cpt+']').click(function(e)

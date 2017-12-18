@@ -20,9 +20,14 @@ target/
 *.jpeg
 *.png
 *.gif
+!uml/*.jpg
+!uml/*.jpeg
+!uml/*.png
+!uml/*.gif
 
 #Pdf
 *.pdf
+!uml/*.pdf
 
 #Meta-inf
 META-INF/

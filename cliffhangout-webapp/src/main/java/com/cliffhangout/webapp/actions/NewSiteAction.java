@@ -236,8 +236,11 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
         {
             if(siteBean!=null)
             {
-                List <Image> images = getManagerFactory().getSiteManager().copyImagesToDisk(siteBean, uploads, uploadsContentType, uploadsFileName);
-                session.put("uploads", images);
+                if(uploads!=null)
+                {
+                    List <Image> images = getManagerFactory().getSiteManager().copyImagesToDisk(siteBean, uploads, uploadsContentType, uploadsFileName);
+                    session.put("uploads", images);
+                }
                 session.put("site", siteBean);
                 return "display";
             }else{
