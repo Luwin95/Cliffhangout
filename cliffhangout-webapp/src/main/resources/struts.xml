@@ -169,6 +169,7 @@
             </result>
             <result name="home" type="redirect">/subscriber/home.action</result>
             <result name="login" type="redirect">/login.action</result>
+            <result name="admin" type="redirect">/admin/home.action</result>
         </action>
         <action name="addTopoSearch" class="com.cliffhangout.webapp.actions.AddTopoSearchAction" method="execute">
             <result name="success">/layout.jsp</result>
@@ -198,6 +199,7 @@
                 <param name="actionName">/subscriber/home.action</param>
             </result>
             <result name="login" type="redirect">/login.action</result>
+            <result name="admin" type="redirect">/admin/home.action</result>
         </action>
         <action name="editTopoSearch" class="com.cliffhangout.webapp.actions.AddTopoSearchAction" method="execute">
             <result name="success" type="dispatcher">

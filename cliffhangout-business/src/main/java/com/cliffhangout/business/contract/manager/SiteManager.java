@@ -1,6 +1,7 @@
 package com.cliffhangout.business.contract.manager;
 
 import com.cliffhangout.beans.Comment;
+import com.cliffhangout.beans.Image;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.User;
 
@@ -18,10 +19,11 @@ public interface SiteManager {
     List<Site> displayAllSites();
     void buildSiteDependencies(Site site);
     void addSite(Site site);
-    void addSite(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName);
+    void addSite(Site site, List<Image> uploads);
     void addSiteDependencies(Site site);
     void addSiteImage(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName);
-    void testAddSiteImage(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName);
+    void testAddSiteImage(Site site, List<Image> images);
+    List<Image> copyImagesToDisk(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName);
     void updateSite(Site site);
     void updateSite(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName);
     void updateSiteDependencies(Site site);

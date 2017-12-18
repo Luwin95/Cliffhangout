@@ -37,7 +37,11 @@
                         </s:form>
                     </s:if>
                     <s:else>
-                        <button class="col-xs-offset-7 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
+                        <s:form action="site" >
+                            <s:hidden name="idSite" value="%{idSite}"/>
+                            <input name="commentToReport" type="hidden" value="<s:property value="id"/>"/>
+                            <button type="submit" class="col-xs-offset-7 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
+                        </s:form>
                     </s:else>
                 </s:if>
                 <s:else>

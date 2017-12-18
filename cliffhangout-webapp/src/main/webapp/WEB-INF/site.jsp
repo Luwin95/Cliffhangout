@@ -112,63 +112,65 @@
         </div>
 
     </div>
-    <div class="row comments-section">
-        <div class="col-xs-offset-1 col-xs-10 ">
-            <h2>Commentaires</h2>
-            <s:if test="#session.sessionUser!= null">
-                <div class="row comments-form" id="commentForm">
-                    <s:form action="site" >
-                        <textarea name="commentBean.content" id="comment-content" placeholder="Laisser un commentaire" required></textarea>
-                        <br/><s:submit value="Laisser un commentaire" cssClass="btn-cliffhangout"/>
-                        <s:hidden name="idSite" value="%{idSite}"/>
-                    </s:form>
-                </div>
-            </s:if>
-            <s:if test="%{site.comments !=null && site.comments.size()!=0}">
-                <div class="row comments-display">
-                    <s:iterator value="site.comments">
-                        <div class="row comment">
-                            <div class="col-sm-1 col-xs-2">
-                                <s:if test="%{author.image !=null}">
-                                    <div class="author-profile-img">
-                                        <img src="/uploadCliffhangout/images/user/<s:property value="author.image.path"/>"/>
-                                    </div>
-                                </s:if>
-                                <s:else>
-                                    <div class="author-profile-img">
-                                        <img src="/resources/images/user/icone-grimpeur.png"/>
-                                    </div>
-                                </s:else>
-                            </div>
-                            <div class="col-xs-8 col-xs-10 comment-content">
-                                <s:property value="author.login"/> a dit : <s:property value="content"/>
-                            </div>
-                            <div class="col-sm-3 col-sm-offset-0 col-xs-offset-2 col-xs-10 comment-content">
-                                <div class="row">
-                                    <s:if test="#session.sessionUser!= null">
-                                        <button class="col-xs-5 btn-cliffhangout answer" id="<s:property value="id"/>">Répondre</button>
-                                        <s:form action="site" >
-                                            <s:hidden name="idSite" value="%{idSite}"/>
-                                            <input name="commentToReport" type="hidden" value="<s:property value="id"/>"/>
-                                            <button type="submit" class="col-xs-offset-2 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
-                                        </s:form>
+    <s:if test="%{#session.sessionUser!= null || (site.comments !=null && site.comments.size()!=0)}">
+        <div class="row comments-section">
+            <div class="col-xs-offset-1 col-xs-10 ">
+                <h2>Commentaires</h2>
+                <s:if test="#session.sessionUser!= null">
+                    <div class="row comments-form" id="commentForm">
+                        <s:form action="site" >
+                            <textarea name="commentBean.content" id="comment-content" placeholder="Laisser un commentaire" required></textarea>
+                            <br/><s:submit value="Laisser un commentaire" cssClass="btn-cliffhangout"/>
+                            <s:hidden name="idSite" value="%{idSite}"/>
+                        </s:form>
+                    </div>
+                </s:if>
+                <s:if test="%{site.comments !=null && site.comments.size()!=0}">
+                    <div class="row comments-display">
+                        <s:iterator value="site.comments">
+                            <div class="row comment">
+                                <div class="col-sm-1 col-xs-2">
+                                    <s:if test="%{author.image !=null}">
+                                        <div class="author-profile-img">
+                                            <img src="/uploadCliffhangout/images/user/<s:property value="author.image.path"/>"/>
+                                        </div>
                                     </s:if>
                                     <s:else>
-                                        <a href="<s:url action="login"/>">Se connecter</a> ou <a href="#">S'inscrire</a>
+                                        <div class="author-profile-img">
+                                            <img src="/resources/images/user/icone-grimpeur.png"/>
+                                        </div>
                                     </s:else>
                                 </div>
+                                <div class="col-xs-8 col-xs-10 comment-content">
+                                    <s:property value="author.login"/> a dit : <s:property value="content"/>
+                                </div>
+                                <div class="col-sm-3 col-sm-offset-0 col-xs-offset-2 col-xs-10 comment-content">
+                                    <div class="row">
+                                        <s:if test="#session.sessionUser!= null">
+                                            <button class="col-xs-5 btn-cliffhangout answer" id="<s:property value="id"/>">Répondre</button>
+                                            <s:form action="site" >
+                                                <s:hidden name="idSite" value="%{idSite}"/>
+                                                <input name="commentToReport" type="hidden" value="<s:property value="id"/>"/>
+                                                <button type="submit" class="col-xs-offset-2 col-xs-5 btn btn-danger report"><span class="glyphicon glyphicon-alert"></span> Signaler</button>
+                                            </s:form>
+                                        </s:if>
+                                        <s:else>
+                                            <a href="<s:url action="login"/>">Se connecter</a> ou <a href="#">S'inscrire</a>
+                                        </s:else>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <s:if test="%{children !=null && children.size()!=0}">
-                            <s:set var="cpt" value="0"/>
-                            <div style="margin-left:20px;">
-                                <s:set var="cpt" value="%{#cpt+1}"/>
-                                <s:include value="comment.jsp"/>
-                            </div>
-                        </s:if>
-                    </s:iterator>
-                </div>
-            </s:if>
+                            <s:if test="%{children !=null && children.size()!=0}">
+                                <s:set var="cpt" value="0"/>
+                                <div style="margin-left:20px;">
+                                    <s:set var="cpt" value="%{#cpt+1}"/>
+                                    <s:include value="comment.jsp"/>
+                                </div>
+                            </s:if>
+                        </s:iterator>
+                    </div>
+                </s:if>
+            </div>
         </div>
-    </div>
+    </s:if>
 </div>

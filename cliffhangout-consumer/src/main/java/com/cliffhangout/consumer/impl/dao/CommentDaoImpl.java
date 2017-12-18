@@ -157,10 +157,11 @@ public class CommentDaoImpl extends AbstractDaoImpl implements CommentDao {
     @Override
     public List<Comment> findAllSignaled() {
         try{
-            StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.* " +
+            StringBuilder vSQL= new StringBuilder("SELECT child.comment_id AS child_id, child.content AS child_content, child.reported AS child_reported , parent.comment_id AS parent_id, parent.content AS parent_content,parent.reported AS parent_reported, user_account.user_account_id AS user_id, user_account.*, image.image_id AS imageId, image.* " +
                     "FROM comment AS child " +
                     "LEFT JOIN comment AS parent ON child.parent_id = parent.comment_id " +
                     "LEFT JOIN user_account ON child.author_id= user_account.user_account_id " +
+                    "LEFT JOIN image ON image.image_id=user_account.image_id "+
                     "WHERE 1=1 ");
             vSQL.append("AND child.reported=:reported");
             getvParams().addValue("reported", true);

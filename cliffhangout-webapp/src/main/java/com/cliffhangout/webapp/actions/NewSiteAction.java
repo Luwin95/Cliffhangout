@@ -1,5 +1,6 @@
 package com.cliffhangout.webapp.actions;
 
+import com.cliffhangout.beans.Image;
 import com.cliffhangout.beans.Site;
 import com.cliffhangout.beans.User;
 import com.cliffhangout.webapp.AbstractAction;
@@ -235,9 +236,8 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
         {
             if(siteBean!=null)
             {
-                session.put("uploads", uploads);
-                session.put("uploadsContentType", uploadsContentType);
-                session.put("uploadsFileName", uploadsFileName);
+                List <Image> images = getManagerFactory().getSiteManager().copyImagesToDisk(siteBean, uploads, uploadsContentType, uploadsFileName);
+                session.put("uploads", images);
                 session.put("site", siteBean);
                 return "display";
             }else{
@@ -277,13 +277,7 @@ public class NewSiteAction extends AbstractAction implements SessionAware{
                 siteBean.setCreator((User) session.get("sessionUser"));
                 if(session.containsKey("uploads"))
                 {
-                    setUploads((List<File>) session.get("uploads"));
-                    setUploadsContentType((List<String>) session.get("uploadsContentType"));
-                    setUploadsFileName((List<String>) session.get("uploadsFileName"));
-                }
-                if(uploads != null)
-                {
-                    getManagerFactory().getSiteManager().addSite(siteBean, uploads, uploadsContentType, uploadsFileName);
+                    getManagerFactory().getSiteManager().addSite(siteBean, (List<Image>) session.get("uploads"));
                 }else{
                     getManagerFactory().getSiteManager().addSite(siteBean);
                 }

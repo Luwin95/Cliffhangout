@@ -315,10 +315,10 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     }
 
     @Override
-    public void addSite(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName) {
+    public void addSite(Site site, List<Image> uploads) {
         addSite(site);
         //addSiteImage(site, uploads, uploadsContentType, uploadsFileName);
-        testAddSiteImage(site, uploads, uploadsContentType, uploadsFileName);
+        testAddSiteImage(site, uploads);
     }
 
     @Override
@@ -396,24 +396,51 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
     }
 
     @Override
-    public void testAddSiteImage(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName) {
+    public List<Image> copyImagesToDisk(Site site, List<File> uploads, List<String> uploadsContentType, List<String> uploadsFileName) {
         int i=0;
         String desc="";
+        List<Image> imagesToSave = new ArrayList<>();
         for(File file : uploads){
             try {
-                String userDir = getUploadDirectory().replaceAll("\\\\", "/");
+                String tempDir = "E:/temp/images/";
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yy_H_mm_ss");
                 Date date = new Date();
                 String path=dateFormat.format(date)+ UUID.randomUUID().toString()+"."+uploadsContentType.get(i).substring(6);
                 Image image = new Image();
                 image.setPath(path);
                 image.setTitle("Image du site d'escalade "+site.getName() );
-                image.setAlt("Image du site d'escalade "+site.getName()+ " situé dans la ville de "+site.getLocation()+" dans le département "+site.getDepartement().getName());
-                String fileName = "/images/site/"+path;
-                String fullfilename = userDir+fileName;
+                image.setAlt("Image du site d'escalade "+site.getName()+ " situé dans la ville de "+site.getLocation());
+                imagesToSave.add(image);
+                String fullfilename = tempDir+path;
                 FileInputStream fis = new FileInputStream(file);
                 String contentType = uploadsContentType.get(i);
                 System.out.println(contentType);
+                FileOutputStream fos = new FileOutputStream(fullfilename);
+                byte[] b = new byte[1024];
+                while(fis.read(b) != -1){
+                    fos.write(b);
+                }
+                desc += path +", ";
+                fos.close();
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            i++;
+        }
+        return imagesToSave;
+    }
+
+    @Override
+    public void testAddSiteImage(Site site, List<Image> uploads) {
+        for(Image image : uploads)
+        {
+            String userDir = getUploadDirectory().replaceAll("\\\\", "/");
+            String fullFileName = userDir+ "/images/site/" + image.getPath();
+            String tempFileName = "E:/temp/images/"+image.getPath();
+            File tempFile = new File(tempFileName);
+            try
+            {
                 TransactionTemplate vTransactionTemplate = new TransactionTemplate(getPlatformTransactionManager());
                 vTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
                     @Override
@@ -422,18 +449,14 @@ public class SiteManagerImpl extends AbstractManagerImpl implements SiteManager 
                         getDaoFactory().getImageDao().createSiteImage(image, site);
                     }
                 });
-                FileOutputStream fos = new FileOutputStream(fullfilename);
-                byte[] b = new byte[1024];
-                while(fis.read(b) != -1){
-                    fos.write(b);
+            }finally{
+                File importedImage = new File(fullFileName);
+                try{
+                    FileUtils.copyFile(tempFile, importedImage);
+                    FileUtils.deleteQuietly(tempFile);
+                }catch(IOException e){
                 }
-                desc += fileName +", ";
-                fos.close();
-                fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-            i++;
         }
     }
 

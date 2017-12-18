@@ -33,7 +33,12 @@ public class RemoveSiteAction extends AbstractAction implements SessionAware {
             {
                 int id = Integer.parseInt(this.idSite);
                 getManagerFactory().getSiteManager().deleteSite(id);
-                return SUCCESS;
+                if(((User) session.get("sessionUser")).getRole().equals("ADMIN"))
+                {
+                    return "admin";
+                }else{
+                    return SUCCESS;
+                }
             }else{
                 return "home";
             }
